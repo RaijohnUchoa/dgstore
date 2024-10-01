@@ -12,8 +12,15 @@ class Supplier extends Model
     
     protected $fillable = [
         'supplier_name',
-        'slug',
-        'image',
+        'contact',
+        'image_logo',
+        'cpf_cnpj',
+        'phone',
+        'street_address',
+        'city',
+        'state',
+        'country',
+        'zipcode',
         'is_active',
     ];
     

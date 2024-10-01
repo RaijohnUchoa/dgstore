@@ -6,7 +6,7 @@
 
     <div class="flex justify-between items-center border py-1 px-2">
         <span class="font-bold">EDITANDO USUÁRIO[{{ $user->name }}]</span>
-        <a href="{{ route('usersread') }}" class="py-1 px-3 mb-1 text-xs text-center text-white bg-red-500 rounded">Voltar</a>
+        <a href="{{ route('usersread') }}" class="py-1 px-3 mb-1 text-xs text-center text-white bg-red-600 rounded">Voltar</a>
     </div>
     <hr class="mt-0.5 border">
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,9 +35,10 @@ Route::put('/usersupdate/{id}', [AuthController::class, 'usersupdate'])->name('u
 Route::get('/usersactive/{id}', [AuthController::class, 'usersactive'])->name('usersactive');
 Route::get('/usersfilter/{id}', [AuthController::class, 'usersfilter'])->name('usersfilter');
 // FORNECEDORES
-Route::get('/suppliersread', [AuthController::class, 'suppliersread'])->name('suppliersread');
-Route::post('/supplierscreate', [AuthController::class, 'supplierscreate'])->name('supplierscreate');
-Route::get('/suppliersedit/{id}', [AuthController::class, 'suppliersedit'])->name('suppliersedit');
-Route::put('/suppliersupdate/{id}', [AuthController::class, 'suppliersupdate'])->name('suppliersupdate');
-Route::get('/suppliersdelete/{id}', [AuthController::class, 'suppliersdelete'])->name('suppliersdelete');
+Route::get('/suppliersread', [SupplierController::class, 'suppliersread'])->name('suppliersread');
+Route::post('/supplierscreate', [SupplierController::class, 'supplierscreate'])->name('supplierscreate');
+Route::get('/suppliersedit/{id}', [SupplierController::class, 'suppliersedit'])->name('suppliersedit');
+Route::put('/suppliersupdate/{id}', [SupplierController::class, 'suppliersupdate'])->name('suppliersupdate');
+Route::get('/suppliersactive/{id}', [SupplierController::class, 'suppliersactive'])->name('suppliersactive');
+Route::get('/suppliersfilter/{id}', [SupplierController::class, 'suppliersfilter'])->name('suppliersfilter');
 

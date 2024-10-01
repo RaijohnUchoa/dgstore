@@ -75,7 +75,7 @@ class AuthController extends Controller
         if ($user->save()) {
             $credentials = $request->only('email', 'password');
             if(Auth::attempt($credentials)) {
-                return redirect()->intended(route('userscreate'))->with('success', 'Usuário ['.$request->name.'] CADASTRADO com Sucesso!');
+                return redirect()->intended(route('usersread'))->with('success', 'Usuário ['.$request->name.'] CADASTRADO com Sucesso!');
             }
         }
         return redirect()->back()->with('error', 'Usuário ['.$request->name.'] NÃO CADASTRADO!');
@@ -85,24 +85,16 @@ class AuthController extends Controller
         return view('usersread', compact('users'));
     }
     public function usersedit($id) {
-
         if (!$user = User::find($id))
             return redirect()->route('usersread');
 
         return view('usersedit', compact('user'));
-
     }
     public function usersupdate(Request $request, $id){
-
         if (!$userupdate = User::find($id))
             return redirect()->route('usersread');
         $data = $request->all();
-
-        // dd($request->password, $data, $userupdate);
-
         $userupdate->update($data);
-        //Disparar email com a senha alterada para o Usuário
-
         return redirect()->route('usersread')->with('success', 'Usuário ['.$request->name.'] ALTERADO com Sucesso!');
     }
     public function usersactive($id){
@@ -116,7 +108,6 @@ class AuthController extends Controller
             $useractive->update(['is_active' => 1]);
             return redirect()->route('usersread')->with(['success' => 'Usuário ['.$useractive->name.'] ATIVADO com Sucesso!']);
         }
-        
     }
     public function usersfilter($id){
         if ($id == 3) {
