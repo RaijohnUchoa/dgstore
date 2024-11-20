@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,4 +42,11 @@ Route::get('/suppliersedit/{id}', [SupplierController::class, 'suppliersedit'])-
 Route::put('/suppliersupdate/{id}', [SupplierController::class, 'suppliersupdate'])->name('suppliersupdate');
 Route::get('/suppliersactive/{id}', [SupplierController::class, 'suppliersactive'])->name('suppliersactive');
 Route::get('/suppliersfilter/{id}', [SupplierController::class, 'suppliersfilter'])->name('suppliersfilter');
+// CATEGORIAS
+Route::get('/categoriesread', [CategoryController::class, 'categoriesread'])->name('categoriesread');
+Route::post('/categoriescreate', [CategoryController::class, 'categoriescreate'])->name('categoriescreate');
+Route::get('/categoriesedit/{id}', [CategoryController::class, 'categoriesedit'])->name('categoriesedit');
+Route::put('/categoriesupdate/{id}', [CategoryController::class, 'categoriesupdate'])->name('categoriesupdate');
+Route::get('/categoriesactive/{id}', [CategoryController::class, 'categoriesactive'])->name('categoriesactive');
+Route::get('/categoriesfilter/{id}', [CategoryController::class, 'categoriesfilter'])->name('categoriesfilter');
 

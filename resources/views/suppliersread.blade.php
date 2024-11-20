@@ -19,7 +19,7 @@
     </div>
     <hr class="mt-0.5 border">
     {{-- INCLUIR NOVO USUÁRIO --}}
-    <form action="{{ route('supplierscreate') }}" method="POST" id="open" class="text-xs hidden">
+    <form action="{{ route('supplierscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
         @csrf
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-full">

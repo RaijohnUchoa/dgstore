@@ -36,6 +36,8 @@ class SupplierController extends Controller
     }
     public function suppliersread() {
         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 1)->get();
+        // dd($suppliers);
+
         return view('suppliersread', compact('suppliers'));
     }
     public function suppliersedit($id) {
