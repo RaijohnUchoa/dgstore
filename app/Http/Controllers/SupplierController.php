@@ -47,10 +47,10 @@ class SupplierController extends Controller
         return view('suppliersedit', compact('supplier'));
     }
     public function suppliersupdate(Request $request, $id){
-        if (!$userupdate = Supplier::find($id))
+        if (!$supplierupdate = Supplier::find($id))
             return redirect()->route('suppliersread');
         $data = $request->all();
-        $userupdate->update($data);
+        $supplierupdate->update($data);
         return redirect()->route('suppliersread')->with('success', 'Fornecedor ['.$request->supplier_name.'] ALTERADO com Sucesso!');
     }
     public function suppliersactive($id){

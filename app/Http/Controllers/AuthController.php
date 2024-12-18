@@ -57,6 +57,9 @@ class AuthController extends Controller
 
     //CRUD USUÁRIOS ADMINISTRATIVO
     public function userscreate(Request $request){
+
+        // dd($request->all());
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',

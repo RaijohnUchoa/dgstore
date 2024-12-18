@@ -26,47 +26,45 @@ class CategoryController extends Controller
         if ($categories->save()) {
             return redirect()->intended(route('categoriesread'))->with('success', 'Categoria ['.$request->category_name.'] CADASTRADO com Sucesso!');
         }
-        return redirect()->back()->with('error', 'Categoria ['.$request->supplier_name.'] NÃO CADASTRADO!');
+        return redirect()->back()->with('error', 'Categoria ['.$request->category_name.'] NÃO CADASTRADO!');
     }
     public function categoriesread() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-        // dd($categories);
-
         return view('categoriesread', compact('categories'));
     }
-    // public function suppliersedit($id) {
-    //     if (!$supplier = Supplier::find($id))
-    //         return redirect()->route('usersread');
+    public function categoriesedit($id) {
+        if (!$category = Category::find($id))
+            return redirect()->route('usersread');
 
-    //     return view('suppliersedit', compact('supplier'));
-    // }
-    // public function suppliersupdate(Request $request, $id){
-    //     if (!$userupdate = Supplier::find($id))
-    //         return redirect()->route('suppliersread');
-    //     $data = $request->all();
-    //     $userupdate->update($data);
-    //     return redirect()->route('suppliersread')->with('success', 'Fornecedor ['.$request->supplier_name.'] ALTERADO com Sucesso!');
-    // }
-    // public function suppliersactive($id){
-    //     if (!$supplieractive = Supplier::find($id))
-    //         return redirect()->route('suppliersread');
+        return view('categoriesedit', compact('category'));
+    }
+    public function categoriesupdate(Request $request, $id){
+        if (!$categoryupdate = Category::find($id))
+            return redirect()->route('categoriesread');
+        $data = $request->all();
+        $categoryupdate->update($data);
+        return redirect()->route('categoriesread')->with('success', 'Categoria ['.$request->category_name.'] ALTERADO com Sucesso!');
+    }
+    public function categoriesactive($id){
+        if (!$categoryactive = Category::find($id))
+            return redirect()->route('categoriesread');
 
-    //     if ($supplieractive->is_active == 1) {
-    //         $supplieractive->update(['is_active' => 0]);
-    //         return redirect()->route('suppliersread')->with(['success' => 'Fornecedor ['.$supplieractive->supplier_name.'] DESATIVADO com Sucesso!']);
-    //     } else {
-    //         $supplieractive->update(['is_active' => 1]);
-    //         return redirect()->route('suppliersread')->with(['success' => 'Fornecedor ['.$supplieractive->supplier_name.'] ATIVADO com Sucesso!']);
-    //     }
-    // }
-    // public function suppliersfilter($id){
-    //     if ($id == 2) {
-    //         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->get();
-    //     } elseif ($id == 1) {
-    //         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 1)->get();
-    //     } else {
-    //         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 0)->get();
-    //     }
-    //     return view('suppliersread', compact('suppliers'));
-    // }
+        if ($categoryactive->is_active == 1) {
+            $categoryactive->update(['is_active' => 0]);
+            return redirect()->route('categoriesread')->with(['success' => 'Categoria ['.$categoryactive->category_name.'] DESATIVADO com Sucesso!']);
+        } else {
+            $categoryactive->update(['is_active' => 1]);
+            return redirect()->route('categoriesread')->with(['success' => 'Categoria ['.$categoryactive->category_name.'] ATIVADO com Sucesso!']);
+        }
+    }
+    public function categoriesfilter($id){
+        if ($id == 2) {
+            $categories = Category::orderBy('category_name', 'ASC')->get();
+        } elseif ($id == 1) {
+            $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        } else {
+            $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 0)->get();
+        }
+        return view('categoriesread', compact('categories'));
+    }
 }

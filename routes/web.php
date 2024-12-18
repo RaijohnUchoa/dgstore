@@ -1,20 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('layouts.app');
@@ -49,4 +39,11 @@ Route::get('/categoriesedit/{id}', [CategoryController::class, 'categoriesedit']
 Route::put('/categoriesupdate/{id}', [CategoryController::class, 'categoriesupdate'])->name('categoriesupdate');
 Route::get('/categoriesactive/{id}', [CategoryController::class, 'categoriesactive'])->name('categoriesactive');
 Route::get('/categoriesfilter/{id}', [CategoryController::class, 'categoriesfilter'])->name('categoriesfilter');
+// MARCAS
+Route::get('/brandsread', [BrandController::class, 'brandsread'])->name('brandsread');
+Route::post('/brandscreate', [BrandController::class, 'brandscreate'])->name('brandscreate');
+Route::get('/brandsedit/{id}', [BrandController::class, 'brandsedit'])->name('brandsedit');
+Route::put('/brandsupdate/{id}', [BrandController::class, 'brandsupdate'])->name('brandsupdate');
+Route::get('/brandsactive/{id}', [BrandController::class, 'brandsactive'])->name('brandsactive');
+Route::get('/brandsfilter/{id}', [BrandController::class, 'brandsfilter'])->name('brandsfilter');
 

@@ -46,9 +46,9 @@
             </div>
             <div class="w-full">
                 <label for="type"><span class="font-semibold">:Tipo</span></label>
-                <select name="type" id="type" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required disabled>
+                <select name="type" id="type" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
                     <option value="{{ 0 }}">Admin</option>
-                    <option value="{{ 1 }}">Cliente</option>
+                    {{-- <option value="{{ 1 }}">Cliente</option> --}}
                 </select>
             </div>
         </div>

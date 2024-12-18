@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Cateegorias")
+@section("title", "Categorias")
 @section("content")
 
 <div class="">
@@ -14,7 +14,7 @@
             <a href="{{ route('categoriesfilter', 2) }}" class="bg-gray-700 text-xs py-1 px-2 rounded">Geral</a>
             <a href="{{ route('categoriesfilter', 1) }}" class="bg-green-600 text-xs py-1 px-1 rounded">Ativos</a>
             <a href="{{ route('categoriesfilter', 0) }}" class="bg-gray-500 text-xs py-1 px-1 rounded">inAtivos</a>
-            <button class="bg-sky-600 text-white text-xs py-1 px-1 rounded" onclick="openForm()">Novo Fornecedor ▼</button>
+            <button class="bg-sky-600 text-white text-xs py-1 px-1 rounded" onclick="openForm()">Nova Categoria ▼</button>
         </div>
     </div>
     <hr class="mt-0.5 border">
@@ -88,16 +88,16 @@
                         <td class="px-2 py-1">
                             <span class="py-1 px-2 mr-2 rounded hover:fonte-bold">{{ $category->is_active == 1 ? "Ativo" : "inAtivo" }}</span>
                         </td>
-                        {{-- <td class="px-2 flex items-center">
+                        <td class="px-2 flex items-center">
 
                             @if ($category->is_active == 1)
-                                <a href="{{ route('categorysedit', $category->id) }}" class="bg-yellow-300 py-1 px-2 mr-2 rounded text-blue-600 hover:fonte-bold">Edit</a>
+                                <a href="{{ route('categoriesedit', $category->id) }}" class="bg-yellow-300 py-1 px-2 mr-2 rounded text-blue-600 hover:fonte-bold">Edit</a>
                             @else
                                 <span class="bg-gray-300 py-1 px-2 mr-2 rounded text-gray-400 hover:fonte-bold" disabled>Edit</span>
                             @endif
-                            <a href="{{ route('categorysactive', $category->id) }}" onclick="return confirm('Tem Certeza que Deseja (DES)ATIVAR')" class="flex {{ $category->is_active == 1 ? 'bg-red-600 px-1' : 'bg-gray-400 px-1' }} rounded-full text-gray-50 hover:fonte-bold"><span>{{ $category->is_active == 1 ? 'x' : '>' }}</span></a>
+                            <a href="{{ route('categoriesactive', $category->id) }}" onclick="return confirm('Tem Certeza que Deseja (DES)ATIVAR')" class="flex {{ $category->is_active == 1 ? 'bg-red-600 px-1' : 'bg-gray-400 px-1' }} rounded-full text-gray-50 hover:fonte-bold"><span>{{ $category->is_active == 1 ? 'X' : '>' }}</span></a>
                             
-                        </td> --}}
+                        </td>
                     </tr>
                 @empty
                     <tr><td>Lista Vazia</td></tr>

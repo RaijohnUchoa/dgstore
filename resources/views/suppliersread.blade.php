@@ -155,7 +155,7 @@
                             @else
                                 <span class="bg-gray-300 py-1 px-2 mr-2 rounded text-gray-400 hover:fonte-bold" disabled>Edit</span>
                             @endif
-                            <a href="{{ route('suppliersactive', $supplier->id) }}" onclick="return confirm('Tem Certeza que Deseja (DES)ATIVAR')" class="flex {{ $supplier->is_active == 1 ? 'bg-red-600 px-1' : 'bg-gray-400 px-1' }} rounded-full text-gray-50 hover:fonte-bold"><span>{{ $supplier->is_active == 1 ? 'x' : '>' }}</span></a>
+                            <a href="{{ route('suppliersactive', $supplier->id) }}" onclick="return confirm('Tem Certeza que Deseja (DES)ATIVAR')" class="flex {{ $supplier->is_active == 1 ? 'bg-red-600 px-1' : 'bg-gray-400 px-1' }} rounded-full text-gray-50 hover:fonte-bold"><span>{{ $supplier->is_active == 1 ? 'X' : '>' }}</span></a>
                             
                         </td>
                     </tr>
