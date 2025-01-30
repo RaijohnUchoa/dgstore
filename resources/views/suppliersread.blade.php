@@ -18,7 +18,7 @@
         </div>
     </div>
     <hr class="mt-0.5 border">
-    {{-- INCLUIR NOVO USUÁRIO --}}
+    {{-- INCLUIR NOVO FORNECEDOR --}}
     <form action="{{ route('supplierscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
         @csrf
         <div class="flex items-center mt-3 px-2 space-x-2">
@@ -79,7 +79,7 @@
                 <label for="state"><span class="font-semibold">:Estado/UF</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="state"  id="state" value="{{ old('state') }}" placeholder=" sigla estado" required>
                 @error('state')
-                    <div class="absolute text-red-400">Digite a Sigra do Estado</div>
+                    <div class="absolute text-red-400">Digite a Sigla do Estado</div>
                 @enderror
             </div>
             <div class="w-full">

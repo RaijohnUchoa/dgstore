@@ -17,7 +17,7 @@ class Brand extends Model
     ];
     
     //Definir relacionamento com Produtos - BRAND contém vários produtos
-    public function products() {
-        return $this->hasMany(Product::class);
-    }
+    // public function products() {
+    //     return $this->hasMany(Product::class);
+    // }
 }

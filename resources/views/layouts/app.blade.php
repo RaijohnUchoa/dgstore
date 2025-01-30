@@ -39,8 +39,21 @@
     </div>
 
     {{-- MAIN --}}
+
     <div class="main border shadow bg-gray-50 text-gray-600 col-span-8">
-        @yield('content')
+      @yield('content')
+
+      {{-- ============================================================================================== --}}
+      {{-- <div class="m-2">
+        <div class="">
+          <span class="px-2 bg-sky-300 text-sky-700 text-3xl rounded" id="contador">00:00:00</span>
+        </div>
+        <div class="my-2">
+          <input type="number" id="valor" value=11>
+          <button class="px-2 bg-green-300 rounded" id="start">LANCE</button>
+        </div>
+      </div> --}}
+      {{-- ============================================================================================== --}}
 
       {{-- <div class="py-1 w-full gap-3 flex-wrap flex justify-center items-center">
 
@@ -179,9 +192,86 @@
     </div>
 
   </div>
+  
+    <script>
+      const tempo = document.querySelector('#valor');
+      const btnStart = document.querySelector('#start');
+      
+      var tempo_atual, relogio;
+
+      btnStart.addEventListener('click', function() {
+
+        start();
+
+      });
+
+      function start() {
+        if(tempo.value != '' && tempo.value != '0') {
+          
+          const valor = parseInt(tempo.value);
+
+          if(valor > 0) {
+
+            tempo_atual = valor;
+
+            if(relogio) {
+              clearInterval(relogio);
+            }
+            
+            relogio = setInterval(contar, 1000);
+
+          }else{
+
+            alert("Informe um valor maior que zero!");
+
+          }
+
+        }else{
+
+          alert("Informe um número válido!");
+
+        }
+      }
+
+      function contar() {
+        
+        tempo_atual--;
+        
+        if(tempo_atual >= 0) {
+
+          let horas, minutos, segundos;
+
+          horas = Math.floor(tempo_atual/3600);
+          minutos = Math.floor((tempo_atual - horas * 3600)/60);
+          segundos = tempo_atual - horas * 3600 - minutos * 60;
+
+          if(horas < 10) {
+            horas = "0"+horas;
+          }
+          if(minutos < 10) {
+            minutos = "0"+minutos;
+          }
+          if(segundos < 10) {
+            segundos = "0"+segundos;
+          }
+
+          document.querySelector('#contador').innerHTML = "<span>"+horas+":"+minutos+":"+segundos+"</span>";
+
+        }else{
+
+          clearInterval(relogio);
+          // alert("Parou!");
+          document.querySelector('#contador').innerHTML = "<span>"+"Você Venceu!!"+"</span>";
+
+        }
+      }
+
+    </script>
 
 </body>
 </html
+
+
 
 {{-- <div class="main border shadow bg-white text-sm text-center p-2 col-span-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 

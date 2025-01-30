@@ -21,31 +21,35 @@ class Product extends Model
         'car_color',
         'car_scale',
         'car_attribute',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+        'image5',
         'stock',
-        'images',
-        'description',
         'price_normal',
         'price_sale',
+        'description',
         'is_active',
         'is_featured',
         'in_stock',
         'on_sale',
     ];
-            
-    protected $casts = [
-        'images' => 'array',
-    ];
+           
+    // protected $casts = [
+    //     'images' => 'array',
+    // ];
 
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
+    // public function category() {
+    //     return $this->belongsTo(Category::class);
+    // }
 
-    public function brand() {
-        return $this->belongsTo(Brand::class);
-    }
+    // public function brand() {
+    //     return $this->belongsTo(Brand::class);
+    // }
 
-    public function orderItems() {
-        return $this->hasMany(OrderItem::class);
-    }
+    // public function orderItems() {
+    //     return $this->hasMany(OrderItem::class);
+    // }
 
 }

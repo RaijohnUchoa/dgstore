@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +47,12 @@ Route::get('/brandsedit/{id}', [BrandController::class, 'brandsedit'])->name('br
 Route::put('/brandsupdate/{id}', [BrandController::class, 'brandsupdate'])->name('brandsupdate');
 Route::get('/brandsactive/{id}', [BrandController::class, 'brandsactive'])->name('brandsactive');
 Route::get('/brandsfilter/{id}', [BrandController::class, 'brandsfilter'])->name('brandsfilter');
+// PRODUTOS
+Route::get('/productsread', [ProductController::class, 'productsread'])->name('productsread');
+Route::post('/productscreate', [ProductController::class, 'productscreate'])->name('productscreate');
+Route::get('/productsedit/{id}', [ProductController::class, 'productsedit'])->name('productsedit');
+Route::put('/productsupdate/{id}', [ProductController::class, 'productsupdate'])->name('productsupdate');
+Route::get('/productsactive/{id}', [ProductController::class, 'productsactive'])->name('productsactive');
+Route::get('/productsfilter/{id}', [ProductController::class, 'productsfilter'])->name('productsfilter');
+Route::get('/productslist', [ProductController::class, 'productslist'])->name('productslist');
 

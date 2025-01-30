@@ -18,7 +18,7 @@
         </div>
     </div>
     <hr class="mt-0.5 border">
-    {{-- INCLUIR NOVO USUÁRIO --}}
+    {{-- INCLUIR NOVA MARCA --}}
     <form action="{{ route('brandscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
         @csrf
         <div class="flex items-center mt-3 px-2 space-x-2">
@@ -31,7 +31,7 @@
             </div>
             <div class="w-full">
                 <label for="slug"><span class="font-semibold">:Slug</span></label>
-                <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do marca" required>
+                <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do slug" required>
                 @error('slug')
                     <div class="absolute text-red-400">Digite o Slug Marca</div>
                 @enderror

@@ -17,11 +17,11 @@ class OrderItem extends Model
         'total_amount',
     ];
 
-    public function order() {
-        return $this->belongsTo(Order::class);
-    }
+    // public function order() {
+    //     return $this->belongsTo(Order::class);
+    // }
 
-    public function product() {
-        return $this->belongsTo(Product::class);
-    }
+    // public function product() {
+    //     return $this->belongsTo(Product::class);
+    // }
 }

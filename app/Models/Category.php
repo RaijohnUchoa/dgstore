@@ -17,9 +17,9 @@ class Category extends Model
     ];
     
     //Definir relacionamento com Produtos - CATEGORIA contém vários produtos
-    public function products() {
-        return $this->hasMany(Product::class);
-    }
+    // public function products() {
+    //     return $this->hasMany(Product::class);
+    // }
 
 }
 
