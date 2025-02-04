@@ -2,355 +2,416 @@
 @section('title', 'Produtos')
 @section('content')
 
-    <div class="">
+@if (session()->has('success'))
+    <span class="flex justify-center bg-green-200 text-green-700 text-sm m-2 py-1 rounded">{{ session()->get('success') }}</span>
+@endif
+<div class="flex justify-between items-center border py-1 px-2">
+    <span class="font-semibold">PRODUTOS</span>
+    <div class="text-white">
+        <a href="{{ route('productsfilter', 2) }}" class="bg-gray-700 text-xs py-1 px-2 rounded">Geral</a>
+        <a href="{{ route('productsfilter', 1) }}" class="bg-green-600 text-xs py-1 px-1 rounded">Ativos</a>
+        <a href="{{ route('productsfilter', 0) }}" class="bg-gray-500 text-xs py-1 px-1 rounded">inAtivos</a>
+        <button class="bg-sky-600 text-white text-xs py-1 px-1 rounded" onclick="openForm()">Novo Produto ▼</button>
+    </div>
+</div>
+<hr class="mt-0.5 border">
 
-        @if (session()->has('success'))
-            <span
-                class="flex justify-center bg-green-200 text-green-700 text-sm m-2 py-1 rounded">{{ session()->get('success') }}</span>
-        @endif
+{{-- INCLUIR NOVO PRODUTO --}}
+<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
+    @csrf
 
-        <div class="flex justify-between items-center border py-1 px-2">
-            <span class="font-semibold">PRODUTOS</span>
-            <div class="text-white">
-                <a href="{{ route('productsfilter', 2) }}" class="bg-gray-700 text-xs py-1 px-2 rounded">Geral</a>
-                <a href="{{ route('productsfilter', 1) }}" class="bg-green-600 text-xs py-1 px-1 rounded">Ativos</a>
-                <a href="{{ route('productsfilter', 0) }}" class="bg-gray-500 text-xs py-1 px-1 rounded">inAtivos</a>
-                <button class="bg-sky-600 text-white text-xs py-1 px-1 rounded" onclick="openForm()">Novo Produto ▼</button>
+    {{-- Card Título --}}
+    <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-4/12">
+                <label for="category_id"><span class="font-semibold">:Categoria</span></label>
+                <select name="category_id" id="category_id"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
+                    required>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="w-4/12">
+                <label for="brand_id"><span class="font-semibold">:Fabricante</span></label>
+                <select name="brand_id" id="brand_id"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
+                    required>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="w-2/12">
+                <label for="car_scale"><span class="font-semibold">:Escala</span></label>
+                <select name="car_scale" id="car_scale"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
+                    required>
+                    <option value="{{ '1/64' }}">1/64</option>
+                    <option value="{{ '1/87' }}">1/87</option>
+                    <option value="{{ '1/72' }}">1/72</option>
+                    <option value="{{ '1/50' }}">1/50</option>
+                    <option value="{{ '1/43' }}">1/43</option>
+                    <option value="{{ '1/32' }}">1/32</option>
+                    <option value="{{ '1/24' }}">1/24</option>
+                    <option value="{{ '1/18' }}">1/18</option>
+                    <option value="{{ '1/12' }}">1/12</option>
+                    <option value="{{ 'Outras' }}">Outras</option>
+                </select>
+            </div>
+            <div class="w-2/12">
+                <label for="is_active"><span class="font-semibold">:Status</span></label>
+                <select name="is_active" id="is_active"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
+                    required>
+                    <option value="{{ 1 }}">Ativo</option>
+                    <option value="{{ 0 }}">Inativo</option>
+                </select>
             </div>
         </div>
-        <hr class="mt-0.5 border">
-        {{-- INCLUIR NOVO PRODUTO --}}
-        {{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data"> --}}
-        <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data">
-            @csrf
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-full">
+                <label for="title"><span class="font-semibold">:Título</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="title" id="title" value="{{ old('title') }}"
+                    placeholder=" título do produto" required>
+                @error('title')
+                    <div class="absolute text-red-400">Digite o Título do Produto</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    {{-- Card Características do Produto --}}
+    <div
+        class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-3/12">
+                <label for="car_model"><span class="font-semibold">:Marca/Modelo</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="car_model" id="car_model" value="{{ old('car_model') }}"
+                    placeholder=" nome do marca">
+                @error('car_model')
+                    <div class="absolute text-red-400">Digite o Modelo</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="car_year"><span class="font-semibold">:Ano</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="car_year" id="car_year" value="{{ old('car_year') }}"
+                    placeholder=" nome do marca">
+                @error('car_year')
+                    <div class="absolute text-red-400">Digite o Modelo</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="car_color"><span class="font-semibold">:Cor</span></label>
+                <select name="car_color" id="car_color"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
+                    <option value="{{ 'Amarelo' }}">Amarelo</option>
+                    <option value="{{ 'Azul' }}">Azul</option>
+                    <option value="{{ 'Branco' }}">Branco</option>
+                    <option value="{{ 'Dourado' }}">Dourado</option>
+                    <option value="{{ 'Cinza' }}">Cinza</option>
+                    <option value="{{ 'Laranja' }}">Laranja</option>
+                    <option value="{{ 'Preto' }}">Preto</option>
+                    <option value="{{ 'Prata' }}">Prata</option>
+                    <option value="{{ 'Verde' }}">Verde</option>
+                    <option value="{{ 'Vermelho' }}">Vermelho</option>
+                    <option value="{{ 'Outras' }}">Outras</option>
+                </select>
+            </div>
+            <div class="w-2/12">
+                <label for="car_attribute"><span class="font-semibold">:Atributo/Tipo</span></label>
+                <select name="car_attribute" id="car_attribute"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
+                    <option value="{{ 'Pickup' }}">Pickup</option>
+                    <option value="{{ 'SUV' }}">SUV</option>
+                    <option value="{{ 'Sedan' }}">Sedan</option>
+                    <option value="{{ 'Conversível' }}">Conversível</option>
+                    <option value="{{ 'Van' }}">Van</option>
+                    <option value="{{ 'Onibus' }}">Onibus</option>
+                    <option value="{{ 'Outros' }}">Outras</option>
+                </select>
+            </div>
+            <div class="w-3/12">
+                <label for="slug"><span class="font-semibold">:Slug</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="slug" id="slug" value="{{ old('slug') }}"
+                    placeholder=" nome do slug">
+                @error('slug')
+                    <div class="absolute text-red-400">Digite o Slug do Produto</div>
+                @enderror
+            </div>
+        </div>
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-3/12">
+                <label for="sku"><span class="font-semibold">:SKU</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="sku" id="sku" value="{{ old('sku') }}"
+                    placeholder=" código SKU">
+                @error('sku')
+                    <div class="absolute text-red-400">Digite o SKU</div>
+                @enderror
+            </div>
+            <div class="w-3/12">
+                <label for="barcode"><span class="font-semibold">:Código de Barras</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="barcode" id="barcode" value="{{ old('barcode') }}"
+                    placeholder=" código de barras">
+                @error('barcode')
+                    <div class="absolute text-red-400">Digite o Código de Barras</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="stock"><span class="font-semibold">:Estoque</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="stock" id="stock" value="{{ old('stock') }}"
+                    placeholder=" quantidade de estoque" required>
+                @error('stock')
+                    <div class="absolute text-red-400">Digite Quantidade do Estoque</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="price_normal"><span class="font-semibold">:Preço</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="price_normal" id="price_normal" value="{{ old('price_normal') }}"
+                    placeholder=" preço normal" required>
+                @error('price_normal')
+                    <div class="absolute text-red-400">Digite o Preço</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="price_sale"><span class="font-semibold">:Preço Promocional</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="price_sale" id="price_sale" value="{{ old('price_sale') }}"
+                    placeholder=" preço promocional">
+                @error('price_sale')
+                    <div class="absolute text-red-400">Digite o Preço Promocional</div>
+                @enderror
+            </div>
+        </div>
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-full">
+                <label for="description"><span class="font-semibold">:Descrição</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="description" id="description" value="{{ old('description') }}"
+                    placeholder=" descrição do produto">
+                @error('description')
+                    <div class="absolute text-red-400">Digite a Descrição do Produto</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    {{-- Card Imagem --}}
+    <div
+        class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+        <div class="flex justify-evenly">
+
+            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image1" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-red-400">Obrigatória</p>
+                    </div>
+                    <input type="file" name="image1" id="image1" value="{{ old('image1') }}"
+                        onchange="previewImage1()" class="hidden" required />
+                    <img id="img1" class="absolute top-0">
+                </label>
+            </div>
+            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image2" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image2" id="image2" value="{{ old('image2') }}"
+                        onchange="previewImage2()" class="hidden" />
+                    <img id="img2" class="absolute top-0">
+                </label>
+            </div>
+            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image3" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image3" id="image3" value="{{ old('image3') }}"
+                        onchange="previewImage3()" class="hidden" />
+                    <img id="img3" class="absolute top-0">
+                </label>
+            </div>
+            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image4" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image4" id="image4" value="{{ old('image4') }}"
+                        onchange="previewImage4()" class="hidden" />
+                    <img id="img4" class="absolute top-0">
+                </label>
+            </div>
+            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image5" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image5" id="image5" value="{{ old('image5') }}"
+                        onchange="previewImage5()" class="hidden" />
+                    <img id="img5" class="absolute top-0">
+                </label>
+            </div>
+
+        </div>
+
+    </div>
+
+    <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
+    <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
+    <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" />
+
+    <div class="px-2">
+        <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo Produto</button>
+    </div>
+</form>
+
+{{-- LISTA/EDIT PRODUTOS --}}
+
+@forelse ($products as $product)
+
+    <div class="border-b p-1 {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }} text-xs odd:bg-gray-75 even:bg-white">
+        
+        <span class="text-red-900">{{ $loop->iteration }}]</span>
+        <span class="">{{ substr($product->title, 0, 55) }}</span>
+        
+        <div class="flex justify-between items-center text-center pr-2">
             
-            {{-- Card Título --}}
-            <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-4/12">
-                        <label for="category_id"><span class="font-semibold">:Categoria</span></label>
+            <div class="flex items-center gap-1 {{ $product->is_active == 0 ? 'opacity-15' : '' }}">
+                <img src="{{ asset("storage/{$product->image1}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+
+                @if ($product->image2 != null)
+                    <img src="{{ asset("storage/{$product->image2}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                @else
+                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                @endif
+                @if ($product->image3 != null)
+                    <img src="{{ asset("storage/{$product->image3}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                @else
+                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                @endif
+                @if ($product->image4 != null)
+                    <img src="{{ asset("storage/{$product->image4}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                @else
+                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                @endif
+                @if ($product->image5 != null)
+                    <img src="{{ asset("storage/{$product->image5}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                @else
+                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                @endif
+                
+            </div>
+            <div class="flex items-center">
+
+                <form action="{{ route('productsupdate', $product->id) }}" method="POST" id="open" class="text-xs mt-3">
+                    @csrf
+                    @method('PUT')
+                    <div class="flex items-center gap-x-1">
+                        <span>{{ $product->id }}</span>
+                        <span>{{ $product->brand_id }}</span>
                         <select name="category_id" id="category_id"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
+                            class="w-32 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            @disabled($product->is_active == 1 ? false : true)>
+                            <option value="{{ $product->category_id }}">{{ $product->category_name }}</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="w-4/12">
-                        <label for="brand_id"><span class="font-semibold">:Fabricante</span></label>
                         <select name="brand_id" id="brand_id"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
+                            class="w-32 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            @disabled($product->is_active == 1 ? false : true)>
+                            <option value="{{ $product->brand_id }}">{{ $product->brand_name }}</option>
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="w-2/12">
-                        <label for="car_scale"><span class="font-semibold">:Escala</span></label>
-                        <select name="car_scale" id="car_scale"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
-                            <option value="{{ "1/64" }}">1/64</option>
-                            <option value="{{ "1/87" }}">1/87</option>
-                            <option value="{{ "1/72" }}">1/72</option>
-                            <option value="{{ "1/50" }}">1/50</option>
-                            <option value="{{ "1/43" }}">1/43</option>
-                            <option value="{{ "1/32" }}">1/32</option>
-                            <option value="{{ "1/24" }}">1/24</option>
-                            <option value="{{ "1/18" }}">1/18</option>
-                            <option value="{{ "1/12" }}">1/12</option>
-                            <option value="{{ 'Outras' }}">Outras</option>
-                        </select>
-                    </div>
-                    <div class="w-2/12">
-                        <label for="is_active"><span class="font-semibold">:Status</span></label>
-                        <select name="is_active" id="is_active"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
-                            <option value="{{ 1 }}">Ativo</option>
-                            <option value="{{ 0 }}">Inativo</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-full">
-                        <label for="title"><span class="font-semibold">:Título</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="title" id="title" value="{{ old('title') }}"
-                            placeholder=" título do produto">
-                        @error('title')
-                            <div class="absolute text-red-400">Digite o Título do Produto</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            {{-- Card Atributos --}}
-            <div class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-full">
-                        <label for="car_model"><span class="font-semibold">:Marca/Modelo</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="car_model" id="car_model" value="{{ old('car_model') }}"
-                            placeholder=" nome do marca">
-                        @error('car_model')
-                            <div class="absolute text-red-400">Digite o Modelo</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        {{-- @php $yearc = date('Y'); $years = range($yearc - 125, $yearc); rsort($years) @endphp
-                        <label for="car_year"><span class="font-semibold">:Ano</span></label>
-                        <select name="car_year" id="car_year"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
-                            @foreach ($years as $year)
-                                <option value="{{ "$year" }}">{{ $year }}</option>
-                            @endforeach
-                        </select> --}}
-                        <label for="car_year"><span class="font-semibold">:Ano</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="car_year" id="car_year" value="{{ old('car_year') }}"
-                            placeholder=" nome do marca">
-                        @error('car_year')
-                            <div class="absolute text-red-400">Digite o Modelo</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="car_color"><span class="font-semibold">:Cor</span></label>
-                        <select name="car_color" id="car_color"
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
-                            <option value="{{ "Amarelo" }}">Amarelo</option>
-                            <option value="{{ "Azul" }}">Azul</option>
-                            <option value="{{ "Branco" }}">Branco</option>
-                            <option value="{{ "Dourado" }}">Dourado</option>
-                            <option value="{{ "Cinza" }}">Cinza</option>
-                            <option value="{{ "Laranja" }}">Laranja</option>
-                            <option value="{{ "Preto" }}">Preto</option>
-                            <option value="{{ "Prata" }}">Prata</option>
-                            <option value="{{ "Verde" }}">Verde</option>
-                            <option value="{{ "Vermelho" }}">Vermelho</option>
-                            <option value="{{ "Outras" }}">Outras</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-full">
-                        <label for="stock"><span class="font-semibold">:Estoque</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="stock" id="stock" value="{{ old('stock') }}"
-                            placeholder=" quantidade de estoque">
-                        @error('stock')
-                            <div class="absolute text-red-400">Digite Quantidade do Estoque</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="price_normal"><span class="font-semibold">:Preço</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="price_normal" id="price_normal" value="{{ old('price_normal') }}"
-                            placeholder=" preço normal" required>
-                        @error('price_normal')
-                            <div class="absolute text-red-400">Digite o Preço</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="price_sale"><span class="font-semibold">:Preço Promocional</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="price_sale" id="price_sale" value="{{ old('price_sale') }}"
-                            placeholder=" preço promocional">
-                        @error('price_sale')
-                            <div class="absolute text-red-400">Digite o Preço Promocional</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-full">
-                        <label for="description"><span class="font-semibold">:Descrição</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="description" id="description" value="{{ old('description') }}"
-                            placeholder=" descrição do produto">
-                        @error('description')
-                            <div class="absolute text-red-400">Digite a Descrição do Produto</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-full">
-                        <label for="car_attribute"><span class="font-semibold">:Atributos</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="car_attribute" id="car_attribute" value="{{ old('car_attribute') }}"
-                            placeholder=" atributos">
-                        @error('car_attribute')
-                            <div class="absolute text-red-400">Digite os Atributos</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="slug"><span class="font-semibold">:Slug</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="slug" id="slug" value="{{ old('slug') }}"
-                            placeholder=" nome do slug">
-                        @error('slug')
-                            <div class="absolute text-red-400">Digite o Slug do Produto</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="sku"><span class="font-semibold">:SKU</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="sku" id="sku" value="{{ old('sku') }}"
-                            placeholder=" código SKU">
-                        @error('sku')
-                            <div class="absolute text-red-400">Digite o SKU</div>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="barcode"><span class="font-semibold">:Código de Barras</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                            type="text" name="barcode" id="barcode" value="{{ old('barcode') }}"
-                            placeholder=" código de barras">
-                        @error('barcode')
-                            <div class="absolute text-red-400">Digite o Código de Barras</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            {{-- Card Imagem --}}
-
-            {{-- <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <div class="flex items-center mt-3 px-2 space-x-2">
-                    <div class="w-4/12">
-                        <label for="image"><span class="font-semibold">:Imagem</span></label>
-                        <input
-                            class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-blue-900"
-                            type="file" name="image" id="image" value="{{ old('image') }}"
-                            placeholder=" imagem do produto" required>
-                        @error('image')
-                            <div class="absolute text-red-400">Carregue a Imagem do Produto</div>
-                        @enderror
-                    </div>
-                </div>
-            </div> --}}
-
-            <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                
-                <div class="flex items-center mt-3 px-2 space-x-2">
+                        <input class="w-16 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="stock" id="stock" value="{{ $product->stock }}" @disabled($product->is_active == 1 ? false : true)>
+                        <input class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="price_normal" id="price_normal" value="{{ $product->price_normal }}" @disabled($product->is_active == 1 ? false : true)>
+                        <input class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}" @disabled($product->is_active == 1 ? false : true)>
                     
-                    <div class="w-4/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                        <label for="image1" class="cursor-pointer">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                            </div>
-                            <input type="file" name="image1" id="image1" value="{{ old('image1') }}" class="mb-2" required/>
-                        </label>
+                        @if ($product->is_active == 1)
+                            <button type="submit" class="" title="Atualização">
+                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#0284c7">
+                                    <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                                </svg>
+                            </button>
+                            <a href="{{ route('productsedit', $product->id) }}">
+                                <span class="" title="Edição">
+                                    <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#eab308">
+                                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                            <a href="{{ route('productsactive', $product->id) }}" onclick="return confirm('Tem Certeza que Deseja (DESATIVAR)?')">
+                                <span class="" title="Desativar">
+                                    <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#ef4444">
+                                        <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        @else
+                            <span class="">
+                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#d1d5db">
+                                    <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                                </svg>
+                            </span>
+                            <span class="">
+                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#d1d5db">
+                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+                                </svg>
+                            </span>
+                            <a href="{{ route('productsactive', $product->id) }}" onclick="return confirm('Tem Certeza que Deseja (REATIVAR)?')">
+                                <span class="" title="Reativar">
+                                    <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#16a34a">
+                                        <path d="M440-320h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        @endif
                     </div>
-                    <div class="w-4/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                        <label for="image2" class="cursor-pointer">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                            </div>
-                            <input type="file" name="image2" id="image2" value="{{ old('image2') }}" class="mb-2"/>
-                        </label>
-                    </div>
-                    <div class="w-4/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                        <label for="image3" class="cursor-pointer">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                            </div>
-                            <input type="file" name="image3" id="image3" value="{{ old('image3') }}" class="mb-2"/>
-                        </label>
-                    </div>
+                </form>
 
-                </div>
-                
             </div>
             
-            <input type="number" name="is_featured" id="is_featured" value="{{ 0 }}"/>
-            <input type="number" name="in_stock" id="in_stock" value="{{ 1 }}"/>
-            <input type="number" name="on_sale" id="on_sale" value="{{ 0 }}"/>
-
-            <div class="px-2">
-                <button type="submit"
-                    class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo
-                    Produto</button>
-            </div>
-        </form>
-
-        {{-- LISTA TABELAS --}}
-        <div class="relative overflow-x-auto shadow sm:rounded">
-            <table class="w-full mt-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-600 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 border-b-4">
-                    <tr>
-                        <th scope="col" class="px-2">#</th>
-                        {{-- <th scope="col"></th> --}}
-                        <th scope="col" class="px-2">Marca</th>
-                        <th scope="col" class="px-2">Slug</th>
-                        <th scope="col" class="px-2">Imagem</th>
-                        <th scope="col" class="px-2">Status</th>
-                        <th scope="col" class="px-2">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($products as $product)
-                        <tr
-                            class="{{ $product->is_active == 1 ? 'text-green-700' : 'text-gray-300' }} text-xs odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <th scope="row" class="px-2 py-1">
-                                <span>{{ $loop->iteration }}]</span>
-                            </th>
-                            <td class="px-2 py-1">
-                                <span>{{ $product->product_name }}</span>
-                            </td>
-                            <td class="px-2 py-1">
-                                <span>{{ $product->slug }}</span>
-                            </td>
-                            <td class="px-2 py-1">
-                                <figure class="">
-                                    <img src="{{ asset("storage/{$product->image1}") }}" class="w-16" alt="imagem">
-                                    <figcaption class="bg-red-700 text-white text-center w-16">R${{ $product->price_normal }}</figcaption>
-                                </figure>
-                            </td>
-                            <td class="px-2 py-1">
-                                <span
-                                    class="py-1 px-2 mr-2 rounded hover:fonte-bold">{{ $product->is_active == 1 ? 'Ativo' : 'inAtivo' }}</span>
-                            </td>
-                            <td class="px-2 flex items-center">
-
-                                @if ($product->is_active == 1)
-                                    <a href="{{ route('productsedit', $product->id) }}"
-                                        class="bg-yellow-300 py-1 px-2 mr-2 rounded text-blue-600 hover:fonte-bold">Edit</a>
-                                @else
-                                    <span class="bg-gray-300 py-1 px-2 mr-2 rounded text-gray-400 hover:fonte-bold"
-                                        disabled>Edit</span>
-                                @endif
-                                <a href="{{ route('productsactive', $product->id) }}"
-                                    onclick="return confirm('Tem Certeza que Deseja (DES)ATIVAR')"
-                                    class="flex {{ $product->is_active == 1 ? 'bg-red-600 px-1' : 'bg-gray-400 px-1' }} rounded-full text-gray-50 hover:fonte-bold"><span>{{ $product->is_active == 1 ? 'X' : '>' }}</span></a>
-
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td>Lista Vazia</td>
-                        </tr>
-                    @endforelse
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
-
     </div>
+
+@empty
+    <td>Lista Vazia</td>
+@endforelse
 
 @endsection
 
@@ -360,3 +421,85 @@
     }
     openForm()
 </script>
+
+<script>
+    function previewImage1() {
+        var image1 = document.querySelector('#image1').files[0];
+        var preview = document.getElementById('img1');
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;
+        }
+        if (image1) {
+            reader.readAsDataURL(image1);
+        } else {
+            preview.src = "";
+        }
+    }
+
+    function previewImage2() {
+        var image2 = document.querySelector('#image2').files[0];
+        var preview = document.getElementById('img2');
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;
+        }
+        if (image2) {
+            reader.readAsDataURL(image2);
+        } else {
+            preview.src = "";
+        }
+    }
+
+    function previewImage3() {
+        var image3 = document.querySelector('#image3').files[0];
+        var preview = document.getElementById('img3');
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;
+        }
+        if (image3) {
+            reader.readAsDataURL(image3);
+        } else {
+            preview.src = "";
+        }
+    }
+
+    function previewImage4() {
+        var image4 = document.querySelector('#image4').files[0];
+        var preview = document.getElementById('img4');
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;
+        }
+        if (image4) {
+            reader.readAsDataURL(image4);
+        } else {
+            preview.src = "";
+        }
+    }
+
+    function previewImage5() {
+        var image5 = document.querySelector('#image5').files[0];
+        var preview = document.getElementById('img5');
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;
+        }
+        if (image5) {
+            reader.readAsDataURL(image5);
+        } else {
+            preview.src = "";
+        }
+    }
+</script>
+
+
+{{-- @php $yearc = date('Y'); $years = range($yearc - 125, $yearc); rsort($years) @endphp
+<label for="car_year"><span class="font-semibold">:Ano</span></label>
+<select name="car_year" id="car_year"
+    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
+    @foreach ($years as $year)
+        <option value="{{ "$year" }}">{{ $year }}</option>
+    @endforeach
+</select> --}}

@@ -34,7 +34,7 @@ class CategoryController extends Controller
     }
     public function categoriesedit($id) {
         if (!$category = Category::find($id))
-            return redirect()->route('usersread');
+            return redirect()->route('categoriesread');
 
         return view('categoriesedit', compact('category'));
     }

@@ -11,7 +11,7 @@
     <hr class="mt-0.5 border">
 
     {{-- ALTERAR USUÁRIO --}}
-    <form action="{{ route('categoriesupdate', $category->id) }}" method="POST" id="open" class="text-xs">
+    <form action="{{ route('categoriesupdate', $category->id) }}" method="POST" id="" class="text-xs">
         @csrf
         @method('PUT')
         <div class="flex items-center mt-3 px-2 space-x-2">

@@ -34,7 +34,7 @@ class BrandController extends Controller
     }
     public function brandsedit($id) {
         if (!$brand = Brand::find($id))
-            return redirect()->route('usersread');
+            return redirect()->route('brandsread');
 
         return view('brandsedit', compact('brand'));
     }

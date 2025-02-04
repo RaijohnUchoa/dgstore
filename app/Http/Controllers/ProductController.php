@@ -6,22 +6,19 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function productscreate(Request $request){
-
-        // dd($request->all());
-
         $request->validate([
             'category_id' => 'required',
             'brand_id' => 'required',
             'title' => 'required',
             'price_normal' => 'required',
             'is_active' => 'required',
-            'image1' => 'required|mimes:jpg,png,pdf|max:2048',
+            'image1' => 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
         ]);
-
         $products = New Product();
         $products->category_id = $request->category_id;
         $products->brand_id = $request->brand_id;
@@ -47,17 +44,26 @@ class ProductController extends Controller
         $file_path = $request->file('image1')->storeAs('uploads', $file_name);
         $products->image1 = $file_path;
 
-        if (!$request->image2 == null)
-            $products->image2 = rand(0,999999) . '_' . $request->file('image2')->getClientOriginalName();
-        if (!$request->image3 == null)
-            $products->image3 = rand(0,999999) . '_' . $request->file('image3')->getClientOriginalName();
-        if (!$request->image4 == null)
-            $products->image4 = rand(0,999999) . '_' . $request->file('image4')->getClientOriginalName();
-        if (!$request->image5 == null)
-            $products->image5 = rand(0,999999) . '_' . $request->file('image5')->getClientOriginalName();
-
-        // dd($products, $file_name, $file_path);
-
+        if (!$request->image2 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image2')->getClientOriginalName();
+            $file_path = $request->file('image2')->storeAs('uploads', $file_name);
+            $products->image2 = $file_path;
+        }
+        if (!$request->image3 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image3')->getClientOriginalName();
+            $file_path = $request->file('image3')->storeAs('uploads', $file_name);
+            $products->image3 = $file_path;
+        }
+        if (!$request->image4 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image4')->getClientOriginalName();
+            $file_path = $request->file('image4')->storeAs('uploads', $file_name);
+            $products->image4 = $file_path;
+        }
+        if (!$request->image5 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image5')->getClientOriginalName();
+            $file_path = $request->file('image5')->storeAs('uploads', $file_name);
+            $products->image5 = $file_path;
+        }
         if ($products->save()) {
             return redirect()->intended(route('productsread'))->with('success', 'Produto ['.$request->title.'] CADASTRADO com Sucesso!');
         }
@@ -66,43 +72,105 @@ class ProductController extends Controller
     public function productsread() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-        $products = Product::orderBy('title', 'ASC')->where('is_active', 1)->get();
+
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('brand_id', 'ASC')
+            ->get();
+
         return view('productsread', compact('products', 'categories', 'brands'));
     }
+    public function productsedit($id) {
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        if (!$product = Product::find($id))
+            return redirect()->route('productsread');
 
-    // public function brandsedit($id) {
-    //     if (!$brand = Brand::find($id))
-    //         return redirect()->route('usersread');
+        $categorynow = Category::find($product->category_id);
+        $categorynow = $categorynow->category_name;
+        $brandnow = Brand::find($product->brand_id);
+        $brandnow = $brandnow->brand_name;
+        return view('productsedit', compact('product', 'categories', 'brands', 'categorynow', 'brandnow'));
+    }
+    public function productsupdate(Request $request, $id){
 
-    //     return view('brandsedit', compact('brand'));
-    // }
-    // public function brandsupdate(Request $request, $id){
-    //     if (!$brandupdate = Brand::find($id))
-    //         return redirect()->route('brandsread');
-    //     $data = $request->all();
-    //     $brandupdate->update($data);
-    //     return redirect()->route('brandsread')->with('success', 'Marca ['.$request->brand_name.'] ALTERADO com Sucesso!');
-    // }
-    // public function brandsactive($id){
-    //     if (!$brandactive = Brand::find($id))
-    //         return redirect()->route('brandsread');
+        if (!$productsupdate = Product::find($id))
+            return redirect()->route('productsread');
 
-    //     if ($brandactive->is_active == 1) {
-    //         $brandactive->update(['is_active' => 0]);
-    //         return redirect()->route('brandsread')->with(['success' => 'Marca ['.$brandactive->brand_name.'] DESATIVADO com Sucesso!']);
-    //     } else {
-    //         $brandactive->update(['is_active' => 1]);
-    //         return redirect()->route('brandsread')->with(['success' => 'Marca ['.$brandactive->brand_name.'] ATIVADO com Sucesso!']);
-    //     }
-    // }
-    // public function brandsfilter($id){
-    //     if ($id == 2) {
-    //         $brands = Brand::orderBy('brand_name', 'ASC')->get();
-    //     } elseif ($id == 1) {
-    //         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-    //     } else {
-    //         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 0)->get();
-    //     }
-    //     return view('brandsread', compact('brands'));
-    // }
+        $data = $request->all();
+        $productsupdate->update($data);
+
+        if (!$request->image2 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image1')->getClientOriginalName();
+            $file_path = $request->file('image1')->storeAs('uploads', $file_name);
+            $productsupdate->update(['image1' => $file_path]);
+        }
+        if (!$request->image2 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image2')->getClientOriginalName();
+            $file_path = $request->file('image2')->storeAs('uploads', $file_name);
+            $productsupdate->update(['image2' => $file_path]);
+        }
+        if (!$request->image3 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image3')->getClientOriginalName();
+            $file_path = $request->file('image3')->storeAs('uploads', $file_name);
+            $productsupdate->update(['image3' => $file_path]);
+        }
+        if (!$request->image4 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image4')->getClientOriginalName();
+            $file_path = $request->file('image4')->storeAs('uploads', $file_name);
+            $productsupdate->update(['image4' => $file_path]);
+        }
+        if (!$request->image5 == null) {
+            $file_name = rand(0,999999) . '_' . $request->file('image5')->getClientOriginalName();
+            $file_path = $request->file('image5')->storeAs('uploads', $file_name);
+            $productsupdate->update(['image5' => $file_path]);
+        }
+        return redirect()->route('productsread')->with('success', 'Produto ['.$productsupdate->title.'] ALTERADO com Sucesso!');
+    }
+    public function productsactive($id){
+        if (!$productactive = Product::find($id))
+            return redirect()->route('productsread');
+
+        if ($productactive->is_active == 1) {
+            $productactive->update(['is_active' => 0]);
+            return redirect()->route('productsread')->with(['success' => 'Produto ['.$productactive->title.'] DESATIVADO com Sucesso!']);
+        } else {
+            $productactive->update(['is_active' => 1]);
+            return redirect()->route('productsread')->with(['success' => 'Produto ['.$productactive->title.'] ATIVADO com Sucesso!']);
+        }
+    }
+    public function productsfilter($id){
+
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+
+        if ($id == 2) {
+            $products = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                ->orderBy('brand_id', 'ASC')
+                ->get();
+        } elseif ($id == 1) {
+            $products = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                ->orderBy('brand_id', 'ASC')
+                ->where('products.is_active', 1)
+                ->get();
+        } else {
+            $products = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                ->orderBy('brand_id', 'ASC')
+                ->where('products.is_active', 0)
+                ->get();
+        }
+        
+        return view('productsread', compact('categories', 'brands', 'products'));
+    }
 }
