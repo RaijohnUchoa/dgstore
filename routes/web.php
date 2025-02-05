@@ -56,6 +56,3 @@ Route::get('/productsactive/{id}', [ProductController::class, 'productsactive'])
 Route::get('/productsfilter/{id}', [ProductController::class, 'productsfilter'])->name('productsfilter');
 Route::get('/productsdelete/{id}/{img}', [ProductController::class, 'productsdelete'])->name('productsdelete');
 Route::get('/productslist', [ProductController::class, 'productslist'])->name('productslist');
-
-// Route::get('/upload', [ProductController::class, 'showForm'])->name('upload.form');
-// Route::post('/upload', [ProductController::class, 'handleUpload'])->name('upload.handle');

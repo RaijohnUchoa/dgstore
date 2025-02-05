@@ -163,7 +163,7 @@
 
         <div class="flex justify-evenly">
 
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image1" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -172,11 +172,11 @@
                     </div>
                     <input type="file" name="image1" id="image1" value="{{ $product->image1 }}"
                         onchange="previewImage1()" class="hidden"/>
-                    <img src="{{ asset("storage/{$product->image1}") }}" class="absolute top-0">
-                    <img id="img1" class="absolute top-0">
+                    <img src="{{ asset("storage/{$product->image1}") }}" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image2" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -185,11 +185,11 @@
                     </div>
                     <input type="file" name="image2" id="image2" value="{{ $product->image2 }}"
                         onchange="previewImage2()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image2}") }}" id="img1" class="absolute top-0">
-                    <img id="img2" class="absolute top-0">
+                    <img src="{{ asset("storage/{$product->image2}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image3" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -198,11 +198,11 @@
                     </div>
                     <input type="file" name="image3" id="image3" value="{{ $product->image3 }}"
                         onchange="previewImage3()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image3}") }}" id="img1" class="absolute top-0">
-                    <img id="img3" class="absolute top-0">
+                    <img src="{{ asset("storage/{$product->image3}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image4" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -211,11 +211,11 @@
                     </div>
                     <input type="file" name="image4" id="image4" value="{{ $product->image4 }}"
                         onchange="previewImage4()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image4}") }}" id="img1" class="absolute top-0">
-                    <img id="img4" class="absolute top-0">
+                    <img src="{{ asset("storage/{$product->image4}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image5" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -224,8 +224,8 @@
                     </div>
                     <input type="file" name="image5" id="image5" value="{{ $product->image5 }}"
                         onchange="previewImage5()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image5}") }}" id="img1" class="absolute top-0">
-                    <img id="img5" class="absolute top-0">
+                    <img src="{{ asset("storage/{$product->image5}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
 

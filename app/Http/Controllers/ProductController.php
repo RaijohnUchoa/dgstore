@@ -96,7 +96,7 @@ class ProductController extends Controller
         return view('productsedit', compact('product', 'categories', 'brands', 'categorynow', 'brandnow'));
     }
     public function productsupdate(Request $request, $id){
-
+        
         if (!$productsupdate = Product::find($id))
             return redirect()->route('productsread');
 
@@ -177,8 +177,7 @@ class ProductController extends Controller
 
         if (!$productdel = Product::find($id))
             return redirect()->route('productsread');
-        
-        
+
         if ($img == 1) {
             $imgdel = $productdel->image1;
             $productdel->update(['image1' => null]);
@@ -203,8 +202,6 @@ class ProductController extends Controller
         if(Storage::exists($imgdel)){
             Storage::delete($imgdel);
         }
-        // dd($imgdel);
         return redirect()->route('productsread')->with('success', 'Imagem DELETADA com Sucesso!');
-
     }
 }

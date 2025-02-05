@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('car_color')->nullable();
             $table->string('car_scale')->nullable();
             $table->string('car_attribute')->nullable();
-            $table->string('image1');
+            $table->string('image1')->nullable();
             $table->string('image2')->nullable();
             $table->string('image3')->nullable();
             $table->string('image4')->nullable();

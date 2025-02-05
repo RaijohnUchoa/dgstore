@@ -3,7 +3,8 @@
 @section('content')
 
 @if (session()->has('success'))
-    <span class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
+    <span
+        class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
 @endif
 <div class="flex justify-between items-center border py-1 px-2">
     <span class="font-semibold">PRODUTOS</span>
@@ -17,11 +18,13 @@
 <hr class="mt-0.5 border">
 
 {{-- INCLUIR NOVO PRODUTO --}}
-<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
+<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden"
+    enctype="multipart/form-data">
     @csrf
 
     {{-- Card Título --}}
-    <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div
+        class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-4/12">
                 <label for="category_id"><span class="font-semibold">:Categoria</span></label>
@@ -220,7 +223,7 @@
 
         <div class="flex justify-evenly">
 
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image1" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -229,10 +232,10 @@
                     </div>
                     <input type="file" name="image1" id="image1" value="{{ old('image1') }}"
                         onchange="previewImage1()" class="hidden" required />
-                    <img id="img1" class="absolute top-0">
+                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image2" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -241,10 +244,10 @@
                     </div>
                     <input type="file" name="image2" id="image2" value="{{ old('image2') }}"
                         onchange="previewImage2()" class="hidden" />
-                    <img id="img2" class="absolute top-0">
+                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image3" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -253,10 +256,10 @@
                     </div>
                     <input type="file" name="image3" id="image3" value="{{ old('image3') }}"
                         onchange="previewImage3()" class="hidden" />
-                    <img id="img3" class="absolute top-0">
+                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image4" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -265,10 +268,10 @@
                     </div>
                     <input type="file" name="image4" id="image4" value="{{ old('image4') }}"
                         onchange="previewImage4()" class="hidden" />
-                    <img id="img4" class="absolute top-0">
+                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-            <div class="w-2/12 bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
                 <label for="image5" class="cursor-pointer relative">
                     <div class="flex flex-col items-center justify-center py-16">
                         <p class="text-4xl py-1">&#128228;</p>
@@ -277,14 +280,11 @@
                     </div>
                     <input type="file" name="image5" id="image5" value="{{ old('image5') }}"
                         onchange="previewImage5()" class="hidden" />
-                    <img id="img5" class="absolute top-0">
+                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
                 </label>
             </div>
-
         </div>
-
     </div>
-
     <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
     <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
     <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" />
@@ -295,80 +295,124 @@
 </form>
 
 {{-- LISTA/EDIT PRODUTOS --}}
-
 @forelse ($products as $product)
 
     <div class="border-b p-1 {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }} text-xs odd:bg-gray-75 even:bg-white">
-        
+
         <span class="text-red-900">{{ $loop->iteration }}]</span>
         <span class="">{{ substr($product->title, 0, 55) }}</span>
-        
+
         <div class="flex justify-between items-center text-center pr-2">
-            
-            <div class="flex items-center gap-1 {{ $product->is_active == 0 ? 'opacity-15' : '' }}">
-                <img src="{{ asset("storage/{$product->image1}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
-                <a href="{{ route('productsdelete', [$product->id, 1]) }}">
-                    <span class="" title="Deletar">
-                        <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
-                            <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
-                        </svg>
-                    </span>
-                </a>
+
+            <div class="flex items-center pt-1 {{ $product->is_active == 0 ? 'opacity-15' : '' }}">
+
+                @if ($product->image1 != null)
+                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image1}") }}" class="h-16 w-14">
+                    </div>
+                    <a href="{{ route('productsdelete', [$product->id, 1]) }}">
+                        <span class="" title="Deletar">
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                            </svg>
+                        </span>
+                    </a>
+                @else
+                    <a href="{{ route('productsedit', $product->id) }}">
+                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                            <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
+                        </div>
+                    </a>
+                @endif
                 @if ($product->image2 != null)
-                    <img src="{{ asset("storage/{$product->image2}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image2}") }}" class="h-16 w-14">
+                    </div>
                     <a href="{{ route('productsdelete', [$product->id, 2]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
-                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
+                                width="15px" fill="#ef4444">
+                                <path
+                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
-                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                    <a href="{{ route('productsedit', $product->id) }}">
+                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                            <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
+                        </div>
+                    </a>
                 @endif
                 @if ($product->image3 != null)
-                    <img src="{{ asset("storage/{$product->image3}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image3}") }}" class="h-16 w-14">
+                    </div>
                     <a href="{{ route('productsdelete', [$product->id, 3]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
-                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
+                                width="15px" fill="#ef4444">
+                                <path
+                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
-                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                    <a href="{{ route('productsedit', $product->id) }}">
+                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                            <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
+                        </div>
+                    </a>
                 @endif
                 @if ($product->image4 != null)
-                    <img src="{{ asset("storage/{$product->image4}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image4}") }}" class="h-16 w-14">
+                    </div>
                     <a href="{{ route('productsdelete', [$product->id, 4]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
-                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
+                                width="15px" fill="#ef4444">
+                                <path
+                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
-                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                    <a href="{{ route('productsedit', $product->id) }}">
+                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                            <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
+                        </div>
+                    </a>
                 @endif
                 @if ($product->image5 != null)
-                    <img src="{{ asset("storage/{$product->image5}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image5}") }}" class="h-16 w-14">
+                    </div>
                     <a href="{{ route('productsdelete', [$product->id, 5]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
-                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
+                                width="15px" fill="#ef4444">
+                                <path
+                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
-                    <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
+                    <a href="{{ route('productsedit', $product->id) }}">
+                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                            <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
+                        </div>
+                    </a>
                 @endif
-                
-            </div>
-            <div class="flex items-center">
 
-                <form action="{{ route('productsupdate', $product->id) }}" method="POST" id="open" class="text-xs mt-3">
-                    @csrf
-                    @method('PUT')
+            </div>
+            {{-- FIRMULÁRIO ALTERAR NA LISTAGEM --}}
+            <form action="{{ route('productsupdate', $product->id) }}" method="POST" id="open" class="text-xs mt-3">
+                @csrf
+                @method('PUT')
+
+                <div class="flex items-center">
+
                     <div class="flex items-center gap-x-1">
                         <span>{{ $product->id }}</span>
                         <span>{{ $product->brand_id }}</span>
@@ -388,57 +432,64 @@
                                 <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                             @endforeach
                         </select>
-                        <input class="w-16 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
-                            type="text" name="stock" id="stock" value="{{ $product->stock }}" @disabled($product->is_active == 1 ? false : true)>
-                        <input class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
-                            type="text" name="price_normal" id="price_normal" value="{{ $product->price_normal }}" @disabled($product->is_active == 1 ? false : true)>
-                        <input class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
-                            type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}" @disabled($product->is_active == 1 ? false : true)>
-                    
+                        <input
+                            class="w-16 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="stock" id="stock" value="{{ $product->stock }}"
+                            @disabled($product->is_active == 1 ? false : true)>
+                        <input
+                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="price_normal" id="price_normal"
+                            value="{{ $product->price_normal }}" @disabled($product->is_active == 1 ? false : true)>
+                        <input
+                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}"
+                            @disabled($product->is_active == 1 ? false : true)>
+
                         @if ($product->is_active == 1)
                             <button type="submit" class="" title="Atualizar">
                                 <svg height="22px" viewBox="0 -960 960 960" width="22px" fill="#0284c7">
-                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>
+                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z" />
                                 </svg>
                             </button>
                             <a href="{{ route('productsedit', $product->id) }}">
                                 <span class="" title="Editar">
                                     <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#eab308">
-                                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+                                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z" />
                                     </svg>
                                 </span>
                             </a>
-                            <a href="{{ route('productsactive', $product->id) }}" onclick="return confirm('Tem Certeza que Deseja (DESATIVAR)?')">
+                            <a href="{{ route('productsactive', $product->id) }}"
+                                onclick="return confirm('Tem Certeza que Deseja (DESATIVAR)?')">
                                 <span class="" title="Desativar">
                                     <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#ef4444">
-                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
                                     </svg>
                                 </span>
                             </a>
                         @else
                             <span class="">
                                 <svg height="22px" viewBox="0 -960 960 960" width="22px" fill="#d1d5db">
-                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>
+                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z" />
                                 </svg>
                             </span>
                             <span class="">
                                 <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#d1d5db">
-                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z" />
                                 </svg>
                             </span>
-                            <a href="{{ route('productsactive', $product->id) }}" onclick="return confirm('Tem Certeza que Deseja (REATIVAR)?')">
+                            <a href="{{ route('productsactive', $product->id) }}"
+                                onclick="return confirm('Tem Certeza que Deseja (REATIVAR)?')">
                                 <span class="" title="Reativar">
                                     <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#16a34a">
-                                        <path d="M440-320h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                                        <path d="M440-320h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                                     </svg>
                                 </span>
                             </a>
                         @endif
                     </div>
-                </form>
+                </div>
+            </form>
 
-            </div>
-            
         </div>
 
     </div>
@@ -527,13 +578,3 @@
         }
     }
 </script>
-
-
-{{-- @php $yearc = date('Y'); $years = range($yearc - 125, $yearc); rsort($years) @endphp
-<label for="car_year"><span class="font-semibold">:Ano</span></label>
-<select name="car_year" id="car_year"
-    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
-    @foreach ($years as $year)
-        <option value="{{ "$year" }}">{{ $year }}</option>
-    @endforeach
-</select> --}}
