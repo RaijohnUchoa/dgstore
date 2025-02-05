@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -102,7 +103,7 @@ class ProductController extends Controller
         $data = $request->all();
         $productsupdate->update($data);
 
-        if (!$request->image2 == null) {
+        if (!$request->image1 == null) {
             $file_name = rand(0,999999) . '_' . $request->file('image1')->getClientOriginalName();
             $file_path = $request->file('image1')->storeAs('uploads', $file_name);
             $productsupdate->update(['image1' => $file_path]);
@@ -170,7 +171,40 @@ class ProductController extends Controller
                 ->where('products.is_active', 0)
                 ->get();
         }
-        
         return view('productsread', compact('categories', 'brands', 'products'));
+    }
+    public function productsdelete($id, $img){
+
+        if (!$productdel = Product::find($id))
+            return redirect()->route('productsread');
+        
+        
+        if ($img == 1) {
+            $imgdel = $productdel->image1;
+            $productdel->update(['image1' => null]);
+        }
+        if ($img == 2) {
+            $imgdel = $productdel->image2;
+            $productdel->update(['image2' => null]);
+        }
+        if ($img == 3) {
+            $imgdel = $productdel->image3;
+            $productdel->update(['image3' => null]);
+        }
+        if ($img == 4) {
+            $imgdel = $productdel->image4;
+            $productdel->update(['image4' => null]);
+        }
+        if ($img == 5) {
+            $imgdel = $productdel->image5;
+            $productdel->update(['image5' => null]);
+        }
+
+        if(Storage::exists($imgdel)){
+            Storage::delete($imgdel);
+        }
+        // dd($imgdel);
+        return redirect()->route('productsread')->with('success', 'Imagem DELETADA com Sucesso!');
+
     }
 }

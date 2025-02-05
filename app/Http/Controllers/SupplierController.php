@@ -9,6 +9,8 @@ class SupplierController extends Controller
 {
     public function supplierscreate(Request $request){
 
+        // dd($request->all());
+
         $request->validate([
             'supplier_name' => 'required',
             'contact' => 'required',
@@ -19,7 +21,6 @@ class SupplierController extends Controller
         $suppliers = New Supplier();
         $suppliers->supplier_name = $request->supplier_name;
         $suppliers->contact = $request->contact;
-        $suppliers->image_logo = $request->image_logo;
         $suppliers->cpf_cnpj = $request->cpf_cnpj;
         $suppliers->phone = $request->phone;
         $suppliers->street_address = $request->street_address;
@@ -28,6 +29,10 @@ class SupplierController extends Controller
         $suppliers->country = $request->country;
         $suppliers->zipcode = $request->zipcode;
         $suppliers->is_active = $request->is_active;
+
+        $file_name = rand(0,999999) . '_' . $request->file('image_logo')->getClientOriginalName();
+        $file_path = $request->file('image_logo')->storeAs('uploads', $file_name);
+        $suppliers->image_logo = $file_path;
         
         if ($suppliers->save()) {
             return redirect()->intended(route('suppliersread'))->with('success', 'Fornecedor ['.$request->supplier_name.'] CADASTRADO com Sucesso!');
@@ -36,7 +41,6 @@ class SupplierController extends Controller
     }
     public function suppliersread() {
         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 1)->get();
-        // dd($suppliers);
 
         return view('suppliersread', compact('suppliers'));
     }

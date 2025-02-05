@@ -3,7 +3,7 @@
 @section('content')
 
 @if (session()->has('success'))
-    <span class="flex justify-center bg-green-200 text-green-700 text-sm m-2 py-1 rounded">{{ session()->get('success') }}</span>
+    <span class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
 @endif
 <div class="flex justify-between items-center border py-1 px-2">
     <span class="font-semibold">PRODUTOS</span>
@@ -307,24 +307,58 @@
             
             <div class="flex items-center gap-1 {{ $product->is_active == 0 ? 'opacity-15' : '' }}">
                 <img src="{{ asset("storage/{$product->image1}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
-
+                <a href="{{ route('productsdelete', [$product->id, 1]) }}">
+                    <span class="" title="Deletar">
+                        <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                            <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                        </svg>
+                    </span>
+                </a>
                 @if ($product->image2 != null)
                     <img src="{{ asset("storage/{$product->image2}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <a href="{{ route('productsdelete', [$product->id, 2]) }}">
+                        <span class="" title="Deletar">
+                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            </svg>
+                        </span>
+                    </a>
                 @else
                     <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
                 @endif
                 @if ($product->image3 != null)
                     <img src="{{ asset("storage/{$product->image3}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <a href="{{ route('productsdelete', [$product->id, 3]) }}">
+                        <span class="" title="Deletar">
+                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            </svg>
+                        </span>
+                    </a>
                 @else
                     <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
                 @endif
                 @if ($product->image4 != null)
                     <img src="{{ asset("storage/{$product->image4}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <a href="{{ route('productsdelete', [$product->id, 4]) }}">
+                        <span class="" title="Deletar">
+                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            </svg>
+                        </span>
+                    </a>
                 @else
                     <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
                 @endif
                 @if ($product->image5 != null)
                     <img src="{{ asset("storage/{$product->image5}") }}" class="w-16 py-1 px-1 border" alt="&#128228;">
+                    <a href="{{ route('productsdelete', [$product->id, 5]) }}">
+                        <span class="" title="Deletar">
+                            <svg class="-mt-10 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                            </svg>
+                        </span>
+                    </a>
                 @else
                     <div class="flex justify-center items-center w-16 h-20 py-1 px-1 border">&#128228;</div>
                 @endif
@@ -339,7 +373,7 @@
                         <span>{{ $product->id }}</span>
                         <span>{{ $product->brand_id }}</span>
                         <select name="category_id" id="category_id"
-                            class="w-32 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            class="w-36 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             @disabled($product->is_active == 1 ? false : true)>
                             <option value="{{ $product->category_id }}">{{ $product->category_name }}</option>
                             @foreach ($categories as $category)
@@ -362,33 +396,33 @@
                             type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}" @disabled($product->is_active == 1 ? false : true)>
                     
                         @if ($product->is_active == 1)
-                            <button type="submit" class="" title="Atualização">
-                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#0284c7">
-                                    <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                            <button type="submit" class="" title="Atualizar">
+                                <svg height="22px" viewBox="0 -960 960 960" width="22px" fill="#0284c7">
+                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>
                                 </svg>
                             </button>
                             <a href="{{ route('productsedit', $product->id) }}">
-                                <span class="" title="Edição">
-                                    <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#eab308">
+                                <span class="" title="Editar">
+                                    <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#eab308">
                                         <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
                                     </svg>
                                 </span>
                             </a>
                             <a href="{{ route('productsactive', $product->id) }}" onclick="return confirm('Tem Certeza que Deseja (DESATIVAR)?')">
                                 <span class="" title="Desativar">
-                                    <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#ef4444">
-                                        <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/>
+                                    <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#ef4444">
+                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
                                     </svg>
                                 </span>
                             </a>
                         @else
                             <span class="">
-                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#d1d5db">
-                                    <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                                <svg height="22px" viewBox="0 -960 960 960" width="22px" fill="#d1d5db">
+                                    <path d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z"/>
                                 </svg>
                             </span>
                             <span class="">
-                                <svg height="20px" viewBox="0 -960 960 960" width="20px" fill="#d1d5db">
+                                <svg height="19px" viewBox="0 -960 960 960" width="19px" fill="#d1d5db">
                                     <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
                                 </svg>
                             </span>

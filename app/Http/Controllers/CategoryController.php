@@ -20,9 +20,12 @@ class CategoryController extends Controller
         $categories = New Category();
         $categories->category_name = $request->category_name;
         $categories->slug = $request->slug;
-        $categories->image = $request->image;
         $categories->is_active = $request->is_active;
-        
+
+        $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
+        $file_path = $request->file('image')->storeAs('uploads', $file_name);
+        $categories->image = $file_path;
+
         if ($categories->save()) {
             return redirect()->intended(route('categoriesread'))->with('success', 'Categoria ['.$request->category_name.'] CADASTRADO com Sucesso!');
         }

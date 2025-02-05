@@ -20,9 +20,14 @@ class BrandController extends Controller
         $brands = New Brand();
         $brands->brand_name = $request->brand_name;
         $brands->slug = $request->slug;
-        $brands->image = $request->image;
         $brands->is_active = $request->is_active;
         
+        // $brands->image = $request->image;
+
+        $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
+        $file_path = $request->file('image')->storeAs('uploads', $file_name);
+        $brands->image = $file_path;
+
         if ($brands->save()) {
             return redirect()->intended(route('brandsread'))->with('success', 'Marca ['.$request->brand_name.'] CADASTRADO com Sucesso!');
         }

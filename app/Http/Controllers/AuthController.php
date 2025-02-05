@@ -84,7 +84,7 @@ class AuthController extends Controller
         return redirect()->back()->with('error', 'Usuário ['.$request->name.'] NÃO CADASTRADO!');
     }
     public function usersread() {
-        $users = User::orderBy('name', 'ASC')->where('is_active', 1)->where('type', 1)->get();
+        $users = User::orderBy('name', 'ASC')->where('is_active', 1)->get();
         return view('usersread', compact('users'));
     }
     public function usersedit($id) {
