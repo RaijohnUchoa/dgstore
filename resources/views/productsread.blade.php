@@ -18,10 +18,9 @@
 <hr class="mt-0.5 border">
 
 {{-- INCLUIR NOVO PRODUTO --}}
-<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden"
-    enctype="multipart/form-data">
+{{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data"> --}}
+<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
     @csrf
-
     {{-- Card Título --}}
     <div
         class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -216,6 +215,25 @@
                 @enderror
             </div>
         </div>
+        {{-- <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
+        <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
+        <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" /> --}}
+
+        <div class="flex justify-center items-center mt-3 space-x-3">
+            <span>Produto em:</span>
+            <div class="flex">
+                <input name="is_featured" id="is_featured" type="checkbox" value="{{ 1 }}" class="">
+                <label for="is_featured" class="font-semibold ps-1">Destaque</label>
+            </div>
+            <div class="flex">
+                <input name="on_sale" id="on_sale" type="checkbox" value="{{ 1 }}" class="">
+                <label for="on_sale" class="font-semibold ps-1">Promoção</label>
+            </div>
+            <div class="flex">
+                <input name="in_stock" id="in_stock" type="checkbox" value="{{ 1 }}" class="">
+                <label for="in_stock" class="font-semibold ps-1">Estoque</label>
+            </div>
+        </div>
     </div>
     {{-- Card Imagem --}}
     <div
@@ -285,10 +303,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
-    <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
-    <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" />
-
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo Produto</button>
     </div>
@@ -406,7 +420,7 @@
                 @endif
 
             </div>
-            {{-- FIRMULÁRIO ALTERAR NA LISTAGEM --}}
+            {{-- FORMULÁRIO ALTERAR NA LISTAGEM --}}
             <form action="{{ route('productsupdate', $product->id) }}" method="POST" id="open" class="text-xs mt-3">
                 @csrf
                 @method('PUT')
@@ -414,9 +428,11 @@
                 <div class="flex items-center">
 
                     <div class="flex items-center gap-x-1">
-                        <span>{{ $product->id }}</span>
-                        <span>{{ $product->brand_id }}</span>
-                        <select name="category_id" id="category_id"
+                        {{-- <span>{{ $product->id }}</span>
+                        <span>{{ $product->category_id }}</span>
+                        <span>{{ $product->brand_id }}</span> --}}
+
+                        {{-- <select name="category_id" id="category_id"
                             class="w-36 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             @disabled($product->is_active == 1 ? false : true)>
                             <option value="{{ $product->category_id }}">{{ $product->category_name }}</option>
@@ -431,7 +447,23 @@
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                             @endforeach
-                        </select>
+                        </select> --}}
+
+                        <div class="w-32 py-1 px-2 border border-blue-200 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}">
+                            <div class="flex">
+                                <input name="is_featured" id="is_featured" type="checkbox" value="{{ 1 }}" @checked($product->is_featured == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                                <label for="is_featured" class="ps-1">em Destaque</label>
+                            </div>
+                            <div class="flex">
+                                <input name="on_sale" id="on_sale" type="checkbox" value="{{ 1 }}" @checked($product->on_sale == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                                <label for="on_sale" class="ps-1">em Promoção</label>
+                            </div>
+                            <div class="flex">
+                                <input name="in_stock" id="in_stock" type="checkbox" value="{{ 1 }}" @checked($product->in_stock == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                                <label for="in_stock" class="ps-1">em Estoque</label>
+                            </div>
+                        </div>
+
                         <input
                             class="w-16 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             type="text" name="stock" id="stock" value="{{ $product->stock }}"

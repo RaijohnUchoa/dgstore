@@ -23,8 +23,8 @@
                 <label for="category_id"><span class="font-semibold">:Categoria</span></label>
                 <select name="category_id" id="category_id"
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
+                    <option value="{{ $categorynow->id }}">{{ $categorynow->category_name }}</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $categorynow }}</option>
                         <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                     @endforeach
                 </select>
@@ -33,8 +33,8 @@
                 <label for="brand_id"><span class="font-semibold">:Fabricante</span></label>
                 <select name="brand_id" id="brand_id"
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
+                    <option value="{{ $brandnow->id }}">{{ $brandnow->brand_name }}</option>
                     @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}">{{ $brandnow }}</option>
                         <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                     @endforeach
                 </select>
@@ -156,6 +156,21 @@
                     type="text" name="description" id="description" value="{{ $product->description }}">
             </div>
         </div>
+        <div class="flex justify-center items-center mt-3 space-x-3">
+            <span>Produto em:</span>
+            <div class="flex">
+                <input name="is_featured" id="is_featured" type="checkbox" value="{{ 1 }}" @checked($product->is_featured == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                <label for="is_featured" class="ps-1">em Destaque</label>
+            </div>
+            <div class="flex">
+                <input name="on_sale" id="on_sale" type="checkbox" value="{{ 1 }}" @checked($product->on_sale == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                <label for="on_sale" class="ps-1">em Promoção</label>
+            </div>
+            <div class="flex">
+                <input name="in_stock" id="in_stock" type="checkbox" value="{{ 1 }}" @checked($product->in_stock == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                <label for="in_stock" class="ps-1">em Estoque</label>
+            </div>
+        </div>
     </div>
     {{-- Card Imagem --}}
     <div
@@ -233,9 +248,9 @@
 
     </div>
 
-    <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
+    {{-- <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
     <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
-    <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" />
+    <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" /> --}}
 
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Edição Produto</button>

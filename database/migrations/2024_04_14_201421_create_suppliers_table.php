@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image_logo')->nullable();
             $table->string('cpf_cnpj');
             $table->string('phone');
+            $table->string('email');
             $table->string('street_address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

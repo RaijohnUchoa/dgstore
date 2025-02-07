@@ -11,32 +11,35 @@
     <hr class="mt-0.5 border">
 
     {{-- ALTERAR USUÁRIO --}}
-    <form action="{{ route('brandsupdate', $brand->id) }}" method="POST" id="open" class="text-xs">
+    <form action="{{ route('brandsupdate', $brand->id) }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="flex items-center mt-3 px-2 space-x-2">
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="brand_name"><span class="font-semibold">:Marca</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="brand_name" id="brand_name" value="{{ $brand->brand_name }}" placeholder=" nome do marca" required>
                 @error('brand_name')
                     <div class="absolute text-red-400">Digite o Nome Marca</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="slug"><span class="font-semibold">:Slug</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ $brand->slug }}" placeholder=" nome do marca" required>
                 @error('slug')
                     <div class="absolute text-red-400">Digite o Slug Marca</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="image"><span class="font-semibold">:Imagem</span></label>
-                <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image"  id="image" value="{{ $brand->image }}" placeholder=" imagem da marca" required>
+                <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image"  id="image" value="{{ $brand->image }}">
                 @error('image')
                     <div class="absolute text-red-400">Carregue a Imagem da Marca</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-1/12">
+                <img src="{{ asset("storage/{$brand->image}") }}" class="w-48 py-1 px-1 border" alt="&#128228;">
+            </div>
+            <div class="w-2/12">
                 <label for="is_active"><span class="font-semibold">:Status</span></label>
                 <select name="is_active" id="is_active" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
                     <option value="{{ $brand->is_active }}">{{ $brand->is_active == 1 ? "Ativo" : "Inativo"}}</option>

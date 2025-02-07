@@ -16,6 +16,7 @@ class Supplier extends Model
         'image_logo',
         'cpf_cnpj',
         'phone',
+        'email',
         'street_address',
         'city',
         'state',

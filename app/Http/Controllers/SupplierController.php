@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SupplierController extends Controller
 {
@@ -23,6 +24,7 @@ class SupplierController extends Controller
         $suppliers->contact = $request->contact;
         $suppliers->cpf_cnpj = $request->cpf_cnpj;
         $suppliers->phone = $request->phone;
+        $suppliers->email = $request->email;
         $suppliers->street_address = $request->street_address;
         $suppliers->city = $request->city;
         $suppliers->state = $request->state;
@@ -53,8 +55,25 @@ class SupplierController extends Controller
     public function suppliersupdate(Request $request, $id){
         if (!$supplierupdate = Supplier::find($id))
             return redirect()->route('suppliersread');
+        
+        $image_old = $supplierupdate->image_logo;
         $data = $request->all();
         $supplierupdate->update($data);
+        
+        if ($request->image_logo == null) {
+            if ($image_old != null) {
+                $supplierupdate->update(['image_logo' => $image_old]);
+            }
+        }else{
+            $file_name = rand(0,999999) . '_' . $request->file('image_logo')->getClientOriginalName();
+            $file_path = $request->file('image_logo')->storeAs('uploads', $file_name);
+            $supplierupdate->update(['image_logo' => $file_path]);
+        }
+
+        if(Storage::exists($image_old)){
+            Storage::delete($image_old);
+        }
+
         return redirect()->route('suppliersread')->with('success', 'Fornecedor ['.$request->supplier_name.'] ALTERADO com Sucesso!');
     }
     public function suppliersactive($id){

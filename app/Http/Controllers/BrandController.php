@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -46,8 +47,24 @@ class BrandController extends Controller
     public function brandsupdate(Request $request, $id){
         if (!$brandupdate = Brand::find($id))
             return redirect()->route('brandsread');
+        
+        $image_old = $brandupdate->image;
         $data = $request->all();
         $brandupdate->update($data);
+
+        if ($request->image == null) {
+            if ($image_old != null) {
+                $brandupdate->update(['image' => $image_old]);
+            }
+        }else{
+            $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
+            $file_path = $request->file('image')->storeAs('uploads', $file_name);
+            $brandupdate->update(['image' => $file_path]);
+        }
+        if(Storage::exists($image_old)){
+            Storage::delete($image_old);
+        }
+
         return redirect()->route('brandsread')->with('success', 'Marca ['.$request->brand_name.'] ALTERADO com Sucesso!');
     }
     public function brandsactive($id){

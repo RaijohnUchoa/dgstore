@@ -85,7 +85,7 @@
                     <td class="px-2 py-1">
                         <span class="py-1 px-2 mr-2 rounded hover:fonte-bold">{{ $brand->is_active == 1 ? "Ativo" : "inAtivo" }}</span>
                     </td>
-                    <td class="px-2 flex items-center">
+                    <td class="px-2">
 
                         {{-- @if ($brand->is_active == 1)
                             <a href="{{ route('brandsedit', $brand->id) }}" class="bg-yellow-300 py-1 px-2 mr-2 rounded text-blue-600 hover:fonte-bold">Edit</a>

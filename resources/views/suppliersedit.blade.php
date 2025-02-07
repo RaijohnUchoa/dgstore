@@ -11,47 +11,64 @@
     <hr class="mt-0.5 border">
 
     {{-- ALTERAR USUÁRIO --}}
-    <form action="{{ route('suppliersupdate', $supplier->id) }}" method="POST" id="open" class="text-xs">
+    <form action="{{ route('suppliersupdate', $supplier->id) }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="flex items-center mt-3 px-2 space-x-2">
-            <div class="w-full">
+            <div class="w-4/12">
                 <label for="supplier_name"><span class="font-semibold">:Fornecedor</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="supplier_name" id="supplier_name" value="{{ $supplier->supplier_name }}" placeholder=" nome do fornecedor" required>
                 @error('supplier_name')
                     <div class="absolute text-red-400">Digite o Nome Fornecedor</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="contact"><span class="font-semibold">:Contato</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300 " type="text" name="contact" id="contact" value="{{ $supplier->contact }}" placeholder=" contato do fornecedor" required>
                 @error('contact')
                     <div class="absolute text-red-400">Digite o Nome do Contato</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="image_logo"><span class="font-semibold">:Novo Logo</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image_logo"  id="image_logo" value="{{ $supplier->image_logo }}" placeholder=" logo do fornecedor">
                 @error('image_logo')
                     <div class="absolute text-red-400">Digite o Logo do Fornecedor</div>
                 @enderror
             </div>
-            <img src="{{ asset("LogoDGS.png") }}" class="w-32" alt="LOGO"/>
+            <div class="w-2/12">
+                <img src="{{ asset("storage/{$supplier->image_logo}") }}" class="w-48 py-1 px-1 border" alt="&#128228;">
+            </div>
         </div>
         <div class="flex items-center mt-3 px-2 space-x-2">
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="cpf_cnpj"><span class="font-semibold">:CPF/CNPJ</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="cpf_cnpj"  id="cpf_cnpj" value="{{ $supplier->cpf_cnpj }}" placeholder=" cpf/cnpj" required>
                 @error('cpf_cnpj')
                     <div class="absolute text-red-400">Digite o CPF/CNPJ</div>
                 @enderror
             </div>
-            <div class="w-full">
+            <div class="w-3/12">
                 <label for="phone"><span class="font-semibold">:Telefone/Celular</span></label>
                 <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="phone"  id="phone" value="{{ $supplier->phone }}" placeholder=" telefone/celular" required>
                 @error('phone')
                     <div class="absolute text-red-400">Digite o Telefone/Celular</div>
                 @enderror
+            </div>
+            <div class="w-4/12">
+                <label for="email"><span class="font-semibold">:Email</span></label>
+                <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="email"  id="email" value="{{ $supplier->email }}" placeholder=" telefone/celular" required>
+                @error('email')
+                    <div class="absolute text-red-400">Digite o Email Válido</div>
+                @enderror
+            </div>
+            <div class="w-2/12">
+                <label for="is_active"><span class="font-semibold">:Status</span></label>
+                <select name="is_active" id="is_active" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
+                    <option value="{{ $supplier->is_active }}">{{ $supplier->is_active == 1 ? "Ativo" : "Inativo"}}</option>
+                    <option value="{{ 1 }}">Ativo</option>
+                    <option value="{{ 0 }}">Inativo</option>
+                </select>
             </div>
         </div>
         <div class="flex items-center mt-3 px-2 space-x-2">
@@ -89,14 +106,6 @@
                 @error('zipcode')
                     <div class="absolute text-red-400">Digite o CEP</div>
                 @enderror
-            </div>
-            <div class="w-full">
-                <label for="is_active"><span class="font-semibold">:Status</span></label>
-                <select name="is_active" id="is_active" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
-                    <option value="{{ $supplier->is_active }}">{{ $supplier->is_active == 1 ? "Ativo" : "Inativo"}}</option>
-                    <option value="{{ 1 }}">Ativo</option>
-                    <option value="{{ 0 }}">Inativo</option>
-                </select>
             </div>
         </div>
         <div class="px-2">

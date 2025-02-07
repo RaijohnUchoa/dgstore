@@ -37,9 +37,9 @@ class ProductController extends Controller
         $products->price_sale = $request->price_sale;
         $products->description = $request->description;
         $products->is_active = $request->is_active;
-        $products->is_featured = $request->is_featured;
-        $products->in_stock = $request->in_stock;
-        $products->on_sale = $request->on_sale;
+        $products->is_featured = $request->is_featured == null ? "0" : "1";
+        $products->on_sale = $request->on_sale == null ? "0" : "1";
+        $products->in_stock = $request->in_stock == null ? "0" : "1";
         
         $file_name = rand(0,999999) . '_' . $request->file('image1')->getClientOriginalName();
         $file_path = $request->file('image1')->storeAs('uploads', $file_name);
@@ -90,9 +90,9 @@ class ProductController extends Controller
             return redirect()->route('productsread');
 
         $categorynow = Category::find($product->category_id);
-        $categorynow = $categorynow->category_name;
+        // $categorynow = $categorynow->category_name;
         $brandnow = Brand::find($product->brand_id);
-        $brandnow = $brandnow->brand_name;
+        // $brandnow = $brandnow->brand_name;
         return view('productsedit', compact('product', 'categories', 'brands', 'categorynow', 'brandnow'));
     }
     public function productsupdate(Request $request, $id){
@@ -102,6 +102,16 @@ class ProductController extends Controller
 
         $data = $request->all();
         $productsupdate->update($data);
+
+        if ($request->is_featured == null) {
+            $productsupdate->update(['is_featured' => 0]);
+        }
+        if ($request->on_sale == null) {
+            $productsupdate->update(['on_sale' => 0]);
+        }
+        if ($request->in_stock == null) {
+            $productsupdate->update(['in_stock' => 0]);
+        }
 
         if (!$request->image1 == null) {
             $file_name = rand(0,999999) . '_' . $request->file('image1')->getClientOriginalName();

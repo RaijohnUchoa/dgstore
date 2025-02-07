@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -44,8 +45,25 @@ class CategoryController extends Controller
     public function categoriesupdate(Request $request, $id){
         if (!$categoryupdate = Category::find($id))
             return redirect()->route('categoriesread');
+        
+        $image_old = $categoryupdate->image;
         $data = $request->all();
         $categoryupdate->update($data);
+
+        if ($request->image == null) {
+            if ($image_old != null) {
+                $categoryupdate->update(['image' => $image_old]);
+            }
+        }else{
+            $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
+            $file_path = $request->file('image')->storeAs('uploads', $file_name);
+            $categoryupdate->update(['image' => $file_path]);
+        }
+
+        if(Storage::exists($image_old)){
+            Storage::delete($image_old);
+        }
+
         return redirect()->route('categoriesread')->with('success', 'Categoria ['.$request->category_name.'] ALTERADO com Sucesso!');
     }
     public function categoriesactive($id){

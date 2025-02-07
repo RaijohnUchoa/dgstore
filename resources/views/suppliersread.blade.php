@@ -43,19 +43,33 @@
         </div>
     </div>
     <div class="flex items-center mt-3 px-2 space-x-2">
-        <div class="w-full">
+        <div class="w-3/12">
             <label for="cpf_cnpj"><span class="font-semibold">:CPF/CNPJ</span></label>
             <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="cpf_cnpj"  id="cpf_cnpj" value="{{ old('cpf_cnpj') }}" placeholder=" cpf/cnpj" required>
             @error('cpf_cnpj')
                 <div class="absolute text-red-400">Digite o CPF/CNPJ</div>
             @enderror
         </div>
-        <div class="w-full">
+        <div class="w-3/12">
             <label for="phone"><span class="font-semibold">:Telefone/Celular</span></label>
             <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="phone"  id="phone" value="{{ old('phone') }}" placeholder=" telefone/celular" required>
             @error('phone')
                 <div class="absolute text-red-400">Digite o Telefone/Celular</div>
             @enderror
+        </div>
+        <div class="w-4/12">
+            <label for="email"><span class="font-semibold">:Email</span></label>
+            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="email"  id="email" value="{{ old('email') }}" placeholder=" email válido" required>
+            @error('email')
+                <div class="absolute text-red-400">Digite um Email Válido</div>
+            @enderror
+        </div>
+        <div class="w-2/12">
+            <label for="is_active"><span class="font-semibold">:Status</span></label>
+            <select name="is_active" id="is_active" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
+                <option value="{{ 1 }}">Ativo</option>
+                <option value="{{ 0 }}">Inativo</option>
+            </select>
         </div>
     </div>
     <div class="flex items-center mt-3 px-2 space-x-2">
@@ -94,13 +108,6 @@
                 <div class="absolute text-red-400">Digite o CEP</div>
             @enderror
         </div>
-        <div class="w-full">
-            <label for="is_active"><span class="font-semibold">:Status</span></label>
-            <select name="is_active" id="is_active" class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900" required>
-                <option value="{{ 1 }}">Ativo</option>
-                <option value="{{ 0 }}">Inativo</option>
-            </select>
-        </div>
     </div>
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo Fornecedor</button>
@@ -118,6 +125,7 @@
                 <th scope="col" class="px-2">Contato</th>
                 <th scope="col" class="px-2">CPF/CNPJ</th>
                 <th scope="col" class="px-2">Telefone/Celular</th>
+                <th scope="col" class="px-2">Email</th>
                 <th scope="col" class="px-2">Status</th>
                 <th scope="col" class="px-2">Ações</th>
             </tr>
@@ -142,6 +150,9 @@
                     </td>
                     <td class="px-2 py-1">
                         <span>{{ $supplier->phone }}</span>
+                    </td>
+                    <td class="px-2 py-1">
+                        <span>{{ $supplier->email }}</span>
                     </td>
                     <td class="px-2 py-1">
                         <span class="py-1 px-2 mr-2 rounded hover:fonte-bold">{{ $supplier->is_active == 1 ? "Ativo" : "inAtivo" }}</span>
