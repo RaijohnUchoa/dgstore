@@ -5,10 +5,24 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Models\Brand;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('layouts.app');
+    global $categories;
+    global $brands;
+    $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+    $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+    $products = DB::table('products')
+        ->join('categories', 'products.category_id', '=', 'categories.id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        ->orderBy('brand_id', 'ASC')
+        ->where('products.is_active', 1)
+        ->get();
+    return view('layouts.app', compact('products', 'categories', 'brands'));
 });
 
 Route::middleware('auth')->group(function () {
@@ -53,6 +67,7 @@ Route::post('/productscreate', [ProductController::class, 'productscreate'])->na
 Route::get('/productsedit/{id}', [ProductController::class, 'productsedit'])->name('productsedit');
 Route::put('/productsupdate/{id}', [ProductController::class, 'productsupdate'])->name('productsupdate');
 Route::get('/productsactive/{id}', [ProductController::class, 'productsactive'])->name('productsactive');
-Route::get('/productsfilter/{id}', [ProductController::class, 'productsfilter'])->name('productsfilter');
 Route::get('/productsdelete/{id}/{img}', [ProductController::class, 'productsdelete'])->name('productsdelete');
-Route::get('/productslist', [ProductController::class, 'productslist'])->name('productslist');
+Route::get('/productsfilter/{id}', [ProductController::class, 'productsfilter'])->name('productsfilter');
+Route::get('/productsfiltercategory/{filter}', [ProductController::class, 'productsfiltercategory'])->name('productsfiltercategory');
+Route::get('/productsfilterbrand/{filter}', [ProductController::class, 'productsfilterbrand'])->name('productsfilterbrand');

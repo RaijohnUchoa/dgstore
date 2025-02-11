@@ -214,4 +214,31 @@ class ProductController extends Controller
         }
         return redirect()->route('productsread')->with('success', 'Imagem DELETADA com Sucesso!');
     }
+    public function productsfiltercategory($filter) {
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('brand_id', 'ASC')
+            ->where('products.is_active', 1)
+            ->where('categories.category_name', '=', $filter)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands'));
+    }
+    public function productsfilterbrand($filter) {
+
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('brand_id', 'ASC')
+            ->where('products.is_active', 1)
+            ->where('brands.brand_name', '=', $filter)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands'));
+    }
 }

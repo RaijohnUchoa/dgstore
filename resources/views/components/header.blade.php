@@ -25,7 +25,7 @@
                     <div class="border-b cursor-pointer hover:text-gray-50 py-1 px-2">
                         <a class="hover:text-gray-50" href="{{ route('logout') }}">
                             <span class="flex items-center">Sair
-                                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                                 </svg>
                             </span>
@@ -44,7 +44,9 @@
                 @if(Auth::user()->type == 0)
                     <span class="font-bold text-white tracking-widest bg-red-700 px-3 py-1 rounded text-sm">PAINEL DE CONTROLE</span>
                 @else
-                    <span>BUSCA...</span>
+                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Home</a>
+                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Sobre</a>
+                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Contato</a>
                 @endif
 
             @else

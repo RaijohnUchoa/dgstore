@@ -4,7 +4,7 @@
 
 <div class="">
     
-  {{-- @forelse ($productslist as $product) --}}
+  @forelse ($productslist as $product)
 
 
     <div class="py-1 w-full gap-3 flex-wrap flex justify-center items-center">
@@ -134,9 +134,9 @@
 
     </div>
         
-  {{-- @empty
+  @empty
       <tr><td>Lista Vazia</td></tr>
-  @endforelse --}}
+  @endforelse
 
 
 
