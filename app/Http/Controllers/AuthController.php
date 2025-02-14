@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Scale;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,14 +28,15 @@ class AuthController extends Controller
         if(Auth::attempt($credentials)) {
             $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
             $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+            $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
                 ->select('products.*', 'categories.category_name', 'brands.brand_name')
-                ->orderBy('brand_id', 'ASC')
+                ->orderBy('id', 'DESC')
                 ->where('products.is_active', 1)
                 ->get();
-            return view('layouts.app', compact('products', 'categories', 'brands'));
+            return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
             // return redirect()->intended(route('app'));
         }
         return redirect(route('login'))->with('error', 'Falhar ao logar usuário!');
@@ -59,14 +61,15 @@ class AuthController extends Controller
             if(Auth::attempt($credentials)) {
                 $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
                 $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+                $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
                 $products = DB::table('products')
                     ->join('categories', 'products.category_id', '=', 'categories.id')
                     ->join('brands', 'products.brand_id', '=', 'brands.id')
                     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-                    ->orderBy('brand_id', 'ASC')
+                    ->orderBy('id', 'DESC')
                     ->where('products.is_active', 1)
                     ->get();
-                return view('layouts.app', compact('products', 'categories', 'brands'));
+                return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
                 // return redirect()->intended(route('app'))->with('success', 'Seja Bem Vindo(a) ');
             }
         }
@@ -78,16 +81,16 @@ class AuthController extends Controller
 
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-
+        $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
         $products = DB::table('products')
         ->join('categories', 'products.category_id', '=', 'categories.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id')
         ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        ->orderBy('brand_id', 'ASC')
+        ->orderBy('id', 'DESC')
         ->where('products.is_active', 1)
         ->get();
     
-        return view('layouts.app', compact('products', 'categories', 'brands'));
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
         
     }
 

@@ -43,16 +43,9 @@
                 <label for="car_scale"><span class="font-semibold">:Escala</span></label>
                 <select name="car_scale" id="car_scale" class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
                     <option value="{{ $product->car_scale }}">{{ $product->car_scale }}</option>
-                    <option value="{{ '1/64' }}">1/64</option>
-                    <option value="{{ '1/87' }}">1/87</option>
-                    <option value="{{ '1/72' }}">1/72</option>
-                    <option value="{{ '1/50' }}">1/50</option>
-                    <option value="{{ '1/43' }}">1/43</option>
-                    <option value="{{ '1/32' }}">1/32</option>
-                    <option value="{{ '1/24' }}">1/24</option>
-                    <option value="{{ '1/18' }}">1/18</option>
-                    <option value="{{ '1/12' }}">1/12</option>
-                    <option value="{{ 'Outras' }}">Outras</option>
+                    @foreach ($scales as $scale)
+                        <option value="{{ $scale->scale_name }}">{{ $scale->scale_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="w-2/12">
