@@ -23,7 +23,15 @@ Route::get('/', function () {
         ->orderBy('id', 'DESC')
         ->where('products.is_active', 1)
         ->get();
-    return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
+    $productsonsale = DB::table('products')
+        ->join('categories', 'products.category_id', '=', 'categories.id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        ->orderBy('id', 'DESC')
+        ->where('products.is_active', 1)
+        ->where('products.on_sale', 1)
+        ->get();
+    return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
 });
 
 Route::middleware('auth')->group(function () {

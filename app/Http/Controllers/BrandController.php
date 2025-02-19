@@ -39,10 +39,11 @@ class BrandController extends Controller
         return view('brandsread', compact('brands'));
     }
     public function brandsedit($id) {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if (!$brand = Brand::find($id))
             return redirect()->route('brandsread');
 
-        return view('brandsedit', compact('brand'));
+        return view('brandsedit', compact('brands', 'brand'));
     }
     public function brandsupdate(Request $request, $id){
         if (!$brandupdate = Brand::find($id))

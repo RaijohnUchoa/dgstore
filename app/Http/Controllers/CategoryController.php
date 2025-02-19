@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,14 +34,16 @@ class CategoryController extends Controller
         return redirect()->back()->with('error', 'Categoria ['.$request->category_name.'] NÃO CADASTRADO!');
     }
     public function categoriesread() {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-        return view('categoriesread', compact('categories'));
+        return view('categoriesread', compact('brands', 'categories'));
     }
     public function categoriesedit($id) {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if (!$category = Category::find($id))
             return redirect()->route('categoriesread');
 
-        return view('categoriesedit', compact('category'));
+        return view('categoriesedit', compact('brands', 'category'));
     }
     public function categoriesupdate(Request $request, $id){
         if (!$categoryupdate = Category::find($id))
@@ -79,6 +82,7 @@ class CategoryController extends Controller
         }
     }
     public function categoriesfilter($id){
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if ($id == 2) {
             $categories = Category::orderBy('category_name', 'ASC')->get();
         } elseif ($id == 1) {
@@ -86,6 +90,6 @@ class CategoryController extends Controller
         } else {
             $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 0)->get();
         }
-        return view('categoriesread', compact('categories'));
+        return view('categoriesread', compact('brands', 'categories'));
     }
 }

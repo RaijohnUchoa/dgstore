@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -42,15 +43,17 @@ class SupplierController extends Controller
         return redirect()->back()->with('error', 'Fornecedor ['.$request->supplier_name.'] NÃO CADASTRADO!');
     }
     public function suppliersread() {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 1)->get();
 
-        return view('suppliersread', compact('suppliers'));
+        return view('suppliersread', compact('brands', 'suppliers'));
     }
     public function suppliersedit($id) {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if (!$supplier = Supplier::find($id))
             return redirect()->route('usersread');
 
-        return view('suppliersedit', compact('supplier'));
+        return view('suppliersedit', compact('brands', 'supplier'));
     }
     public function suppliersupdate(Request $request, $id){
         if (!$supplierupdate = Supplier::find($id))
@@ -89,6 +92,7 @@ class SupplierController extends Controller
         }
     }
     public function suppliersfilter($id){
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if ($id == 2) {
             $suppliers = Supplier::orderBy('supplier_name', 'ASC')->get();
         } elseif ($id == 1) {
@@ -96,6 +100,6 @@ class SupplierController extends Controller
         } else {
             $suppliers = Supplier::orderBy('supplier_name', 'ASC')->where('is_active', 0)->get();
         }
-        return view('suppliersread', compact('suppliers'));
+        return view('suppliersread', compact('brands', 'suppliers'));
     }
 }

@@ -36,8 +36,15 @@ class AuthController extends Controller
                 ->orderBy('id', 'DESC')
                 ->where('products.is_active', 1)
                 ->get();
-            return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
-            // return redirect()->intended(route('app'));
+            $productsonsale = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                ->orderBy('id', 'DESC')
+                ->where('products.is_active', 1)
+                ->where('products.on_sale', 1)
+                ->get();
+            return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
         }
         return redirect(route('login'))->with('error', 'Falhar ao logar usuário!');
     }
@@ -69,8 +76,15 @@ class AuthController extends Controller
                     ->orderBy('id', 'DESC')
                     ->where('products.is_active', 1)
                     ->get();
-                return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
-                // return redirect()->intended(route('app'))->with('success', 'Seja Bem Vindo(a) ');
+                $productsonsale = DB::table('products')
+                    ->join('categories', 'products.category_id', '=', 'categories.id')
+                    ->join('brands', 'products.brand_id', '=', 'brands.id')
+                    ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                    ->orderBy('id', 'DESC')
+                    ->where('products.is_active', 1)
+                    ->where('products.on_sale', 1)
+                    ->get();
+                return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
             }
         }
         return redirect(route('register'))->with('error', 'Falha ao Criar Usuário!');
@@ -78,27 +92,29 @@ class AuthController extends Controller
 
     public function logout() {
         Auth::logout();
-
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
         $products = DB::table('products')
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->join('brands', 'products.brand_id', '=', 'brands.id')
-        ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        ->orderBy('id', 'DESC')
-        ->where('products.is_active', 1)
-        ->get();
-    
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
-        
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->get();
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
 
     //CRUD USUÁRIOS ADMINISTRATIVO
     public function userscreate(Request $request){
-
-        // dd($request->all());
-
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -123,14 +139,17 @@ class AuthController extends Controller
         return redirect()->back()->with('error', 'Usuário ['.$request->name.'] NÃO CADASTRADO!');
     }
     public function usersread() {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $users = User::orderBy('name', 'ASC')->where('is_active', 1)->get();
-        return view('usersread', compact('users'));
+
+        return view('usersread', compact('brands', 'users'));
     }
     public function usersedit($id) {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if (!$user = User::find($id))
             return redirect()->route('usersread');
 
-        return view('usersedit', compact('user'));
+        return view('usersedit', compact('brands', 'user'));
     }
     public function usersupdate(Request $request, $id){
         if (!$userupdate = User::find($id))
@@ -152,6 +171,7 @@ class AuthController extends Controller
         }
     }
     public function usersfilter($id){
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         if ($id == 3) {
             $users = User::orderBy('name', 'ASC')->get();
         } elseif ($id == 2) {
@@ -161,7 +181,7 @@ class AuthController extends Controller
         } else {
             $users = User::orderBy('name', 'ASC')->where('is_active', 0)->get();
         }
-        return view('usersread', compact('users'));
+        return view('usersread', compact('brands', 'users'));
     }
 
 }

@@ -130,6 +130,7 @@
                     <option value="{{ 'Conversível' }}">Conversível</option>
                     <option value="{{ 'Van' }}">Van</option>
                     <option value="{{ 'Onibus' }}">Onibus</option>
+                    <option value="{{ 'Caminhão' }}">Caminhão</option>
                     <option value="{{ 'Outros' }}">Outras</option>
                 </select>
             </div>
@@ -458,15 +459,19 @@
                         </div>
 
                         <input
-                            class="w-16 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            class="w-12 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-center {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            type="text" name="car_scale" id="car_scale" value="{{ $product->car_scale }}"
+                            @disabled($product->is_active == 1 ? false : true)>
+                        <input
+                            class="w-12 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-center {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             type="text" name="stock" id="stock" value="{{ $product->stock }}"
                             @disabled($product->is_active == 1 ? false : true)>
                         <input
-                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-end {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             type="text" name="price_normal" id="price_normal"
                             value="{{ $product->price_normal }}" @disabled($product->is_active == 1 ? false : true)>
                         <input
-                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
+                            class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-end {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
                             type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}"
                             @disabled($product->is_active == 1 ? false : true)>
 

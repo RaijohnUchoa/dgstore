@@ -67,8 +67,12 @@ class ProductController extends Controller
             $products->image5 = $file_path;
         }
         if ($products->save()) {
+            if ($request->price_sale == 0) {
+                $products->update(['on_sale' => 0]);
+            }
             return redirect()->intended(route('productsread'))->with('success', 'Produto ['.$request->title.'] CADASTRADO com Sucesso!');
         }
+
         return redirect()->back()->with('error', 'Produto ['.$request->title.'] NÃO CADASTRADO!');
     }
     public function productsread() {
@@ -79,8 +83,16 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
             ->select('products.*', 'categories.category_name', 'brands.brand_name')
-            ->orderBy('brand_id', 'ASC')
+            ->orderBy('id', 'DESC')
             ->get();
+        // $productsonsale = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        //     ->orderBy('id', 'DESC')
+        //     ->where('products.is_active', 1)
+        //     ->where('products.on_sale', 1)
+        //     ->get();
         return view('productsread', compact('products', 'categories', 'brands', 'scales'));
     }
     public function productsedit($id) {
@@ -90,6 +102,14 @@ class ProductController extends Controller
         if (!$product = Product::find($id))
             return redirect()->route('productsread');
 
+        // $productsonsale = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        //     ->orderBy('id', 'DESC')
+        //     ->where('products.is_active', 1)
+        //     ->where('products.on_sale', 1)
+        //     ->get();
         $categorynow = Category::find($product->category_id);
         $brandnow = Brand::find($product->brand_id);
         return view('productsedit', compact('product', 'categories', 'scales', 'brands', 'categorynow', 'brandnow'));
@@ -101,6 +121,10 @@ class ProductController extends Controller
 
         $data = $request->all();
         $productsupdate->update($data);
+
+        if ($request->price_sale == 0) {
+            $productsupdate->update(['on_sale' => 0]);
+        }
 
         if ($request->is_featured == null) {
             $productsupdate->update(['is_featured' => 0]);
@@ -152,10 +176,9 @@ class ProductController extends Controller
         }
     }
     public function productsfilter($id){
-
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-
+        $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
         if ($id == 2) {
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
@@ -180,7 +203,15 @@ class ProductController extends Controller
                 ->where('products.is_active', 0)
                 ->get();
         }
-        return view('productsread', compact('categories', 'brands', 'products'));
+        // $productsonsale = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        //     ->orderBy('id', 'DESC')
+        //     ->where('products.is_active', 1)
+        //     ->where('products.on_sale', 1)
+        //     ->get();
+        return view('productsread', compact('categories', 'brands', 'scales', 'products'));
     }
     public function productsdelete($id, $img){
 
@@ -225,7 +256,15 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('categories.category_name', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
     public function productsfilterbrand($filter) {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -239,7 +278,15 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('brands.brand_name', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
     public function productsfilterscale($filter) {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -253,7 +300,15 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.car_scale', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
     public function productsfiltersale() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -267,6 +322,15 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales'));
+        $productsonsale = $products;
+        // $productsonsale = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        //     ->orderBy('id', 'DESC')
+        //     ->where('products.is_active', 1)
+        //     ->where('products.on_sale', 1)
+        //     ->get();
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
 }

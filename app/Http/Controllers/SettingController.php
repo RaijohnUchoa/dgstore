@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Scale;
 use Illuminate\Http\Request;
 
@@ -24,8 +25,9 @@ class SettingController extends Controller
         return redirect()->back()->with('error', 'Escala ['.$request->scale_name.'] NÃO CADASTRADO!');
     }
     public function scalesread() {
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $scales = Scale::orderBy('scale_name', 'ASC')->get();
-        return view('scalesread', compact('scales'));
+        return view('scalesread', compact('brands', 'scales'));
     }
     public function scalesupdate(Request $request, $id){
         if (!$scalesupdate = Scale::find($id))

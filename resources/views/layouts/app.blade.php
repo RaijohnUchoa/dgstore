@@ -10,7 +10,7 @@
 
 <body>
 
-    <div class="container m-auto max-w-[1280px] bg-gray-50 text-gray-300 shadow p-1 grid grid-cols-10 gap-2 select-none">
+    <div class="container m-auto max-w-[1280px] text-gray-300 shadow p-1 grid grid-cols-10 gap-2 select-none">
         {{-- NAVTOP --}}
         <div class="header col-span-10">
             @php
@@ -33,10 +33,10 @@
 
         {{-- MENU PRINCIPAL --}}
         <div class="navmenu shadow col-span-10">
-            <x-menu :brands="$brands"></x-menu>
+            <x-menu :users="$user" :brands="$brands"></x-menu>
         </div>
         {{-- SIDEBAR --}}
-        <div class="sidebar border shadow w-[250px] col-span-2">
+        <div class="sidebar border shadow w-[250px] col-span-2 bg-gray-100">
             @if (Auth::check())
                 @if (Auth::user()->type == 0)
                     <x-sidebar></x-sidebar>
@@ -51,15 +51,23 @@
 
         {{-- MAIN --}}
 
-        <div class="main border shadow bg-gray-50 text-gray-600 col-span-8">
+        <div class="main border shadow text-gray-600 col-span-8">
             @yield('content')
+
+            @if (Auth::check() and Auth::user()->type == 0)
+
+                @if (Request::is('login'))
+                    DASHBOARD ADMIN
+                @endif
+
+            @endif
 
             @if ($user == 'Visitante!' or Auth::user()->type > 0)
 
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1">
                     @foreach ($products as $product)
                         {{-- <div class="h-[488px] w-[245px] rounded transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl"> --}}
-                        <div class="h-[489px] w-[245px] rounded shadow hover:shadow-xl">
+                        <div class="w-[245px] rounded shadow hover:shadow-xl mt-2">
                             <div class="flex justify-center items-center p-1">
                                 <img src="{{ asset("storage/{$product->image1}") }}" class="h-[280px] rounded p-1">
                             </div>
@@ -75,17 +83,21 @@
                                     <span class="text-gray-500">Escala: {{ $product->car_scale }}</span>
                                     <span class="text-gray-500">{{ $product->brand_name }}</span>
                                 </div>
-                                <div class="py-3 flex items-center justify-between text-xs">
-                                    <span class="line-through opacity-50">R$ {{ $product->price_normal }}</span>
-                                    <span class="px-2 py-1 font-semibold bg-yellow-400 text-red-600 rounded-s-2xl">R$ {{ $product->price_normal - $product->price_sale }}</span>
-                                    <span class="font-semibold text-sky-800 text-base">R$ {{ $product->price_sale }}</span>
-                                </div>
+                                @if ($product->price_sale == 0)
+                                    <div class="py-2 flex items-center justify-center text-xs">
+                                        <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ $product->price_normal }}</span>
+                                    </div>
+                                @else
+                                    <div class="py-2 flex items-center justify-between text-xs">
+                                        <span class="line-through opacity-50">R$ {{ $product->price_normal }}</span>
+                                        <span class="font-semibold text-pink-800 text-base">R$ {{ $product->price_sale }}</span>
+                                    </div>
+                                @endif
                             </div>
                             <div class="shadow py-3 flex items-center justify-around rounded">
-                                {{-- <button class="px-3 py-2 text-xs rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold">Buy Now</button> --}}
-                                <button class="px-3 py-2 bg-sky-600 hover:bg-sky-800 shadow shadow-sky-800 rounded-lg text-white text-xs font-semibold">Buy Now</button>
-                                <button class="px-2 py-1 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128722;</button>
-                                <button class="px-2 py-1 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button>
+                                <button title="compre agora" class="px-2 py-1 bg-sky-600 hover:bg-sky-800 shadow shadow-sky-800 rounded-lg text-white text-xs font-semibold">Buy Now</button>
+                                <button title="incluir no carrinho" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128722;</button>
+                                <button title="lista de desejos" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button>
                             </div>
                         </div>
                     @endforeach
@@ -108,9 +120,41 @@
         </div>
 
         {{-- ANUNCIOS --}}
-        <div class="news shadow h-[200px] col-span-10">
-            NEWS
-        </div>
+        @if ($user == 'Visitante!' or Auth::user()->type > 0)
+
+            <div class="news shadow h-[240px] col-span-10 text-center">
+                <div class="mt-1 bg-red-700">
+                    <span class="text-gray-100 font-semibold">PRODUTOS EM OFERTA</span>
+                </div>
+                <div class="flex-wrap flex justify-around items-center gap-2 p-1 my-2">
+
+                    @foreach ($productsonsale as $product)
+
+                        <div class="relative h-[190px] w-[140px] rounded shadow hover:shadow-xl">
+
+                            <div class="flex justify-center items-center p-1">
+                                <img src="{{ asset("storage/{$product->image1}") }}" class="h-[140px] rounded p-1">
+                            </div>
+                            <div class="px-2">
+                                <div class="flex justify-center items-center">
+                                    <span class="text-sky-800 text-center text-xs">{{ $product->title }}</span>
+                                </div>
+                                <div class="py-2 ml-3 absolute top-12 w-24 -rotate-45">
+                                    <span class="font-bold text-red-700 text-md bg-opacity-70 bg-sky-50 rounded shadow-md px-1">R${{ $product->price_sale }}</span>
+                                </div>
+                            </div>
+                            <div class="absolute top-0 ml-3 rounded">
+                                <button title="incluir no carrinho" class="bg-white hover:bg-gray-200 shadow shadow-gray-700 rounded">&#128722;</button>
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+            </div>
+
+        @endif
 
         {{-- FOOTER --}}
         <div class="footer shadow flex  justify-center items-center text-center h-[100px] col-span-10">
