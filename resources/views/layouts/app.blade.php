@@ -33,19 +33,19 @@
 
         {{-- MENU PRINCIPAL --}}
         <div class="navmenu shadow col-span-10">
-            <x-menu :users="$user" :brands="$brands"></x-menu>
+            <x-menu :user="$user" :brands="$brands"></x-menu>
         </div>
         {{-- SIDEBAR --}}
         <div class="sidebar border shadow w-[250px] col-span-2 bg-gray-100">
             @if (Auth::check())
                 @if (Auth::user()->type == 0)
-                    <x-sidebar></x-sidebar>
+                    <x-sidebar :user="$user"></x-sidebar>
                 @else
-                    <x-sidebar :categories="$categories" :brands="$brands" :scales="$scales"></x-sidebar>
+                    <x-sidebar :user="$user" :categories="$categories" :brands="$brands" :scales="$scales"></x-sidebar>
                 @endif
 
             @else
-                <x-sidebar :categories="$categories" :brands="$brands" :scales="$scales"></x-sidebar>
+                <x-sidebar :user="$user" :categories="$categories" :brands="$brands" :scales="$scales"></x-sidebar>
             @endif
         </div>
 
@@ -66,11 +66,17 @@
 
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1">
                     @foreach ($products as $product)
-                        {{-- <div class="h-[488px] w-[245px] rounded transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl"> --}}
-                        <div class="w-[245px] rounded shadow hover:shadow-xl mt-2">
+
+                        <div class="relative w-[245px] rounded shadow hover:shadow-xl mt-2">
                             <div class="flex justify-center items-center p-1">
                                 <img src="{{ asset("storage/{$product->image1}") }}" class="h-[280px] rounded p-1">
                             </div>
+                            @if ( $product->on_sale == 1 )
+                                <span class="absolute py-1 px-1 top-0 bg-red-700 text-gray-50 text-[10px] font-semibold rounded-r-full">OFERTA</span>
+                            @endif
+                            @if ( $product->is_preorder == 1 )
+                                <span class="absolute py-1 px-1 top-0 bg-green-700 text-gray-50 text-[10px] font-semibold rounded-r-full">Pre-Order</span>
+                            @endif
                             <div class="flex items-center justify-between text-[11px] px-2">
                                 <span class="text-gray-500">{{ $product->sku }}</span>
                                 <span class="text-gray-500">{{ $product->category_name }}</span>
@@ -85,12 +91,12 @@
                                 </div>
                                 @if ($product->price_sale == 0)
                                     <div class="py-2 flex items-center justify-center text-xs">
-                                        <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ $product->price_normal }}</span>
+                                        <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
                                     </div>
                                 @else
                                     <div class="py-2 flex items-center justify-between text-xs">
-                                        <span class="line-through opacity-50">R$ {{ $product->price_normal }}</span>
-                                        <span class="font-semibold text-pink-800 text-base">R$ {{ $product->price_sale }}</span>
+                                        <span class="line-through opacity-50">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
+                                        <span class="font-semibold text-pink-800 text-base">R$ {{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span>
                                     </div>
                                 @endif
                             </div>
@@ -100,6 +106,7 @@
                                 <button title="lista de desejos" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button>
                             </div>
                         </div>
+
                     @endforeach
                 </div>
 
@@ -123,7 +130,7 @@
         @if ($user == 'Visitante!' or Auth::user()->type > 0)
 
             <div class="news shadow h-[240px] col-span-10 text-center">
-                <div class="mt-1 bg-red-700">
+                <div class="mt-2 bg-red-700">
                     <span class="text-gray-100 font-semibold">PRODUTOS EM OFERTA</span>
                 </div>
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1 my-2">
@@ -140,7 +147,7 @@
                                     <span class="text-sky-800 text-center text-xs">{{ $product->title }}</span>
                                 </div>
                                 <div class="py-2 ml-3 absolute top-12 w-24 -rotate-45">
-                                    <span class="font-bold text-red-700 text-md bg-opacity-70 bg-sky-50 rounded shadow-md px-1">R${{ $product->price_sale }}</span>
+                                    <span class="font-bold text-red-700 text-md bg-opacity-70 bg-sky-50 rounded shadow-md px-1">{{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span>
                                 </div>
                             </div>
                             <div class="absolute top-0 ml-3 rounded">
@@ -166,55 +173,33 @@
     <script>
         const tempo = document.querySelector('#valor');
         const btnStart = document.querySelector('#start');
-
         var tempo_atual, relogio;
-
         btnStart.addEventListener('click', function() {
-
             start();
-
         });
-
         function start() {
             if (tempo.value != '' && tempo.value != '0') {
-
                 const valor = parseInt(tempo.value);
-
                 if (valor > 0) {
-
                     tempo_atual = valor;
-
                     if (relogio) {
                         clearInterval(relogio);
                     }
-
                     relogio = setInterval(contar, 1000);
-
                 } else {
-
                     alert("Informe um valor maior que zero!");
-
                 }
-
             } else {
-
                 alert("Informe um número válido!");
-
             }
         }
-
         function contar() {
-
             tempo_atual--;
-
             if (tempo_atual >= 0) {
-
                 let horas, minutos, segundos;
-
                 horas = Math.floor(tempo_atual / 3600);
                 minutos = Math.floor((tempo_atual - horas * 3600) / 60);
                 segundos = tempo_atual - horas * 3600 - minutos * 60;
-
                 if (horas < 10) {
                     horas = "0" + horas;
                 }
@@ -224,12 +209,9 @@
                 if (segundos < 10) {
                     segundos = "0" + segundos;
                 }
-
                 document.querySelector('#contador').innerHTML = "<span>" + horas + ":" + minutos + ":" + segundos +
                     "</span>";
-
             } else {
-
                 clearInterval(relogio);
                 // alert("Parou!");
                 document.querySelector('#contador').innerHTML = "<span>" + "Você Venceu!!" + "</span>";

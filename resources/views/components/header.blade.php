@@ -35,7 +35,7 @@
             @else
                 <div class="hidden absolute top-[31px] bg-gray-800 text-xs w-36 rounded" id="dropdown">
                     <div class="border-b cursor-pointer hover:text-gray-50 p-1"><a href="{{ route('register') }}">Registre-se!</a></div>
-                    <div class="border-b cursor-pointer hover:text-gray-50 p-1"><a href="#">Entre em Contato</a></div>
+                    <div class="border-b cursor-pointer hover:text-gray-50 p-1"><a href="information">Entre em Contato</a></div>
                 </div>
             @endif
         </div>
@@ -44,15 +44,15 @@
                 @if(Auth::user()->type == 0)
                     <span class="font-bold text-white tracking-widest bg-red-700 px-3 py-1 rounded text-sm">PAINEL DE CONTROLE</span>
                 @else
-                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Home</a>
-                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Sobre</a>
-                    <a class="hover:text-gray-50 hover:border-y-2" href="#">Contato</a>
+                <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
                 @endif
 
             @else
-                <a class="hover:text-gray-50 hover:border-y-2" href="#">Home</a>
-                <a class="hover:text-gray-50 hover:border-y-2" href="#">Sobre</a>
-                <a class="hover:text-gray-50 hover:border-y-2" href="#">Contato</a>
+            <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+            <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+            <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
             @endif
         </div>
         <div class="w-4/12 hidden md:flex justify-end items-center">
@@ -82,9 +82,9 @@
     {{-- MOBILE --}}
     <div class="mobile-menu hidden md:hidden text-center">
 
-        <a class="border-y block py-2 hover:text-gray-50" href="#">Home</a>
-        <a class="border-b block py-2 hover:text-gray-50" href="#">Sobre</a>
-        <a class="border-b block py-2 hover:text-gray-50" href="#">Contato</a>
+        <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+        <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+        <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
         @if (Auth::check())
             <a class="block py-2 hover:text-gray-50" href="{{ route('logout') }}">
                 <span class="flex items-center justify-center">Sair

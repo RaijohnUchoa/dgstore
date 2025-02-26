@@ -82,8 +82,13 @@ Route::get('/productsfiltercategory/{filter}', [ProductController::class, 'produ
 Route::get('/productsfilterbrand/{filter}', [ProductController::class, 'productsfilterbrand'])->name('productsfilterbrand');
 Route::get('/productsfilterscale/{filter}', [ProductController::class, 'productsfilterscale'])->name('productsfilterscale');
 Route::get('/productsfiltersale', [ProductController::class, 'productsfiltersale'])->name('productsfiltersale');
+Route::get('/productsfilterpreorder', [ProductController::class, 'productsfilterpreorder'])->name('productsfilterpreorder');
+Route::get('/productsfilterfeatured', [ProductController::class, 'productsfilterfeatured'])->name('productsfilterfeatured');
 // CONFIGURAÇÕES - ESCALAS
 Route::get('/scalesread', [SettingController::class, 'scalesread'])->name('scalesread');
 Route::post('/scalescreate', [SettingController::class, 'scalescreate'])->name('scalescreate');
 Route::put('/scalesupdate/{id}', [SettingController::class, 'scalesupdate'])->name('scalesupdate');
 Route::get('/scalesactive/{id}/{del}', [SettingController::class, 'scalesactive'])->name('scalesactive');
+// CONFIGURAÇÕES - INFORMAÇÕES
+Route::get('/information', [SettingController::class, 'information'])->name('information');
+// Route::get('/information', [SettingController::class, 'information'])->name('information');

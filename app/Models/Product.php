@@ -32,7 +32,7 @@ class Product extends Model
         'description',
         'is_active',
         'is_featured',
-        'in_stock',
+        'is_preorder',
         'on_sale',
     ];
            

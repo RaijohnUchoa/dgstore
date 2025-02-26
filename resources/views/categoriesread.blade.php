@@ -22,21 +22,21 @@
     <div class="flex items-center mt-3 px-2 space-x-2">
         <div class="w-full">
             <label for="category_name"><span class="font-semibold">:Categoria</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="category_name" id="category_name" value="{{ old('category_name') }}" placeholder=" nome do categoria" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="category_name" id="category_name" value="{{ old('category_name') }}" placeholder=" nome do categoria" required>
             @error('category_name')
                 <div class="absolute text-red-400">Digite o Nome Categoria</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="slug"><span class="font-semibold">:Slug</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do slug" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do slug" required>
             @error('slug')
                 <div class="absolute text-red-400">Digite o Slug Categoria</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="image"><span class="font-semibold">:Imagem</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image"  id="image" value="{{ old('image') }}" placeholder=" imagem da categoria" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image"  id="image" value="{{ old('image') }}" placeholder=" imagem da categoria" required>
             @error('image')
                 <div class="absolute text-red-400">Carregue a Imagem da Categoria</div>
             @enderror

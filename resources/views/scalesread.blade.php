@@ -172,6 +172,7 @@
     //     document.getElementById("scale_name").value = str.substr(0, i-1)
     // }
     // });
+    
     document.addEventListener('keydown', function(event) { 
         if(event.keyCode != 46 && event.keyCode != 8) {
             var i = document.getElementById("scale_name").value.length;

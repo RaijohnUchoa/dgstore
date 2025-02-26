@@ -22,14 +22,14 @@
     <div class="flex items-center mt-3 px-2 space-x-2">
         <div class="w-full">
             <label for="brand_name"><span class="font-semibold">:Marca</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="brand_name" id="brand_name" value="{{ old('brand_name') }}" placeholder=" nome do marca" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="brand_name" id="brand_name" value="{{ old('brand_name') }}" placeholder=" nome do marca" required>
             @error('brand_name')
                 <div class="absolute text-red-400">Digite o Nome Marca</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="slug"><span class="font-semibold">:Slug</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do slug" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="slug" id="slug" value="{{ old('slug') }}" placeholder=" nome do slug" required>
             @error('slug')
                 <div class="absolute text-red-400">Digite o Slug Marca</div>
             @enderror

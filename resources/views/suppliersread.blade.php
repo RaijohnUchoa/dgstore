@@ -22,21 +22,21 @@
     <div class="flex items-center mt-3 px-2 space-x-2">
         <div class="w-full">
             <label for="supplier_name"><span class="font-semibold">:Fornecedor</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="supplier_name" id="supplier_name" value="{{ old('supplier_name') }}" placeholder=" nome do fornecedor" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-xs text-blue-900 placeholder-gray-300" type="text" name="supplier_name" id="supplier_name" value="{{ old('supplier_name') }}" placeholder=" nome do fornecedor" required>
             @error('supplier_name')
                 <div class="absolute text-red-400">Digite o Nome Fornecedor</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="contact"><span class="font-semibold">:Contato</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300 " type="text" name="contact" id="contact" value="{{ old('contact') }}" placeholder=" contato do fornecedor" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300 " type="text" name="contact" id="contact" value="{{ old('contact') }}" placeholder=" contato do fornecedor" required>
             @error('contact')
                 <div class="absolute text-red-400">Digite o Nome do Contato</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="image_logo"><span class="font-semibold">:Imagem Logo</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image_logo"  id="image_logo" value="{{ old('image_logo') }}" placeholder=" logo do fornecedor" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="file" name="image_logo"  id="image_logo" value="{{ old('image_logo') }}" placeholder=" logo do fornecedor" required>
             @error('image_logo')
                 <div class="absolute text-red-400">Digite o Logo do Fornecedor</div>
             @enderror
@@ -45,21 +45,21 @@
     <div class="flex items-center mt-3 px-2 space-x-2">
         <div class="w-3/12">
             <label for="cpf_cnpj"><span class="font-semibold">:CPF/CNPJ</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="cpf_cnpj"  id="cpf_cnpj" value="{{ old('cpf_cnpj') }}" placeholder=" cpf/cnpj" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="cpf_cnpj"  id="cpf_cnpj" value="{{ old('cpf_cnpj') }}" placeholder=" cpf/cnpj" required>
             @error('cpf_cnpj')
                 <div class="absolute text-red-400">Digite o CPF/CNPJ</div>
             @enderror
         </div>
         <div class="w-3/12">
             <label for="phone"><span class="font-semibold">:Telefone/Celular</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="phone"  id="phone" value="{{ old('phone') }}" placeholder=" telefone/celular" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="phone"  id="phone" value="{{ old('phone') }}" placeholder=" telefone/celular" required>
             @error('phone')
                 <div class="absolute text-red-400">Digite o Telefone/Celular</div>
             @enderror
         </div>
         <div class="w-4/12">
             <label for="email"><span class="font-semibold">:Email</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="email"  id="email" value="{{ old('email') }}" placeholder=" email válido" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="email"  id="email" value="{{ old('email') }}" placeholder=" email válido" required>
             @error('email')
                 <div class="absolute text-red-400">Digite um Email Válido</div>
             @enderror
@@ -75,35 +75,35 @@
     <div class="flex items-center mt-3 px-2 space-x-2">
         <div class="w-full">
             <label for="street_address"><span class="font-semibold">:Logradouro</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="street_address"  id="street_address" value="{{ old('street_address') }}" placeholder=" rua-nº-bairro" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="street_address"  id="street_address" value="{{ old('street_address') }}" placeholder=" rua-nº-bairro" required>
             @error('street_address')
                 <div class="absolute text-red-400">Digite Rua-Nº-Bairro</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="city"><span class="font-semibold">:Cidade</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="city"  id="city" value="{{ old('city') }}" placeholder=" cidade" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="city"  id="city" value="{{ old('city') }}" placeholder=" cidade" required>
             @error('city')
                 <div class="absolute text-red-400">Digite a Cidade</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="state"><span class="font-semibold">:Estado/UF</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="state"  id="state" value="{{ old('state') }}" placeholder=" sigla estado" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="state"  id="state" value="{{ old('state') }}" placeholder=" sigla estado" required>
             @error('state')
                 <div class="absolute text-red-400">Digite a Sigla do Estado</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="country"><span class="font-semibold">:País</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="country"  id="country" value="{{ old('country') }}" placeholder=" digite o país" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="country"  id="country" value="{{ old('country') }}" placeholder=" digite o país" required>
             @error('country')
                 <div class="absolute text-red-400">Digite o País</div>
             @enderror
         </div>
         <div class="w-full">
             <label for="zipcode"><span class="font-semibold">:CEP</span></label>
-            <input class="w-full py-1 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="zipcode"  id="zipcode" value="{{ old('zipcode') }}" placeholder=" digite o cep" required>
+            <input class="w-full py-1 px-2 border border-blue-200 focus:border-blue-100 rounded text-blue-900 placeholder-gray-300" type="text" name="zipcode"  id="zipcode" value="{{ old('zipcode') }}" placeholder=" digite o cep" required>
             @error('zipcode')
                 <div class="absolute text-red-400">Digite o CEP</div>
             @enderror

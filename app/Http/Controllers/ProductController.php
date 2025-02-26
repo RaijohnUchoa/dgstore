@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function productscreate(Request $request){
+
+        $normal = str_replace(',', '.', str_replace('.', '', $request->price_normal));
+        $sale = str_replace(',', '.', str_replace('.', '', $request->price_sale));
+        
+        $request->merge([
+            'price_normal' => $normal,
+            'price_sale' => $sale
+        ]);
+
+        // dd($request->all());
+
         $request->validate([
             'category_id' => 'required',
             'brand_id' => 'required',
@@ -40,8 +51,8 @@ class ProductController extends Controller
         $products->is_active = $request->is_active;
         $products->is_featured = $request->is_featured == null ? "0" : "1";
         $products->on_sale = $request->on_sale == null ? "0" : "1";
-        $products->in_stock = $request->in_stock == null ? "0" : "1";
-        
+        $products->is_preorder = $request->is_preorder == null ? "0" : "1";
+
         $file_name = rand(0,999999) . '_' . $request->file('image1')->getClientOriginalName();
         $file_path = $request->file('image1')->storeAs('uploads', $file_name);
         $products->image1 = $file_path;
@@ -70,6 +81,10 @@ class ProductController extends Controller
             if ($request->price_sale == 0) {
                 $products->update(['on_sale' => 0]);
             }
+            if ($request->is_preorder == 1) {
+                $products->update(['is_featured' => 0]);
+                $products->update(['on_sale' => 0]);
+            }
             return redirect()->intended(route('productsread'))->with('success', 'Produto ['.$request->title.'] CADASTRADO com Sucesso!');
         }
 
@@ -85,14 +100,7 @@ class ProductController extends Controller
             ->select('products.*', 'categories.category_name', 'brands.brand_name')
             ->orderBy('id', 'DESC')
             ->get();
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
+
         return view('productsread', compact('products', 'categories', 'brands', 'scales'));
     }
     public function productsedit($id) {
@@ -102,29 +110,24 @@ class ProductController extends Controller
         if (!$product = Product::find($id))
             return redirect()->route('productsread');
 
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
         $categorynow = Category::find($product->category_id);
         $brandnow = Brand::find($product->brand_id);
         return view('productsedit', compact('product', 'categories', 'scales', 'brands', 'categorynow', 'brandnow'));
     }
     public function productsupdate(Request $request, $id){
-        
         if (!$productsupdate = Product::find($id))
             return redirect()->route('productsread');
-
+    
+        $normal = str_replace(',', '.', str_replace('.', '', $request->price_normal));
+        $sale = str_replace(',', '.', str_replace('.', '', $request->price_sale));
+        
+        $request->merge([
+            'price_normal' => $normal,
+            'price_sale' => $sale
+        ]);
+        
         $data = $request->all();
         $productsupdate->update($data);
-
-        if ($request->price_sale == 0) {
-            $productsupdate->update(['on_sale' => 0]);
-        }
 
         if ($request->is_featured == null) {
             $productsupdate->update(['is_featured' => 0]);
@@ -132,8 +135,17 @@ class ProductController extends Controller
         if ($request->on_sale == null) {
             $productsupdate->update(['on_sale' => 0]);
         }
-        if ($request->in_stock == null) {
-            $productsupdate->update(['in_stock' => 0]);
+        if ($request->is_preorder == null) {
+            $productsupdate->update(['is_preorder' => 0]);
+        }
+
+        if ($request->price_sale == 0) {
+            $productsupdate->update(['on_sale' => 0]);
+        }
+
+        if ($request->is_preorder == 1) {
+            $productsupdate->update(['is_featured' => 0]);
+            $productsupdate->update(['on_sale' => 0]);
         }
 
         if (!$request->image1 == null) {
@@ -179,14 +191,18 @@ class ProductController extends Controller
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-        if ($id == 2) {
+        
+        
+        if ($id == 2) { //Pre-Order
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
                 ->select('products.*', 'categories.category_name', 'brands.brand_name')
                 ->orderBy('id', 'DESC')
+                ->where('products.is_active', 1)
+                ->where('products.is_preorder', 1)
                 ->get();
-        } elseif ($id == 1) {
+        } elseif ($id == 1) { //Ativos
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -194,7 +210,7 @@ class ProductController extends Controller
                 ->orderBy('id', 'DESC')
                 ->where('products.is_active', 1)
                 ->get();
-        } else {
+        } elseif ($id == 0) { //InAtivos
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -202,15 +218,14 @@ class ProductController extends Controller
                 ->orderBy('id', 'DESC')
                 ->where('products.is_active', 0)
                 ->get();
+        } else { //Geral
+            $products = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->select('products.*', 'categories.category_name', 'brands.brand_name')
+                ->orderBy('id', 'DESC')
+                ->get();
         }
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
         return view('productsread', compact('categories', 'brands', 'scales', 'products'));
     }
     public function productsdelete($id, $img){
@@ -323,14 +338,53 @@ class ProductController extends Controller
             ->where('products.on_sale', 1)
             ->get();
         $productsonsale = $products;
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
+        
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+    }
+    public function productsfilterpreorder() {
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.is_preorder', 1)
+            ->get();
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+    }
+    public function productsfilterfeatured() {
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.is_featured', 1)
+            ->get();
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+
         return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
     }
 }

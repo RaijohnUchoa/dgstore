@@ -160,8 +160,8 @@
                 <label for="on_sale" class="ps-1">em Promoção</label>
             </div>
             <div class="flex">
-                <input name="in_stock" id="in_stock" type="checkbox" value="{{ 1 }}" @checked($product->in_stock == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
-                <label for="in_stock" class="ps-1">em Estoque</label>
+                <input name="is_preorder" id="is_preorder" type="checkbox" value="{{ 1 }}" @checked($product->is_preorder == 0 ? false : true) @disabled($product->is_active == 1 ? false : true)>
+                <label for="is_preorder" class="ps-1">em Pre-Order</label>
             </div>
         </div>
     </div>
@@ -242,7 +242,7 @@
     </div>
 
     {{-- <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
-    <input type="hidden" name="in_stock" id="in_stock" value="{{ 1 }}" />
+    <input type="hidden" name="is_preorder" id="is_preorder" value="{{ 1 }}" />
     <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" /> --}}
 
     <div class="px-2">
