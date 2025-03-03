@@ -31,7 +31,8 @@ Route::get('/', function () {
         ->where('products.is_active', 1)
         ->where('products.on_sale', 1)
         ->get();
-    return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+    $filter = '';
+    return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
 });
 
 Route::middleware('auth')->group(function () {
@@ -84,6 +85,9 @@ Route::get('/productsfilterscale/{filter}', [ProductController::class, 'products
 Route::get('/productsfiltersale', [ProductController::class, 'productsfiltersale'])->name('productsfiltersale');
 Route::get('/productsfilterpreorder', [ProductController::class, 'productsfilterpreorder'])->name('productsfilterpreorder');
 Route::get('/productsfilterfeatured', [ProductController::class, 'productsfilterfeatured'])->name('productsfilterfeatured');
+Route::get('/productsdetails/{id}', [ProductController::class, 'productsdetails'])->name('productsdetails');
+Route::get('/productsdetailsimage/{id}/{image}', [ProductController::class, 'productsdetailsimage'])->name('productsdetailsimage');
+Route::post('/productscart/{id}', [ProductController::class, 'productscart'])->name('productscart');
 // CONFIGURAÇÕES - ESCALAS
 Route::get('/scalesread', [SettingController::class, 'scalesread'])->name('scalesread');
 Route::post('/scalescreate', [SettingController::class, 'scalescreate'])->name('scalescreate');
@@ -91,4 +95,3 @@ Route::put('/scalesupdate/{id}', [SettingController::class, 'scalesupdate'])->na
 Route::get('/scalesactive/{id}/{del}', [SettingController::class, 'scalesactive'])->name('scalesactive');
 // CONFIGURAÇÕES - INFORMAÇÕES
 Route::get('/information', [SettingController::class, 'information'])->name('information');
-// Route::get('/information', [SettingController::class, 'information'])->name('information');

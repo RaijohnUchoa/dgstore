@@ -8,8 +8,7 @@
 <body>
     
 @if (session()->has('success'))
-    <span
-        class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
+    <span class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
 @endif
 <div class="flex justify-between items-center border py-1 px-2">
     <span class="font-semibold">PRODUTOS</span>
@@ -28,8 +27,7 @@
 <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
     @csrf
     {{-- Card Título --}}
-    <div
-        class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-4/12">
                 <label for="category_id"><span class="font-semibold">:Categoria</span></label>
@@ -85,8 +83,7 @@
         </div>
     </div>
     {{-- Card Características do Produto --}}
-    <div
-        class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-3/12">
@@ -234,8 +231,7 @@
         </div>
     </div>
     {{-- Card Imagem --}}
-    <div
-        class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 
         <div class="flex justify-evenly">
 

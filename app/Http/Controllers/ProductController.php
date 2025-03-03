@@ -7,8 +7,10 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Scale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Stringable;
 
 class ProductController extends Controller
 {
@@ -21,9 +23,6 @@ class ProductController extends Controller
             'price_normal' => $normal,
             'price_sale' => $sale
         ]);
-
-        // dd($request->all());
-
         $request->validate([
             'category_id' => 'required',
             'brand_id' => 'required',
@@ -100,8 +99,16 @@ class ProductController extends Controller
             ->select('products.*', 'categories.category_name', 'brands.brand_name')
             ->orderBy('id', 'DESC')
             ->get();
-
-        return view('productsread', compact('products', 'categories', 'brands', 'scales'));
+        // $productsonsale = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+        //     ->orderBy('id', 'DESC')
+        //     ->where('products.is_active', 1)
+        //     ->where('products.on_sale', 1)
+        //     ->get();
+        $filter = '';
+        return view('productsread', compact('products', 'categories', 'brands', 'scales', 'filter'));
     }
     public function productsedit($id) {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -279,7 +286,7 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
     public function productsfilterbrand($filter) {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -301,7 +308,7 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
     public function productsfilterscale($filter) {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -323,7 +330,7 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
     public function productsfiltersale() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -338,8 +345,8 @@ class ProductController extends Controller
             ->where('products.on_sale', 1)
             ->get();
         $productsonsale = $products;
-        
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        $filter = '';
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
     public function productsfilterpreorder() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -361,8 +368,8 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        $filter = '';
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
     public function productsfilterfeatured() {
         $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
@@ -384,7 +391,80 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
+        $filter = '';
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
+    }
+    public function productsdetails($id) {
 
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        if (Auth::check()) {
+            $user = (Auth::user()->name);
+        } else {
+            $user = 'Visitante!';
+        }
+
+        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+        $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
+        if (!$product = Product::find($id))
+            return redirect()->route('productsread');
+    
+        $categorynow = Category::find($product->category_id);
+        $brandnow = Brand::find($product->brand_id);
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->where('products.is_active', 1)
+            ->orderBy('id', 'DESC')
+            ->get();
+        $productsonsale = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select('products.*', 'categories.category_name', 'brands.brand_name')
+            ->orderBy('id', 'DESC')
+            ->where('products.is_active', 1)
+            ->where('products.on_sale', 1)
+            ->get();
+        $filter = '';
+        return view('productsdetails', compact('products', 'product', 'categories', 'scales', 'brands', 'categorynow', 'brandnow', 'productsonsale', 'filter', 'user'));
+    }
+    public function productsdetailsimage($id, $img) {
+        if (!$producttoggleimage = Product::find($id))
+            return redirect()->route('productsread');
+
+        if ($img == 2) {
+            $toggleimg = $producttoggleimage->image2;
+            $producttoggleimage->update(['image2' => $producttoggleimage->image1]);
+        }
+        if ($img == 3) {
+            $toggleimg = $producttoggleimage->image3;
+            $producttoggleimage->update(['image3' => $producttoggleimage->image1]);
+        }
+        if ($img == 4) {
+            $toggleimg = $producttoggleimage->image4;
+            $producttoggleimage->update(['image4' => $producttoggleimage->image1]);
+        }
+        if ($img == 5) {
+            $toggleimg = $producttoggleimage->image5;
+            $producttoggleimage->update(['image5' => $producttoggleimage->image1]);
+        }
+        $producttoggleimage->update(['image1' => $toggleimg]);
+
+        return redirect()->route('productsdetails', ['id' => $id]);
+    }
+    public function productscart(Request $request, $id) {
+
+        if (Auth::check()) {
+            $userId = (Auth::user()->id);
+        } else {
+            return redirect()->route('login')->with('success', 'Faça LOGIN ou Registre-se!!');
+        }
+
+        if (!$productcart = Product::find($id))
+            return redirect()->route('productsdetails', ['id' => $id]);
+
+        dd($id, $userId, $request->all());
+
+        return redirect()->route('productsdetails', ['id' => $id]);
     }
 }

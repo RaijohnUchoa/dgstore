@@ -75,6 +75,7 @@ class SettingController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('information', compact('categories', 'brands', 'scales', 'products', 'productsonsale'));
+        $filter = '';
+        return view('information', compact('categories', 'brands', 'scales', 'products', 'productsonsale', 'filter'));
     }
 }

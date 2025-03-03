@@ -44,7 +44,8 @@ class AuthController extends Controller
                 ->where('products.is_active', 1)
                 ->where('products.on_sale', 1)
                 ->get();
-            return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+            $filter = '';
+            return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
         }
         return redirect(route('login'))->with('error', 'Falhar ao logar usuário!');
     }
@@ -84,7 +85,8 @@ class AuthController extends Controller
                     ->where('products.is_active', 1)
                     ->where('products.on_sale', 1)
                     ->get();
-                return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+                $filter = '';
+                return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
             }
         }
         return redirect(route('register'))->with('error', 'Falha ao Criar Usuário!');
@@ -110,7 +112,8 @@ class AuthController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale'));
+        $filter = '';
+        return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
 
     //CRUD USUÁRIOS ADMINISTRATIVO

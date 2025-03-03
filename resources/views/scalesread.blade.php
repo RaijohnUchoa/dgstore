@@ -17,8 +17,8 @@
 <hr class="mt-0.5 border">
 
 {{-- INCLUIR NOVA ESCALA --}}
-<form action="{{ route('scalescreate') }}" method="POST" id="open" class="text-xs">
-{{-- <form action="{{ route('scalescreate') }}" method="POST" id="open" class="text-xs hidden"> --}}
+{{-- <form action="{{ route('scalescreate') }}" method="POST" id="open" class="text-xs"> --}}
+<form action="{{ route('scalescreate') }}" method="POST" id="open" class="text-xs hidden">
     @csrf
     <div class="m-2 py-3 bg-blue-50 border border-blue-200 rounded shadow-md">
         <div class="flex items-center px-2 space-x-2">
