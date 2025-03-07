@@ -1,6 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Escalas')
+@section('title', 'DetalhesProdutos')
 @section('content')
+
+    @if(session()->has('success'))
+        <span class="flex justify-center bg-green-200 text-green-700 text-xs m-2 py-1 rounded">{{ session()->get('success') }}</span>
+    @endif
 
     <div class="flex justify-between items-center border py-1 px-2">
         <span class="font-semibold">DETALHES DO PRODUTO</span>
@@ -31,13 +35,35 @@
                     </div>
                 </div>
                 <div class="w-1/2 p-2">
+
+                    <p>{{ $product->id }}</p>
+
                     <p class="text-blue-700 text-sm font-semibold">#{{ $product->title }}</p>
                     <div class="text-center mt-7">
-                        @if ($product->price_sale == 0)
-                            <p class="font-semibold text-blue-800 text-sm"><span class="border-b border-blue-800 px-2 py-1 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span></p>
+                        @if ($product->stock > 0)
+                            @if ($product->price_sale == 0)
+                                <p class="font-semibold text-blue-800 text-sm"><span class="border-b border-blue-800 px-2 py-1 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span></p>
+                            @else
+                                <p class="line-through opacity-50 text-sm py-1">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</p>
+                                <p class="font-semibold text-pink-800 text-sm"><span class="border-b border-red-800 px-2 py-1 rounded">R$ {{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span></p>
+                            @endif
                         @else
-                            <p class="line-through opacity-50 text-sm py-1">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</p>
-                            <p class="font-semibold text-pink-800 text-sm"><span class="border-b border-red-800 px-2 py-1 rounded">R$ {{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span></p>
+                            @if ($product->is_preorder == 1)
+                                    @if ($product->price_normal != 0)
+                                    <div class="py-2 flex items-center justify-center text-xs">
+                                        <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
+                                    </div>
+                                @else
+                                    <div class="py-2 flex items-center justify-center text-xs">
+                                        <span class="text-gray-400 text-sm border px-2 rounded">Preço em Breve</span>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="py-2 flex items-center justify-center text-xs">
+                                    <span class="text-gray-50 border px-2 py-1 rounded-r-full bg-gray-700">ESGOTADO<em class="text-[15px]">!</em></span>
+                                </div>
+                            @endif
+
                         @endif
                     </div>
                     <hr class="mt-7">
@@ -49,9 +75,21 @@
                             <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="price_cart" id="price_cart" value="{{ $product->price_sale == 0 ? $product->price_normal : $product->price_sale }}">
 
-                            <input class="w-12 border text-center px-2 py-2 shadow rounded" name="quantity" type="number" value="{{ 1 }}">
+                            <span class="w-9 bg-gray-100 border text-center py-2 shadow rounded-full">+{{ $product->stock }}</span>
+                            <input class="w-12 border text-center px-2 py-2 shadow rounded" name="quantity" type="number" value="{{ $product->stock > 0 ? 1 : 0 }}" 
+                                @disabled($product->stock > 0 ? false : true)>
                             
-                            <button type="submit" title="incluir no carrinho" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base">&#128722;<span class="text-sm">add to Cart</span></button>
+                            @if ($product->stock > 0)
+                                <button type="submit" title="incluir no carrinho" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base">&#128722;<span class="text-sm">add to Cart</span></button>
+                            @else
+                                @if ($product->is_preorder == 1)
+                                    <input type="hidden" name="preorder" id="preorder" value="{{ 1 }}">
+                                    <button type="submit" title="encomendar" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base">&#128722;<span class="text-sm text-red-500">Pre-Order</span></button>
+                                @else
+                                    <input type="hidden" name="preorder" id="preorder" value="{{ 0 }}">
+                                    <span title="encomendar" class="px-2 py-1 shadow shadow-gray-400 rounded text-sm text-gray-400">&#128722;<span class="">Pre-Order</span></span>
+                                @endif
+                            @endif
                         </div>
                     </form>
 
@@ -73,20 +111,37 @@
                 </div>
             </div>
 
-            <div class="w-1/4 p-2 border">
-                carrinho
-                {{ $user }}
+            <div class="w-1/4 p-2 border relative">
+
+                @if (Auth::check())
+                    @php $userId = (Auth::user()->id); @endphp
+                @else
+                    @php $userId = 0; @endphp
+                @endif
+
+                @foreach ($carts as $cart)
+                
+                    <p>{{ $cart->user_id == $userId ? 'ID_Usuário: '.$cart->user_id : '' }}</p>
+                    <p>{{ $cart->user_id == $userId ? 'ID_Produto: '.$cart->product_id : '' }}</p>
+                    <p>{{ $cart->user_id == $userId ? 'Quantidade: '.$cart->quantity : '' }}</p>
+                    <p>{{ $cart->user_id == $userId ? 'Preço: '.$cart->price_cart : '' }}</p>
+                    
+                    <br>
+                    
+                @endforeach
+                
             </div>
 
             @if ($product->stock > 0)
                 @if ($product->on_sale == 1)
                     <span class="absolute py-1 px-1 top-1 bg-red-700 text-gray-50 text-[10px] font-semibold rounded-r-full">OFERTA</span>
                 @endif
+            @else
                 @if ($product->is_preorder == 1)
                     <span class="absolute py-1 px-1 top-1 bg-green-700 text-gray-50 text-[10px] font-semibold rounded-r-full">Pre-Order</span>
+                @else
+                    <span class="absolute py-1 px-1 top-1 bg-slate-700 text-gray-50 text-[10px] font-semibold rounded-r-full">ESGOTADO!</span>
                 @endif
-            @else
-                <span class="absolute py-1 px-1 top-1 bg-slate-700 text-gray-50 text-[10px] font-semibold rounded-r-full">ESGOTADO!</span>
             @endif
 
         </div>

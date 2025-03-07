@@ -13,26 +13,27 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-    $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-    $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-    $products = DB::table('products')
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->join('brands', 'products.brand_id', '=', 'brands.id')
-        ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        ->orderBy('id', 'DESC')
-        ->where('products.is_active', 1)
-        ->get();
-    $productsonsale = DB::table('products')
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->join('brands', 'products.brand_id', '=', 'brands.id')
-        ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        ->orderBy('id', 'DESC')
-        ->where('products.is_active', 1)
-        ->where('products.on_sale', 1)
-        ->get();
-    $filter = '';
-    return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
+    // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+    // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
+    // $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
+    // $products = DB::table('products')
+    //     ->join('categories', 'products.category_id', '=', 'categories.id')
+    //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+    //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+    //     ->orderBy('id', 'DESC')
+    //     ->where('products.is_active', 1)
+    //     ->get();
+    // $productsonsale = DB::table('products')
+    //     ->join('categories', 'products.category_id', '=', 'categories.id')
+    //     ->join('brands', 'products.brand_id', '=', 'brands.id')
+    //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
+    //     ->orderBy('id', 'DESC')
+    //     ->where('products.is_active', 1)
+    //     ->where('products.on_sale', 1)
+    //     ->get();
+    // $filter = '';
+    return view('layouts.app');
+    // return view('layouts.app', compact('products', 'productsonsale', 'filter'));
 });
 
 Route::middleware('auth')->group(function () {

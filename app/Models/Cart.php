@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cartcustomer extends Model
+class Cart extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Cartcustomer extends Model
         'product_id',
         'quantity',
         'price_cart',
-        'status',
+        'preorder',
     ];
         
 }

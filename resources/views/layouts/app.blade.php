@@ -33,6 +33,7 @@
 
         {{-- MENU PRINCIPAL --}}
         <div class="navmenu shadow col-span-10">
+            {{-- <x-menu :user="$user"></x-menu> --}}
             <x-menu :user="$user" :brands="$brands"></x-menu>
         </div>
 
@@ -65,51 +66,87 @@
 
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1">
 
-                    @foreach ($products as $product)
+                    
+                    @if (count($products))
 
-                        <div class="relative w-[245px] rounded shadow hover:shadow-xl mt-2">
-                            <a href="{{ route('productsdetails', $product->id) }}">
-                                <div class="flex justify-center items-center p-1">
-                                    <img src="{{ asset("storage/{$product->image1}") }}" class="h-[280px] rounded p-1">
-                                </div>
-                                @if ( $product->on_sale == 1 )
-                                    <span class="absolute py-1 px-1 top-0 bg-red-700 text-gray-50 text-[10px] font-semibold rounded-r-full">OFERTA</span>
-                                @endif
-                                @if ( $product->is_preorder == 1 )
-                                    <span class="absolute py-1 px-1 top-0 bg-green-700 text-gray-50 text-[10px] font-semibold rounded-r-full">Pre-Order</span>
-                                @endif
-                                <div class="flex items-center justify-between text-[11px] px-2">
-                                    <span class="text-gray-500">{{ $product->sku }}</span>
-                                    <span class="text-gray-500">{{ $product->category_name }}</span>
-                                </div>
-                                <div class="px-2">
-                                    <div class="border-b flex justify-center items-center h-16">
-                                        <span class="text-sky-800 text-center text-sm">{{ $product->title }}</span>
+                        @foreach ($products as $product)
+                        
+                            <div class="relative w-[245px] rounded shadow hover:shadow-xl mt-2">
+                                <a href="{{ route('productsdetails', $product->id) }}">
+                                    <div class="flex justify-center items-center p-1">
+                                        <img src="{{ asset("storage/{$product->image1}") }}" class="h-[280px] rounded p-1">
                                     </div>
-                                    <div class="flex items-center justify-between text-[11px]">
-                                        <span class="text-gray-500">Escala: {{ $product->car_scale }}</span>
-                                        <span class="text-gray-500">{{ $product->brand_name }}</span>
-                                    </div>
-                                    @if ($product->price_sale == 0)
-                                        <div class="py-2 flex items-center justify-center text-xs">
-                                            <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
-                                        </div>
+
+                                    @if ($product->stock > 0)
+                                        @if ($product->on_sale == 1)
+                                            <span class="absolute py-1 px-1 top-1 bg-red-700 text-gray-50 text-[10px] font-semibold rounded-r-full">OFERTA</span>
+                                        @endif
                                     @else
-                                        <div class="py-2 flex items-center justify-between text-xs">
-                                            <span class="line-through opacity-50">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
-                                            <span class="font-semibold text-pink-800 text-base">R$ {{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span>
-                                        </div>
+                                        @if ($product->is_preorder == 1)
+                                            <span class="absolute py-1 px-1 top-1 bg-green-700 text-gray-50 text-[10px] font-semibold rounded-r-full">Pre-Order</span>
+                                        @else
+                                            <span class="absolute py-1 px-1 top-1 bg-slate-700 text-gray-50 text-[10px] font-semibold rounded-r-full">ESGOTADO!</span>
+                                        @endif
                                     @endif
-                                </div>
-                            </a>
-                            <div class="shadow py-3 flex items-center justify-around rounded">
-                                <a href=""><button title="compre agora" class="px-2 py-1 bg-sky-600 hover:bg-sky-800 shadow shadow-sky-800 rounded-lg text-white text-xs font-semibold">Buy Now</button></a>
-                                <a href=""><button title="incluir no carrinho" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128722;</button></a>
-                                <a href=""><button title="lista de desejos" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button></a>
-                            </div>
-                        </div>
 
-                    @endforeach
+                                    <div class="flex items-center justify-between text-[11px] px-2">
+                                        <span class="text-gray-500">{{ $product->sku }}</span>
+                                        <span class="text-gray-500">{{ $product->category_name }}</span>
+                                    </div>
+                                    <div class="px-2">
+                                        <div class="border-b flex justify-center items-center h-16">
+                                            <span class="text-sky-800 text-center text-sm">{{ $product->title }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-[11px]">
+                                            <span class="text-gray-500">Escala: {{ $product->car_scale }}</span>
+                                            <span class="text-gray-500">{{ $product->brand_name }}</span>
+                                        </div>
+
+                                        @if ($product->stock > 0)
+                                            @if ($product->price_sale == 0)
+                                                <div class="py-2 flex items-center justify-center text-xs">
+                                                    <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
+                                                </div>
+                                            @else
+                                                <div class="py-2 flex items-center justify-between text-xs">
+                                                    <span class="line-through opacity-50">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
+                                                    <span class="font-semibold text-pink-800 text-base">R$ {{ old('price_normal', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}</span>
+                                                </div>
+                                            @endif
+                                        @else
+                                            @if ($product->is_preorder == 1)
+                                                @if ($product->price_normal != 0)
+                                                    <div class="py-2 flex items-center justify-center text-xs">
+                                                        <span class="font-semibold text-blue-800 text-base border px-2 rounded">R$ {{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}</span>
+                                                    </div>
+                                                @else
+                                                    <div class="py-2 flex items-center justify-center text-xs">
+                                                        <span class="text-gray-400 text-sm border px-2 rounded">Preço em Breve</span>
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <div class="py-2 flex items-center justify-center text-xs">
+                                                    <span class="text-gray-50 border px-2 py-1 rounded-r-full bg-gray-700">ESGOTADO<em class="text-[15px]">!</em></span>
+                                                </div>
+                                            @endif
+                                        @endif
+
+                                    </div>
+                                </a>
+                                <div class="shadow py-3 flex items-center justify-around rounded">
+                                    <a href=""><button title="compre agora" class="px-2 py-1 bg-sky-600 hover:bg-sky-800 shadow shadow-sky-800 rounded-lg text-white text-xs font-semibold">Buy Now</button></a>
+                                    <a href=""><button title="incluir no carrinho" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128722;</button></a>
+                                    <a href=""><button title="lista de desejos" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button></a>
+                                </div>
+                            </div>
+
+                        @endforeach
+
+                    @else
+
+                        <span class="mt-5">{{ $filter.' Não Existe!' }}</span>
+
+                    @endif
                 </div>
 
             @endif
