@@ -33,12 +33,11 @@
 
         {{-- MENU PRINCIPAL --}}
         <div class="navmenu shadow col-span-10">
-            {{-- <x-menu :user="$user"></x-menu> --}}
             <x-menu :user="$user" :brands="$brands"></x-menu>
         </div>
 
         {{-- SIDEBAR --}}
-        <div class="sidebar border shadow w-[250px] col-span-2 bg-gray-100">
+        <div class="sidebar border shadow xl:w-[250px] col-span-2 bg-gray-100">
             @if (Auth::check())
                 @if (Auth::user()->type == 0)
                     <x-sidebar :user="$user"></x-sidebar>
@@ -70,15 +69,19 @@
                     @if (count($products))
 
                         @foreach ($products as $product)
-                        
+
                             <div class="relative w-[245px] rounded shadow hover:shadow-xl mt-2">
+
                                 <a href="{{ route('productsdetails', $product->id) }}">
-                                    <div class="flex justify-center items-center p-1">
-                                        <img src="{{ asset("storage/{$product->image1}") }}" class="h-[280px] rounded p-1">
+
+                                    <div class="flex justify-center items-center p-1 h-[280px]">
+                                        <img src="{{ asset("storage/{$product->image1}") }}" class="max-h-[280px] rounded p-1">
                                     </div>
 
                                     @if ($product->stock > 0)
-                                        @if ($product->on_sale == 1)
+                                        @if ($product->is_preorder == 1)
+                                            <span class="absolute py-1 px-1 top-1 bg-green-700 text-gray-50 text-[10px] font-semibold rounded-r-full">Pre-Order</span>
+                                        @elseif ($product->on_sale == 1)
                                             <span class="absolute py-1 px-1 top-1 bg-red-700 text-gray-50 text-[10px] font-semibold rounded-r-full">OFERTA</span>
                                         @endif
                                     @else
@@ -144,7 +147,7 @@
 
                     @else
 
-                        <span class="mt-5">{{ $filter.' Não Existe!' }}</span>
+                        <span class="mt-5">{{ $filter.' Em breve produtos aqui...' }}</span>
 
                     @endif
                 </div>
@@ -165,7 +168,7 @@
 
         </div>
 
-        {{-- ANUNCIOS --}}
+        {{-- ANUNCIOS/OFERTAS --}}
         @if ($user == 'Visitante!' or Auth::user()->type > 0)
 
             <div class="news shadow h-[240px] col-span-10 text-center">

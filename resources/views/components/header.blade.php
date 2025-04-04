@@ -44,15 +44,15 @@
                 @if(Auth::user()->type == 0)
                     <span class="font-bold text-white tracking-widest bg-red-700 px-3 py-1 rounded text-sm">PAINEL DE CONTROLE</span>
                 @else
-                <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
-                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
-                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
+                    <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+                    <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+                    <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
                 @endif
 
             @else
-            <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
-            <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
-            <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
+                <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
             @endif
         </div>
         <div class="w-4/12 hidden md:flex justify-end items-center">
@@ -67,8 +67,15 @@
             @else
                 <a class="hover:text-gray-50" href="{{ route('login') }}">
                     <span class="flex items-center">Entrar
-                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+                        </svg>
+                    </span>
+                </a>
+                <a class="hover:text-gray-50" href="{{ route('register') }}">
+                    <span class="flex items-center font-semibold"><|> Registre-se
+                        <svg height="24px" viewBox="0 -960 960 960" width="22px" fill="#f8fafc">
+                            <path d="M240-160q-33 0-56.5-23.5T160-240q0-33 23.5-56.5T240-320q33 0 56.5 23.5T320-240q0 33-23.5 56.5T240-160Zm0-240q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm0-240q-33 0-56.5-23.5T160-720q0-33 23.5-56.5T240-800q33 0 56.5 23.5T320-720q0 33-23.5 56.5T240-640Zm240 0q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Zm240 0q-33 0-56.5-23.5T640-720q0-33 23.5-56.5T720-800q33 0 56.5 23.5T800-720q0 33-23.5 56.5T720-640ZM480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm40 240v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T863-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/>
                         </svg>
                     </span>
                 </a>

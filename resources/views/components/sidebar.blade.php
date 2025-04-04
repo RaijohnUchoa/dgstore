@@ -119,9 +119,9 @@
                         </div>
                     </span>
                 </div>
-                <div id="submenu" class="ml-4 {{ Request::is('scalesread') ? 'hidden' : '' }}">
+                <div id="submenu" class="ml-4 {{ Request::is('scalesread') || Request::is('colorsread') || Request::is('attributesread') ? 'hidden' : '' }}">
 
-                    <a href="#" class="block py-1 px-1 ml-3 hover:font-semibold {{ Request::is('') ? 'text-green-900 font-semibold' : '' }}">Dados Instituição</a>
+                    {{-- <a href="#" class="block py-1 px-1 ml-3 hover:font-semibold {{ Request::is('') ? 'text-green-900 font-semibold' : '' }}">Dados Instituição</a> --}}
 
                     {{-- Configurações/Submenu --}}
                     <div class="flex justify-between py-1 px-1 ml-3 hover:font-semibold" onclick="dropDowns()">
@@ -137,12 +137,15 @@
                             </div>
                         </span>
                     </div>
-                    <div id="submenus" class="ml-4 {{ Request::is('scalesread') ? 'hidden' : '' }}">
+                    <div id="submenus" class="ml-4 {{ Request::is('scalesread') || Request::is('colorsread') || Request::is('attributesread') ? 'hidden' : '' }}">
                         <a href="{{ route('scalesread') }}" class="block py-1 px-1 ml-2 hover:text-blue-900 hover:font-semibold ">
                             <span class="{{ Request::is('scalesread') ? 'border-b-2 border-red-400 text-blue-900 font-semibold rounded' : '' }}">Escalas</span>
                         </a>
-                        <a href="#" class="block py-1 px-1 ml-2 hover:text-blue-900 hover:font-semibold ">
-                            <span class="{{ Request::is('') ? 'border-b-2 border-red-400 text-blue-900 font-semibold rounded' : '' }}">Cores</span>
+                        <a href="{{ route('colorsread') }}" class="block py-1 px-1 ml-2 hover:text-blue-900 hover:font-semibold ">
+                            <span class="{{ Request::is('colorsread') ? 'border-b-2 border-red-400 text-blue-900 font-semibold rounded' : '' }}">Cores</span>
+                        </a>
+                        <a href="{{ route('attributesread') }}" class="block py-1 px-1 ml-2 hover:text-blue-900 hover:font-semibold ">
+                            <span class="{{ Request::is('attributesread') ? 'border-b-2 border-red-400 text-blue-900 font-semibold rounded' : '' }}">Atributos</span>
                         </a>
                     </div>
                 </div>

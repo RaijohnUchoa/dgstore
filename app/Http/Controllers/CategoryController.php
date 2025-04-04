@@ -6,22 +6,26 @@ use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function categoriescreate(Request $request){
 
-        // dd($request->all());
-
         $request->validate([
             'category_name' => 'required',
-            'slug' => 'required',
             'image' => 'required',
             'is_active' => 'required',
         ]);
+        
         $categories = New Category();
         $categories->category_name = $request->category_name;
-        $categories->slug = $request->slug;
+        
+        $slug = $request->category_name;
+        $slug = Str::remove(['-', ' '], $slug);
+        $slug = Str::snake($slug, '-');
+        $categories->slug = 'diecast-'.$slug;
+
         $categories->is_active = $request->is_active;
 
         $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
@@ -50,23 +54,25 @@ class CategoryController extends Controller
             return redirect()->route('categoriesread');
         
         $image_old = $categoryupdate->image;
-        $data = $request->all();
-        $categoryupdate->update($data);
 
         if ($request->image == null) {
             if ($image_old != null) {
-                $categoryupdate->update(['image' => $image_old]);
+                $request->merge([
+                    'image' => $image_old,
+                ]);
+                $data = $request->all();
+                $categoryupdate->update($data);
             }
         }else{
+            $data = $request->all();
+            $categoryupdate->update($data);
             $file_name = rand(0,999999) . '_' . $request->file('image')->getClientOriginalName();
             $file_path = $request->file('image')->storeAs('uploads', $file_name);
             $categoryupdate->update(['image' => $file_path]);
+            if(Storage::exists($image_old)){
+                Storage::delete($image_old);
+            }
         }
-
-        if(Storage::exists($image_old)){
-            Storage::delete($image_old);
-        }
-
         return redirect()->route('categoriesread')->with('success', 'Categoria ['.$request->category_name.'] ALTERADO com Sucesso!');
     }
     public function categoriesactive($id){

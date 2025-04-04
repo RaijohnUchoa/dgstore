@@ -23,9 +23,76 @@
 <hr class="mt-0.5 border">
 
 {{-- INCLUIR NOVO PRODUTO --}}
-{{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data"> --}}
-<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
+<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data">
+{{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data"> --}}
     @csrf
+    {{-- Card Imagem --}}
+    <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+        <div class="flex justify-evenly">
+
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image1" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-red-400">Obrigatória</p>
+                    </div>
+                    <input type="file" name="image1" id="image1" value="{{ old('image1') }}"
+                        onchange="previewImage1()" class="hidden" required />
+                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                </label>
+            </div>
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image2" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image2" id="image2" value="{{ old('image2') }}"
+                        onchange="previewImage2()" class="hidden" />
+                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
+                </label>
+            </div>
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image3" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image3" id="image3" value="{{ old('image3') }}"
+                        onchange="previewImage3()" class="hidden" />
+                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
+                </label>
+            </div>
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image4" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image4" id="image4" value="{{ old('image4') }}"
+                        onchange="previewImage4()" class="hidden" />
+                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
+                </label>
+            </div>
+            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
+                <label for="image5" class="cursor-pointer relative">
+                    <div class="flex flex-col items-center justify-center py-16">
+                        <p class="text-4xl py-1">&#128228;</p>
+                        <p class="text-sm text-gray-500">Click to Upload</p>
+                        <p class="text-sm text-gray-400">Opcional</p>
+                    </div>
+                    <input type="file" name="image5" id="image5" value="{{ old('image5') }}"
+                        onchange="previewImage5()" class="hidden" />
+                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
+                </label>
+            </div>
+        </div>
+    </div>
     {{-- Card Título --}}
     <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <div class="flex items-center mt-3 px-2 space-x-2">
@@ -86,7 +153,7 @@
     <div class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 
         <div class="flex items-center mt-3 px-2 space-x-2">
-            <div class="w-3/12">
+            <div class="w-4/12">
                 <label for="car_model"><span class="font-semibold">:Marca/Modelo</span></label>
                 <input
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
@@ -103,41 +170,28 @@
                     type="text" name="car_year" id="car_year" value="{{ old('car_year') }}"
                     placeholder=" nome do marca">
                 @error('car_year')
-                    <div class="absolute text-red-400">Digite o Modelo</div>
+                    <div class="absolute text-red-400">Digite o Ano</div>
                 @enderror
             </div>
-            <div class="w-2/12">
+            <div class="w-3/12">
                 <label for="car_color"><span class="font-semibold">:Cor</span></label>
                 <select name="car_color" id="car_color"
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
-                    <option value="{{ 'Amarelo' }}">Amarelo</option>
-                    <option value="{{ 'Azul' }}">Azul</option>
-                    <option value="{{ 'Branco' }}">Branco</option>
-                    <option value="{{ 'Dourado' }}">Dourado</option>
-                    <option value="{{ 'Cinza' }}">Cinza</option>
-                    <option value="{{ 'Laranja' }}">Laranja</option>
-                    <option value="{{ 'Preto' }}">Preto</option>
-                    <option value="{{ 'Prata' }}">Prata</option>
-                    <option value="{{ 'Verde' }}">Verde</option>
-                    <option value="{{ 'Vermelho' }}">Vermelho</option>
-                    <option value="{{ 'Outras' }}">Outras</option>
-                </select>
-            </div>
-            <div class="w-2/12">
-                <label for="car_attribute"><span class="font-semibold">:Atributo/Tipo</span></label>
-                <select name="car_attribute" id="car_attribute"
-                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
-                    <option value="{{ 'Pickup' }}">Pickup</option>
-                    <option value="{{ 'SUV' }}">SUV</option>
-                    <option value="{{ 'Sedan' }}">Sedan</option>
-                    <option value="{{ 'Conversível' }}">Conversível</option>
-                    <option value="{{ 'Van' }}">Van</option>
-                    <option value="{{ 'Onibus' }}">Onibus</option>
-                    <option value="{{ 'Caminhão' }}">Caminhão</option>
-                    <option value="{{ 'Outros' }}">Outras</option>
+                    @foreach ($colors as $color)
+                        <option value="{{ $color->color_name }}">{{ $color->color_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="w-3/12">
+                <label for="car_attribute"><span class="font-semibold">:Atributo/Tipo</span></label>
+                <select name="car_attribute" id="car_attribute"
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
+                    @foreach ($attributes as $attribute)
+                        <option value="{{ $attribute->attribute_name }}">{{ $attribute->attribute_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            {{-- <div class="w-3/12">
                 <label for="slug"><span class="font-semibold">:Slug</span></label>
                 <input
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
@@ -146,7 +200,7 @@
                 @error('slug')
                     <div class="absolute text-red-400">Digite o Slug do Produto</div>
                 @enderror
-            </div>
+            </div> --}}
         </div>
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-3/12">
@@ -231,7 +285,7 @@
         </div>
     </div>
     {{-- Card Imagem --}}
-    <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    {{-- <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 
         <div class="flex justify-evenly">
 
@@ -296,7 +350,7 @@
                 </label>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo Produto</button>
     </div>

@@ -7,7 +7,7 @@
 <nav class="dropdownhover flex justify-center h-[35px] bg-gray-800 text-sm rounded">
 
     @if (Auth::check() and Auth::user()->type == 0)
-        <div class="flex items-center font-semibold text-white">MANUTENÇÃO DE PRODUTOS</div>
+        <div class="flex items-center font-semibold text-white">MANUTENÇÃO DE CADASTRO</div>
     @endif
 
     @if ($user == 'Visitante!' or Auth::user()->type > 0)

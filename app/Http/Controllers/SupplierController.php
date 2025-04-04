@@ -60,23 +60,25 @@ class SupplierController extends Controller
             return redirect()->route('suppliersread');
         
         $image_old = $supplierupdate->image_logo;
-        $data = $request->all();
-        $supplierupdate->update($data);
-        
+
         if ($request->image_logo == null) {
             if ($image_old != null) {
-                $supplierupdate->update(['image_logo' => $image_old]);
+                $request->merge([
+                    'image_logo' => $image_old,
+                ]);
+                $data = $request->all();
+                $supplierupdate->update($data);
             }
         }else{
+            $data = $request->all();
+            $supplierupdate->update($data);
             $file_name = rand(0,999999) . '_' . $request->file('image_logo')->getClientOriginalName();
             $file_path = $request->file('image_logo')->storeAs('uploads', $file_name);
             $supplierupdate->update(['image_logo' => $file_path]);
+            if(Storage::exists($image_old)){
+                Storage::delete($image_old);
+            }
         }
-
-        if(Storage::exists($image_old)){
-            Storage::delete($image_old);
-        }
-
         return redirect()->route('suppliersread')->with('success', 'Fornecedor ['.$request->supplier_name.'] ALTERADO com Sucesso!');
     }
     public function suppliersactive($id){

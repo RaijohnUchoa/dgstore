@@ -6,34 +6,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SupplierController;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Scale;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-    // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-    // $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-    // $products = DB::table('products')
-    //     ->join('categories', 'products.category_id', '=', 'categories.id')
-    //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-    //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-    //     ->orderBy('id', 'DESC')
-    //     ->where('products.is_active', 1)
-    //     ->get();
-    // $productsonsale = DB::table('products')
-    //     ->join('categories', 'products.category_id', '=', 'categories.id')
-    //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-    //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-    //     ->orderBy('id', 'DESC')
-    //     ->where('products.is_active', 1)
-    //     ->where('products.on_sale', 1)
-    //     ->get();
-    // $filter = '';
     return view('layouts.app');
-    // return view('layouts.app', compact('products', 'productsonsale', 'filter'));
 });
 
 Route::middleware('auth')->group(function () {
@@ -88,11 +64,23 @@ Route::get('/productsfilterpreorder', [ProductController::class, 'productsfilter
 Route::get('/productsfilterfeatured', [ProductController::class, 'productsfilterfeatured'])->name('productsfilterfeatured');
 Route::get('/productsdetails/{id}', [ProductController::class, 'productsdetails'])->name('productsdetails');
 Route::get('/productsdetailsimage/{id}/{image}', [ProductController::class, 'productsdetailsimage'])->name('productsdetailsimage');
-Route::post('/productscart/{id}', [ProductController::class, 'productscart'])->name('productscart');
+Route::post('/productscartcreate/{id}', [ProductController::class, 'productscartcreate'])->name('productscartcreate');
+Route::get('/productscartdelete/{id}', [ProductController::class, 'productscartdelete'])->name('productscartdelete');
+// CONFIGURAÇÕES - INFORMAÇÕES
+Route::get('/information', [SettingController::class, 'information'])->name('information');
 // CONFIGURAÇÕES - ESCALAS
 Route::get('/scalesread', [SettingController::class, 'scalesread'])->name('scalesread');
 Route::post('/scalescreate', [SettingController::class, 'scalescreate'])->name('scalescreate');
 Route::put('/scalesupdate/{id}', [SettingController::class, 'scalesupdate'])->name('scalesupdate');
 Route::get('/scalesactive/{id}/{del}', [SettingController::class, 'scalesactive'])->name('scalesactive');
-// CONFIGURAÇÕES - INFORMAÇÕES
-Route::get('/information', [SettingController::class, 'information'])->name('information');
+// CONFIGURAÇÕES - CORES
+Route::get('/colorsread', [SettingController::class, 'colorsread'])->name('colorsread');
+Route::post('/colorscreate', [SettingController::class, 'colorscreate'])->name('colorscreate');
+Route::put('/colorsupdate/{id}', [SettingController::class, 'colorsupdate'])->name('colorsupdate');
+Route::get('/colorsactive/{id}/{del}', [SettingController::class, 'colorsactive'])->name('colorsactive');
+// CONFIGURAÇÕES - CORES
+Route::get('/attributesread', [SettingController::class, 'attributesread'])->name('attributesread');
+Route::post('/attributescreate', [SettingController::class, 'attributescreate'])->name('attributescreate');
+Route::put('/attributesupdate/{id}', [SettingController::class, 'attributesupdate'])->name('attributesupdate');
+Route::get('/attributesactive/{id}/{del}', [SettingController::class, 'attributesactive'])->name('attributesactive');
+
