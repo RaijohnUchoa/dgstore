@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Scale;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
+        $users = User::orderBy('name', 'ASC')->where('is_active', 1)->get();
+        $categories = Category::orderBy('id', 'ASC')->where('is_active', 1)->get();
         $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
         $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
         $colors = Color::orderBy('color_name', 'ASC')->where('is_active', 1)->get();
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         
         // $carts = Cart::orderBy('user_id', 'ASC')->get();
 
+        view()->share('users', $users);
         view()->share('brands', $brands);
         view()->share('categories', $categories);
         view()->share('scales', $scales);

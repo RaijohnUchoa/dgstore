@@ -25,10 +25,38 @@
         </div>
 
         {{-- SLIDER --}}
-        <div class="slider flex justify-center items-center shadow py-6 col-span-10">
+        <div class="slider flex justify-between items-center shadow py-6 col-span-10">
+            <div><<>></div>
+
             <div class="w-[350px]">
                 <img src="{{ asset('LogoDGS.png') }}" alt="LOGO" />
             </div>
+
+            {{-- Mostrar Carrinho --}}
+            @if ($user != 'Visitante!' and Auth::user()->type > 0)
+                <a href="{{ route('productscheckout') }}">
+                    <div class="mt-28 -mb-8">
+                        @php $sum = 0; @endphp
+                        @foreach ($carts as $cart)
+                            @php $sum = $sum + ($cart->price_cart * $cart->quantity) @endphp
+                        @endforeach
+                        <div class="relative pl-1 pr-2 bg-gray-800 border border-red-200 rounded">
+                            <span>
+                                <button title="incluir no carrinho" class="text-lg">&#128722;</button>
+                            </span>
+                            <span class="absolute left-2 -top-1.5 bg-red-600 text-[10px] px-1 text-gray-50 rounded-full">
+                                {{ $carts->sum('quantity') }}
+                            </span>
+                            <span class="text-xs text-gray-300 font-semibold">
+                                R${{ number_format($sum, '2', ',', '.') }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            @else
+                <div><<>></div>
+            @endif
+
         </div>
 
         {{-- MENU PRINCIPAL --}}
@@ -56,7 +84,36 @@
             @if (Auth::check() and Auth::user()->type == 0)
 
                 @if (Request::is('login'))
-                    DASHBOARD ADMIN
+                    {{-- DASHBOARD --}}
+                    <div class="dashboard mt-6 px-6 gap-6 flex justify-center">
+                        <div class="w-4/12 text-center text-orange-700 font-bold border-2 border-orange-600 rounded p-2">
+                            <p class="text-xl">USUÁRIOS</p>
+                            <p class="text-2xl">[{{ count($users) }}]</p>
+                        </div>
+                        <div class="w-4/12 text-center text-gray-700 font-bold border-2 border-gray-600 rounded p-2">
+                            <p class="text-xl">CATEGORIAS</p>
+                            <p class="text-2xl">[{{ count($categories) }}]</p>
+                        </div>
+                        <div class="w-4/12 text-center text-red-700 font-bold border-2 border-red-600 rounded p-2">
+                            <p class="text-xl">FABRICANTES</p>
+                            <p class="text-2xl">[{{ count($brands) }}]</p>
+                        </div>
+                    </div>
+                    <div class="dashboard mt-6 px-6 gap-6 flex justify-center">
+                        <div class="w-4/12 text-center text-purple-700 font-bold border-2 border-purple-600 rounded p-2">
+                            <p class="text-xl">ESCALAS</p>
+                            <p class="text-2xl">[{{ count($scales) }}]</p>
+                        </div>
+                        <div class="w-4/12 text-center text-blue-700 font-bold border-2 border-blue-600 rounded p-2">
+                            <p class="text-xl">PRODUTOS</p>
+                            <p class="text-2xl">[{{ count($products) }}]</p>
+                        </div>
+                        <div class="w-4/12 text-center text-green-700 font-bold border-2 border-green-600 rounded p-2">
+                            <p class="text-xl">PROMOÇÃO</p>
+                            <p class="text-2xl">[{{ count($productsonsale) }}]</p>
+                        </div>
+                    </div>
+
                 @endif
 
             @endif
@@ -64,7 +121,6 @@
             @if (($user == 'Visitante!' or Auth::user()->type > 0) and (!Request::is('information')))
 
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1">
-
                     
                     @if (count($products))
 

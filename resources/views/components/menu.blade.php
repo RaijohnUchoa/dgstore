@@ -7,18 +7,21 @@
 <nav class="dropdownhover flex justify-center h-[35px] bg-gray-800 text-sm rounded">
 
     @if (Auth::check() and Auth::user()->type == 0)
-        <div class="flex items-center font-semibold text-white">MANUTENÇÃO DE CADASTRO</div>
+        <div class="flex items-center font-semibold text-white text-[18px] tracking-[4px]">CADASTROS</div>
     @endif
 
     @if ($user == 'Visitante!' or Auth::user()->type > 0)
 
         <ul class="flex items-center">
+
             <li class="relative px-4 hover:text-white">
                 <a href="{{ url('/') }}" class="{{ Request::is('/') || Request::is('register') || Request::is('login') || Request::is('logout') ? 'border-b-2 border-red-400 text-white rounded' : '' }}">Todos Produtos</a>
             </li>
+
             <li class="relative px-4 hover:text-white">
                 <a href="{{ route('productsfiltersale') }}" class="{{ Request::is('productsfiltersale') ? 'border-b-2 border-red-400 text-white rounded' : '' }}">Ofertas</a>
             </li>
+
             <li class="relative px-4 hover:text-white">
                 <span class="flex items-center cursor-pointer">
                     Marcas
@@ -36,12 +39,15 @@
                     @endforeach
                 </ul>
             </li>
+
             <li class="relative px-4 hover:text-white">
                 <a href="{{ route('productsfilterpreorder') }}" class="{{ Request::is('productsfilterpreorder') ? 'border-b-2 border-red-400 text-white rounded' : '' }}">Pre-Order</a>
             </li>
+
             <li class="relative px-4 hover:text-white">
                 <a href="{{ route('productsfilterfeatured') }}" class="{{ Request::is('productsfilterfeatured') ? 'border-b-2 border-red-400 text-white rounded' : '' }}">Exclusivos</a>
             </li>
+            
         </ul>
 
     @endif

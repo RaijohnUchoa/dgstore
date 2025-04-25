@@ -6,10 +6,18 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SupplierController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('layouts.app');
+    $carts = DB::table('carts')
+        ->join('products', 'carts.product_id', '=', 'products.id')
+        ->select('carts.*', 'products.title', 'products.image1')
+        ->where(['carts.user_id' => Auth::user()->id])
+        ->orderBy('id', 'DESC')
+        ->get();
+        return view('layouts.app', compact('carts'));
 });
 
 Route::middleware('auth')->group(function () {
@@ -66,6 +74,7 @@ Route::get('/productsdetails/{id}', [ProductController::class, 'productsdetails'
 Route::get('/productsdetailsimage/{id}/{image}', [ProductController::class, 'productsdetailsimage'])->name('productsdetailsimage');
 Route::post('/productscartcreate/{id}', [ProductController::class, 'productscartcreate'])->name('productscartcreate');
 Route::get('/productscartdelete/{id}', [ProductController::class, 'productscartdelete'])->name('productscartdelete');
+Route::get('/productscheckout', [ProductController::class, 'productscheckout'])->name('productscheckout');
 // CONFIGURAÇÕES - INFORMAÇÕES
 Route::get('/information', [SettingController::class, 'information'])->name('information');
 // CONFIGURAÇÕES - ESCALAS

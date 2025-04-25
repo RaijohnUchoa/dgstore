@@ -2,7 +2,6 @@
 @section('title', 'Produtos')
 @section('content')
 
-
 <!DOCTYPE html>
 <html>
 <body>
@@ -23,8 +22,8 @@
 <hr class="mt-0.5 border">
 
 {{-- INCLUIR NOVO PRODUTO --}}
-<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data">
-{{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data"> --}}
+{{-- <form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs" enctype="multipart/form-data"> --}}
+<form action="{{ route('productscreate') }}" method="POST" id="open" class="text-xs hidden" enctype="multipart/form-data">
     @csrf
     {{-- Card Imagem --}}
     <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -38,9 +37,10 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-red-400">Obrigatória</p>
                     </div>
-                    <input type="file" name="image1" id="image1" value="{{ old('image1') }}"
-                        onchange="previewImage1()" class="hidden" required />
-                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image1" id="image1" value="{{ old('image1') }}" onchange="previewImage1()" class="hidden" required />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img id="img1" class="max-h-[216px] w-[170px] rounded"> 
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -50,9 +50,10 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image2" id="image2" value="{{ old('image2') }}"
-                        onchange="previewImage2()" class="hidden" />
-                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image2" id="image2" value="{{ old('image2') }}" onchange="previewImage2()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img id="img2" class="max-h-[216px] w-[170px] rounded"> 
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -62,9 +63,10 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image3" id="image3" value="{{ old('image3') }}"
-                        onchange="previewImage3()" class="hidden" />
-                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image3" id="image3" value="{{ old('image3') }}" onchange="previewImage3()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img id="img3" class="max-h-[216px] w-[170px] rounded"> 
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -74,9 +76,10 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image4" id="image4" value="{{ old('image4') }}"
-                        onchange="previewImage4()" class="hidden" />
-                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image4" id="image4" value="{{ old('image4') }}" onchange="previewImage4()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img id="img4" class="max-h-[216px] w-[170px] rounded"> 
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -86,15 +89,32 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image5" id="image5" value="{{ old('image5') }}"
-                        onchange="previewImage5()" class="hidden" />
-                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image5" id="image5" value="{{ old('image5') }}" onchange="previewImage5()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img id="img5" class="max-h-[216px] w-[170px] rounded"> 
+                    </div>
                 </label>
             </div>
         </div>
     </div>
-    {{-- Card Título --}}
-    <div class="pb-4 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div class="flex justify-center items-center mt-3 space-x-3 text-red-900">
+        {{-- <span>Produto em:</span> --}}
+        <div class="flex">
+            <input name="is_featured" id="is_featured" type="checkbox" value="{{ 1 }}" class="">
+            <label for="is_featured" class="font-semibold ps-1">Destaque</label>
+        </div>
+        <div class="flex">
+            <input name="on_sale" id="on_sale" type="checkbox" value="{{ 1 }}" class="">
+            <label for="on_sale" class="font-semibold ps-1">Promoção</label>
+        </div>
+        <div class="flex">
+            <input name="is_preorder" id="is_preorder" type="checkbox" value="{{ 1 }}" class="">
+            <label for="is_preorder" class="font-semibold ps-1">Pre-Order</label>
+        </div>
+    </div>
+    {{-- Card Car --}}
+    <div class="pb-4 mx-2 mt-3 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        
         <div class="flex items-center mt-3 px-2 space-x-2">
             <div class="w-4/12">
                 <label for="category_id"><span class="font-semibold">:Categoria</span></label>
@@ -109,8 +129,7 @@
             <div class="w-4/12">
                 <label for="brand_id"><span class="font-semibold">:Fabricante</span></label>
                 <select name="brand_id" id="brand_id"
-                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
-                    required>
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" onkeyup="carTitle()">
                     @foreach ($brands as $brand)
                         <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                     @endforeach
@@ -119,8 +138,7 @@
             <div class="w-2/12">
                 <label for="car_scale"><span class="font-semibold">:Escala</span></label>
                 <select name="car_scale" id="car_scale"
-                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900"
-                    required>
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" onkeyup="carTitle()">
                     @foreach ($scales as $scale)
                         <option value="{{ $scale->scale_name }}">{{ $scale->scale_name }}</option>
                     @endforeach
@@ -136,18 +154,7 @@
                 </select>
             </div>
         </div>
-        <div class="flex items-center mt-3 px-2 space-x-2">
-            <div class="w-full">
-                <label for="title"><span class="font-semibold">:Título</span></label>
-                <input
-                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                    type="text" name="title" id="title" value="{{ old('title') }}"
-                    placeholder=" título do produto" required>
-                @error('title')
-                    <div class="absolute text-red-400">Digite o Título do Produto</div>
-                @enderror
-            </div>
-        </div>
+        
     </div>
     {{-- Card Características do Produto --}}
     <div class="pb-4 m-2 bg-blue-50 border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -158,7 +165,7 @@
                 <input
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
                     type="text" name="car_model" id="car_model" value="{{ old('car_model') }}"
-                    placeholder=" nome do marca">
+                    placeholder=" nome do marca" onkeyup="carTitle()">
                 @error('car_model')
                     <div class="absolute text-red-400">Digite o Modelo</div>
                 @enderror
@@ -168,7 +175,7 @@
                 <input
                     class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
                     type="text" name="car_year" id="car_year" value="{{ old('car_year') }}"
-                    placeholder=" nome do marca">
+                    placeholder=" ano de fabricação" onkeyup="carTitle()">
                 @error('car_year')
                     <div class="absolute text-red-400">Digite o Ano</div>
                 @enderror
@@ -267,90 +274,22 @@
                 @enderror
             </div>
         </div>
-
-        <div class="flex justify-center items-center mt-3 space-x-3">
-            <span>Produto em:</span>
-            <div class="flex">
-                <input name="is_featured" id="is_featured" type="checkbox" value="{{ 1 }}" class="">
-                <label for="is_featured" class="font-semibold ps-1">Destaque</label>
-            </div>
-            <div class="flex">
-                <input name="on_sale" id="on_sale" type="checkbox" value="{{ 1 }}" class="">
-                <label for="on_sale" class="font-semibold ps-1">Promoção</label>
-            </div>
-            <div class="flex">
-                <input name="is_preorder" id="is_preorder" type="checkbox" value="{{ 1 }}" class="">
-                <label for="is_preorder" class="font-semibold ps-1">Pre-Order</label>
+    </div>
+    <div class="pb-4 mx-2 mt-3 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <div class="flex items-center mt-3 px-2 space-x-2">
+            <div class="w-full">
+                <label for="title"><span class="font-semibold">:Título</span></label>
+                <input
+                    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
+                    type="text" name="title" id="title" value="{{ old('title') }}"
+                    placeholder=" título do produto">
+                @error('title')
+                    <div class="absolute text-red-400">Digite o Título do Produto</div>
+                @enderror
             </div>
         </div>
     </div>
-    {{-- Card Imagem --}}
-    {{-- <div class="py-3 m-2 bg-white border border-blue-300 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 
-        <div class="flex justify-evenly">
-
-            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                <label for="image1" class="cursor-pointer relative">
-                    <div class="flex flex-col items-center justify-center py-16">
-                        <p class="text-4xl py-1">&#128228;</p>
-                        <p class="text-sm text-gray-500">Click to Upload</p>
-                        <p class="text-sm text-red-400">Obrigatória</p>
-                    </div>
-                    <input type="file" name="image1" id="image1" value="{{ old('image1') }}"
-                        onchange="previewImage1()" class="hidden" required />
-                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
-                </label>
-            </div>
-            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                <label for="image2" class="cursor-pointer relative">
-                    <div class="flex flex-col items-center justify-center py-16">
-                        <p class="text-4xl py-1">&#128228;</p>
-                        <p class="text-sm text-gray-500">Click to Upload</p>
-                        <p class="text-sm text-gray-400">Opcional</p>
-                    </div>
-                    <input type="file" name="image2" id="image2" value="{{ old('image2') }}"
-                        onchange="previewImage2()" class="hidden" />
-                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
-                </label>
-            </div>
-            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                <label for="image3" class="cursor-pointer relative">
-                    <div class="flex flex-col items-center justify-center py-16">
-                        <p class="text-4xl py-1">&#128228;</p>
-                        <p class="text-sm text-gray-500">Click to Upload</p>
-                        <p class="text-sm text-gray-400">Opcional</p>
-                    </div>
-                    <input type="file" name="image3" id="image3" value="{{ old('image3') }}"
-                        onchange="previewImage3()" class="hidden" />
-                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
-                </label>
-            </div>
-            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                <label for="image4" class="cursor-pointer relative">
-                    <div class="flex flex-col items-center justify-center py-16">
-                        <p class="text-4xl py-1">&#128228;</p>
-                        <p class="text-sm text-gray-500">Click to Upload</p>
-                        <p class="text-sm text-gray-400">Opcional</p>
-                    </div>
-                    <input type="file" name="image4" id="image4" value="{{ old('image4') }}"
-                        onchange="previewImage4()" class="hidden" />
-                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
-                </label>
-            </div>
-            <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
-                <label for="image5" class="cursor-pointer relative">
-                    <div class="flex flex-col items-center justify-center py-16">
-                        <p class="text-4xl py-1">&#128228;</p>
-                        <p class="text-sm text-gray-500">Click to Upload</p>
-                        <p class="text-sm text-gray-400">Opcional</p>
-                    </div>
-                    <input type="file" name="image5" id="image5" value="{{ old('image5') }}"
-                        onchange="previewImage5()" class="hidden" />
-                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
-                </label>
-            </div>
-        </div>
-    </div> --}}
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Novo Produto</button>
     </div>
@@ -367,10 +306,9 @@
         <div class="flex justify-between items-center text-center pr-2">
 
             <div class="flex items-center pt-1 {{ $product->is_active == 0 ? 'opacity-15' : '' }}">
-
                 @if ($product->image1 != null)
-                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
-                        <img src="{{ asset("storage/{$product->image1}") }}" class="h-16 w-14">
+                    <div class="flex items-center h-[70px] w-[60px] p-0.5 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image1}") }}" class="max-h-16 w-full">
                     </div>
                     <a href="{{ route('productsdelete', [$product->id, 1]) }}">
                         <span class="" title="Deletar">
@@ -381,87 +319,79 @@
                     </a>
                 @else
                     <a href="{{ route('productsedit', $product->id) }}">
-                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                        <div class="h-[70px] w-[60px] mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
                             <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
                         </div>
                     </a>
                 @endif
                 @if ($product->image2 != null)
-                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
-                        <img src="{{ asset("storage/{$product->image2}") }}" class="h-16 w-14">
+                    <div class="flex items-center h-[70px] w-[60px] p-0.5 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image2}") }}" class="max-h-16 w-full">
                     </div>
-                    <a href="{{ route('productsdelete', [$product->id, 2]) }}">
+                    <a href="{{ route('productsdelete', [$product->id, 1]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
-                                width="15px" fill="#ef4444">
-                                <path
-                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
                     <a href="{{ route('productsedit', $product->id) }}">
-                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                        <div class="h-[70px] w-[60px] mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
                             <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
                         </div>
                     </a>
                 @endif
                 @if ($product->image3 != null)
-                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
-                        <img src="{{ asset("storage/{$product->image3}") }}" class="h-16 w-14">
+                    <div class="flex items-center h-[70px] w-[60px] p-0.5 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image3}") }}" class="max-h-16 w-full">
                     </div>
-                    <a href="{{ route('productsdelete', [$product->id, 3]) }}">
+                    <a href="{{ route('productsdelete', [$product->id, 1]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
-                                width="15px" fill="#ef4444">
-                                <path
-                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
                     <a href="{{ route('productsedit', $product->id) }}">
-                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                        <div class="h-[70px] w-[60px] mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
                             <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
                         </div>
                     </a>
                 @endif
                 @if ($product->image4 != null)
-                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
-                        <img src="{{ asset("storage/{$product->image4}") }}" class="h-16 w-14">
+                    <div class="flex items-center h-[70px] w-[60px] p-0.5 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image4}") }}" class="max-h-16 w-full">
                     </div>
-                    <a href="{{ route('productsdelete', [$product->id, 4]) }}">
+                    <a href="{{ route('productsdelete', [$product->id, 1]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
-                                width="15px" fill="#ef4444">
-                                <path
-                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
                     <a href="{{ route('productsedit', $product->id) }}">
-                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                        <div class="h-[70px] w-[60px] mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
                             <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
                         </div>
                     </a>
                 @endif
                 @if ($product->image5 != null)
-                    <div class="h-18 p-1 mr-1 border border-blue-300 rounded">
-                        <img src="{{ asset("storage/{$product->image5}") }}" class="h-16 w-14">
+                    <div class="flex items-center h-[70px] w-[60px] p-0.5 mr-1 border border-blue-300 rounded">
+                        <img src="{{ asset("storage/{$product->image5}") }}" class="max-h-16 w-full">
                     </div>
-                    <a href="{{ route('productsdelete', [$product->id, 5]) }}">
+                    <a href="{{ route('productsdelete', [$product->id, 1]) }}">
                         <span class="" title="Deletar">
-                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960"
-                                width="15px" fill="#ef4444">
-                                <path
-                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                            <svg class="-mt-9 -ml-5 rounded bg-white" height="15px" viewBox="0 -960 960 960" width="15px" fill="#ef4444">
+                                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                             </svg>
                         </span>
                     </a>
                 @else
                     <a href="{{ route('productsedit', $product->id) }}">
-                        <div class="h-18 p-1 mr-1 border border-blue-300 border-dashed rounded" title="Incluir Imagem">
+                        <div class="h-[70px] w-[60px] border border-blue-300 border-dashed rounded" title="Incluir Imagem">
                             <span class="flex justify-center items-center h-16 w-14">&#128228;</span>
                         </div>
                     </a>
@@ -510,18 +440,20 @@
                     </div>
                     
                     <div class="w-20 text-end">
-                        <label for="editprice_normal"><span class="font-semibold pr-2">$Preço</span></label>
+                        <label for="listprice_normal"><span class="font-semibold pr-2">$Preço</span></label>
                         <input
                             class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-end {{ $product->is_active == 1 ? 'text-blue-900' : 'text-gray-300' }}"
-                            type="text" name="price_normal" id="editprice_normal"
-                            value="{{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}" @disabled($product->is_active == 1 ? false : true)>
+                            type="text" name="price_normal" id="listprice_normal"
+                            value="{{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}" 
+                            @disabled($product->is_active == 1 ? false : true)>
                     </div>
 
                     <div class="w-20 text-end">
-                        <label for="price_sale"><span class="font-semibold pr-2 {{ $product->is_active == 1 ? 'text-red-800' : 'text-gray-300' }}">$Promo</span></label>
+                        <label for="listprice_sale"><span class="font-semibold pr-2 {{ $product->is_active == 1 ? 'text-red-800' : 'text-gray-300' }}">$Promo</span></label>
                         <input
                             class="w-20 py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-end {{ $product->is_active == 1 ? 'text-red-900' : 'text-gray-300' }}"
-                            type="text" name="price_sale" id="editprice_sale" value="{{ old('price_sale', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}"
+                            type="text" name="price_sale" id="listprice_sale" 
+                            value="{{ old('price_sale', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}"
                             @disabled($product->is_active == 1 ? false : true)>
                     </div>
 
@@ -580,18 +512,30 @@
 @endforelse
 
 <script>
-    //FORMATAR VALORE EM REAIS - FOI NECESSÁRIO COLOCAR UM BORY DENTRO DA SECTION
-    //Receber o Seletor do campo id=price_normal
+    function carTitle() {
+        const brandId = document.querySelector('#brand_id');
+        const brandIdSelected = brandId.options[brandId.selectedIndex].text;
+
+        const scaleId = document.querySelector('#car_scale');
+        const scaleIdSelected = scaleId.options[scaleId.selectedIndex].text;
+
+        const yearId = document.getElementById('car_year').value;
+        const carModel = document.getElementById('car_model').value;
+
+        document.getElementById('title').value = 
+        brandIdSelected + ' ' + 
+        yearId + ' ' +
+        carModel + ' ' +
+        scaleIdSelected;
+    }
+</script>
+<script>
+    //FORMATAR PREÇO INCLUIR
     let priceNormal = document.getElementById('price_normal');
-    //Aguardar o usuário digitar o valor no campo
     priceNormal.addEventListener('input', function(){
-        //Obter o valor digitado e remover caractere que não seja número
         let normalValue = this.value.replace(/[^\d]/g, '');
-        //Adicionar os separadores de milhares
         var formattedValue = (normalValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + normalValue.slice(-2);
-        //Adicionar a vírgula e até dois dígitos se houver centavos
         formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
-        //Atualizar o valor no campo
         this.value = formattedValue;
     });
     let priceSale = document.getElementById('price_sale');
@@ -601,33 +545,29 @@
         formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
         this.value = formattedValue;
     });
-    let editpriceNormal = document.getElementById('editprice_normal');
-    editpriceNormal.addEventListener('input', function(){
-        let editnormalValue = this.value.replace(/[^\d]/g, '');
-        var formattedValue = (editnormalValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editnormalValue.slice(-2);
-        formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
-        this.value = formattedValue;
-    });
-    let editpriceSale = document.getElementById('editprice_sale');
-    editpriceSale.addEventListener('input', function(){
-        let editsaleValue = this.value.replace(/[^\d]/g, '');
-        var formattedValue = (editsaleValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editsaleValue.slice(-2);
-        formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
-        this.value = formattedValue;
-    });
+    //FORMATAR PREÇO ALTERAR
+    // let editpriceNormal = document.getElementById('listprice_normal');
+    // editpriceNormal.addEventListener('input', function(){
+    //     let editnormalValue = this.value.replace(/[^\d]/g, '');
+    //     var formattedValue = (editnormalValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editnormalValue.slice(-2);
+    //     formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
+    //     this.value = formattedValue;
+    // });
+    // let editpriceSale = document.getElementById('listprice_sale');
+    // editpriceSale.addEventListener('input', function(){
+    //     let editsaleValue = this.value.replace(/[^\d]/g, '');
+    //     var formattedValue = (editsaleValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editsaleValue.slice(-2);
+    //     formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
+    //     this.value = formattedValue;
+    // });
 </script>
-
-</body>
-</html>
-
-@endsection
 
 <script>
     //ABERTURA DE FORMULÁRIO
     function openForm() {
         document.querySelector('#open').classList.toggle('hidden')
     }
-    openForm()
+    // openForm()
 </script>
 
 <script>
@@ -698,3 +638,9 @@
         }
     }
 </script>
+
+
+</body>
+</html>
+
+@endsection

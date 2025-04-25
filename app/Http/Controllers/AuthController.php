@@ -26,27 +26,20 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials)) {
-            // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-            // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-            // $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-            // $products = DB::table('products')
-            //     ->join('categories', 'products.category_id', '=', 'categories.id')
-            //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-            //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-            //     ->orderBy('id', 'DESC')
-            //     ->where('products.is_active', 1)
-            //     ->get();
-            // $productsonsale = DB::table('products')
-            //     ->join('categories', 'products.category_id', '=', 'categories.id')
-            //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-            //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-            //     ->orderBy('id', 'DESC')
-            //     ->where('products.is_active', 1)
-            //     ->where('products.on_sale', 1)
-            //     ->get();
-            // $filter = '';
-            return view('layouts.app');
-            // return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
+
+            $carts = DB::table('carts')
+                ->join('products', 'carts.product_id', '=', 'products.id')
+                ->select('carts.*', 'products.title', 'products.image1')
+                ->where(['carts.user_id' => Auth::user()->id])
+                ->orderBy('id', 'DESC')
+                ->get();
+                
+            if (count($carts) > 0) {
+                $last_id = $carts[0]->product_id;
+                return redirect()->route('productsdetails', $last_id);
+            }
+
+            return view('layouts.app', compact('carts'));
         }
         return redirect(route('login'))->with('error', 'Falhar ao logar usuário!');
     }
@@ -68,27 +61,20 @@ class AuthController extends Controller
         if ($user->save()) {
             $credentials = $request->only('email', 'password');
             if(Auth::attempt($credentials)) {
-                // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-                // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-                // $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-                // $products = DB::table('products')
-                //     ->join('categories', 'products.category_id', '=', 'categories.id')
-                //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-                //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-                //     ->orderBy('id', 'DESC')
-                //     ->where('products.is_active', 1)
-                //     ->get();
-                // $productsonsale = DB::table('products')
-                //     ->join('categories', 'products.category_id', '=', 'categories.id')
-                //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-                //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-                //     ->orderBy('id', 'DESC')
-                //     ->where('products.is_active', 1)
-                //     ->where('products.on_sale', 1)
-                //     ->get();
-                // $filter = '';
-                return view('layouts.app');
-                // return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
+
+                $carts = DB::table('carts')
+                ->join('products', 'carts.product_id', '=', 'products.id')
+                ->select('carts.*', 'products.title', 'products.image1')
+                ->where(['carts.user_id' => Auth::user()->id])
+                ->orderBy('id', 'DESC')
+                ->get();
+                
+            if (count($carts) > 0) {
+                $last_id = $carts[0]->product_id;
+                return redirect()->route('productsdetails', $last_id);
+            }
+
+            return view('layouts.app', compact('carts'));
             }
         }
         return redirect(route('register'))->with('error', 'Falha ao Criar Usuário!');
@@ -96,27 +82,7 @@ class AuthController extends Controller
 
     public function logout() {
         Auth::logout();
-        // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-        // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-        // $scales = Scale::orderBy('scale_name', 'ASC')->where('is_active', 1)->get();
-        // $products = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->get();
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
-        // $filter = '';
         return view('layouts.app');
-        // return view('layouts.app', compact('products', 'categories', 'brands', 'scales', 'productsonsale', 'filter'));
     }
 
     //CRUD USUÁRIOS ADMINISTRATIVO

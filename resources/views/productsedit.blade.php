@@ -2,11 +2,15 @@
 @section('title', 'Produtos')
 @section('content')
 
+<!DOCTYPE html>
+<html>
+<body>
+
 @if (session()->has('success'))
     <span class="flex justify-center bg-green-200 text-green-700 text-sm m-2 py-1 rounded">{{ session()->get('success') }}</span>
 @endif
 <div class="flex justify-between items-center border py-1 px-2">
-    <span class="font-bold">EDITANDO PRODUTOS [{{ $product->title }}]</span>
+    <span class="font-bold"><span class=" text-red-700">EDITANDO PRODUTO</span> [{{ $product->title }}]</span>
     <a href="{{ route('productsread') }}" class="py-1 px-3 mb-1 text-xs text-center text-white bg-red-600 rounded">Voltar</a>
 </div>
 <hr class="mt-0.5 border">
@@ -83,30 +87,18 @@
                 <label for="car_color"><span class="font-semibold">:Cor</span></label>
                 <select name="car_color" id="car_color" class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
                     <option value="{{ $product->car_color }}">{{ $product->car_color }}</option>
-                    <option value="{{ 'Amarelo' }}">Amarelo</option>
-                    <option value="{{ 'Azul' }}">Azul</option>
-                    <option value="{{ 'Branco' }}">Branco</option>
-                    <option value="{{ 'Dourado' }}">Dourado</option>
-                    <option value="{{ 'Cinza' }}">Cinza</option>
-                    <option value="{{ 'Laranja' }}">Laranja</option>
-                    <option value="{{ 'Preto' }}">Preto</option>
-                    <option value="{{ 'Prata' }}">Prata</option>
-                    <option value="{{ 'Verde' }}">Verde</option>
-                    <option value="{{ 'Vermelho' }}">Vermelho</option>
-                    <option value="{{ 'Outras' }}">Outras</option>
+                    @foreach ($colors as $color)
+                        <option value="{{ $color->color_name }}">{{ $color->color_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="w-2/12">
                 <label for="car_attribute"><span class="font-semibold">:Atributo/Tipo</span></label>
                 <select name="car_attribute" id="car_attribute" class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900">
                     <option value="{{ $product->car_attribute }}">{{ $product->car_attribute }}</option>
-                    <option value="{{ 'Pickup' }}">Pickup</option>
-                    <option value="{{ 'SUV' }}">SUV</option>
-                    <option value="{{ 'Sedan' }}">Sedan</option>
-                    <option value="{{ 'Conversível' }}">Conversível</option>
-                    <option value="{{ 'Van' }}">Van</option>
-                    <option value="{{ 'Onibus' }}">Onibus</option>
-                    <option value="{{ 'Outros' }}">Outras</option>
+                    @foreach ($attributes as $attribute)
+                        <option value="{{ $attribute->attribute_name }}">{{ $attribute->attribute_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="w-3/12">
@@ -132,14 +124,14 @@
                     type="text" name="stock" id="stock" value="{{ $product->stock }}">
             </div>
             <div class="w-2/12">
-                <label for="price_normal"><span class="font-semibold">:Preço</span></label>
+                <label for="editprice_normal"><span class="font-semibold">:Preço</span></label>
                 <input class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                    type="text" name="price_normal" id="price_normal" value="{{ $product->price_normal }}">
+                    type="text" name="price_normal" id="editprice_normal" value="{{ old('price_normal', isset($product->price_normal) ? number_format($product->price_normal, '2', ',', '.') : '') }}">
             </div>
             <div class="w-2/12">
-                <label for="price_sale"><span class="font-semibold">:Preço Promocional</span></label>
+                <label for="editprice_sale"><span class="font-semibold">:Preço Promocional</span></label>
                 <input class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900 placeholder-gray-300"
-                    type="text" name="price_sale" id="price_sale" value="{{ $product->price_sale }}">
+                    type="text" name="price_sale" id="editprice_sale" value="{{ old('price_sale', isset($product->price_sale) ? number_format($product->price_sale, '2', ',', '.') : '') }}">
             </div>
         </div>
         <div class="flex items-center mt-3 px-2 space-x-2">
@@ -178,10 +170,11 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-red-400">Obrigatória</p>
                     </div>
-                    <input type="file" name="image1" id="image1" value="{{ $product->image1 }}"
-                        onchange="previewImage1()" class="hidden"/>
-                    <img src="{{ asset("storage/{$product->image1}") }}" class="absolute top-0 h-[216px] w-[175px] p-1">
-                    <img id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image1" id="image1" value="{{ $product->image1 }}" onchange="previewImage1()" class="hidden"/>
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img src="{{ asset("storage/{$product->image1}") }}" class="p-1">
+                        <img id="img1" class="absolute p-1">
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -191,10 +184,11 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image2" id="image2" value="{{ $product->image2 }}"
-                        onchange="previewImage2()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image2}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
-                    <img id="img2" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image2" id="image2" value="{{ $product->image2 }}" onchange="previewImage2()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img src="{{ asset("storage/{$product->image2}") }}" class="p-1">
+                        <img id="img2" class="absolute p-1">
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -204,10 +198,11 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image3" id="image3" value="{{ $product->image3 }}"
-                        onchange="previewImage3()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image3}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
-                    <img id="img3" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image3" id="image3" value="{{ $product->image3 }}" onchange="previewImage3()" class="hidden" />
+                        <div class="absolute flex items-center top-0 h-[216px]">
+                            <img src="{{ asset("storage/{$product->image3}") }}" class="p-1">
+                            <img id="img3" class="absolute p-1">
+                        </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -217,10 +212,11 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image4" id="image4" value="{{ $product->image4 }}"
-                        onchange="previewImage4()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image4}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
-                    <img id="img4" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image4" id="image4" value="{{ $product->image4 }}" onchange="previewImage4()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img src="{{ asset("storage/{$product->image4}") }}" class="p-1">
+                        <img id="img4" class="absolute p-1">
+                    </div>
                 </label>
             </div>
             <div class="h-[220px] w-[175px] bg-gray-100 border-2 border-blue-300 border-dashed rounded">
@@ -230,10 +226,11 @@
                         <p class="text-sm text-gray-500">Click to Upload</p>
                         <p class="text-sm text-gray-400">Opcional</p>
                     </div>
-                    <input type="file" name="image5" id="image5" value="{{ $product->image5 }}"
-                        onchange="previewImage5()" class="hidden" />
-                    <img src="{{ asset("storage/{$product->image5}") }}" id="img1" class="absolute top-0 h-[216px] w-[175px] p-1">
-                    <img id="img5" class="absolute top-0 h-[216px] w-[175px] p-1">
+                    <input type="file" name="image5" id="image5" value="{{ $product->image5 }}" onchange="previewImage5()" class="hidden" />
+                    <div class="absolute flex items-center top-0 h-[216px]">
+                        <img src="{{ asset("storage/{$product->image5}") }}" class="p-1">
+                        <img id="img5" class="absolute p-1">
+                    </div>
                 </label>
             </div>
 
@@ -241,23 +238,27 @@
 
     </div>
 
-    {{-- <input type="hidden" name="is_featured" id="is_featured" value="{{ 0 }}" />
-    <input type="hidden" name="is_preorder" id="is_preorder" value="{{ 1 }}" />
-    <input type="hidden" name="on_sale" id="on_sale" value="{{ 0 }}" /> --}}
-
     <div class="px-2">
         <button type="submit" class="w-full px-2 py-1 mt-3 text-center text-white bg-sky-700 rounded hover:bg-sky-800">Salvar Edição Produto</button>
     </div>
 </form>
 
-@endsection
-
-{{-- <script>
-    function openForm() {
-        document.querySelector('#open').classList.toggle('hidden')
-    }
-    openForm()
-</script> --}}
+<script>
+    let editpriceNormal = document.getElementById('editprice_normal');
+    editpriceNormal.addEventListener('input', function(){
+        let editnormalValue = this.value.replace(/[^\d]/g, '');
+        var formattedValue = (editnormalValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editnormalValue.slice(-2);
+        formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
+        this.value = formattedValue;
+    });
+    let editpriceSale = document.getElementById('editprice_sale');
+    editpriceSale.addEventListener('input', function(){
+        let editsaleValue = this.value.replace(/[^\d]/g, '');
+        var formattedValue = (editsaleValue.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')) + '' + editsaleValue.slice(-2);
+        formattedValue = formattedValue.slice(0, -2) + ',' + formattedValue.slice(-2);
+        this.value = formattedValue;
+    });
+</script>
 
 <script>
     function previewImage1() {
@@ -331,12 +332,7 @@
     }
 </script>
 
+</body>
+</html>
 
-{{-- @php $yearc = date('Y'); $years = range($yearc - 125, $yearc); rsort($years) @endphp
-<label for="car_year"><span class="font-semibold">:Ano</span></label>
-<select name="car_year" id="car_year"
-    class="w-full py-1 px-2 border border-blue-200 focus:outline-none focus:border-blue-500 rounded text-xs text-blue-900" required>
-    @foreach ($years as $year)
-        <option value="{{ "$year" }}">{{ $year }}</option>
-    @endforeach
-</select> --}}
+@endsection

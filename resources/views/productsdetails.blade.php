@@ -130,7 +130,7 @@
                         ->orderBy('id', 'DESC')
                         ->get();
                     @endphp
-                    <a href="">
+                    <a href="{{ route('productscheckout') }}">
                         <div class="px-2 mt-1 text-center text-blue-900 border border-red-100 bg-red-100 rounded shadow shadow-red-200">
                             <span class="text-base">&#128722;</span>
                             <span class="font-semibold">Checkout Carrinho</span>
@@ -139,10 +139,12 @@
                     @foreach ($carts as $cart)
 
                         <div class="mt-1 bg-gray-50 border shadow rounded">
-                            <div class="relative flex p-1">
-                                <img class="w-1/5" src="{{ asset("storage/{$cart->image1}") }}">
-                                <a href="{{ route('productscartdelete', $cart->id) }}"><span class="absolute top-0 left-0 px-1 text-[10px] bg-white text-red-600 font-bold border rounded-e-full">X</span></a>
 
+                            <div class="relative flex p-1 h-[65px]">
+
+                                <div class="flex items-center w-1/5 max-h-[65px]">
+                                    <a href="{{ route('productsdetails', $cart->product_id) }}"><img class="max-h-[60px]" src="{{ asset("storage/{$cart->image1}") }}"></a>
+                                </div>
                                 <div class="w-4/5 text-[10px] px-1">
                                     <div class="h-1/2">
                                         <span class="text-blue-900">{{ $cart->title }}</span>
@@ -153,6 +155,14 @@
                                         <span>Preço: <strong class="text-blue-900">R$ {{ number_format($cart->price_cart * $cart->quantity, '2', ',', '.') }}</strong></span>
                                     </div>
                                 </div>
+
+                                <a href="{{ route('productscartdelete', $cart->id) }}">
+                                    <span class="absolute top-0 left-[-4px] px-1">
+                                        <svg class="rounded bg-white" height="14px" viewBox="0 -960 960 960" width="14px" fill="#ef4444">
+                                            <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                                        </svg>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                         @php $sum = $sum + ($cart->price_cart * $cart->quantity) @endphp
@@ -162,7 +172,7 @@
                         <span class="">Total Produtos</span>
                         <span class="">R$ {{ number_format($sum, '2', ',', '.') }}</span>
                     </div>
-                    <a href="">
+                    <a href="{{ route('productscheckout') }}">
                         <div class="px-2 mt-1 text-center text-blue-900 border border-red-100 bg-red-100 rounded shadow shadow-red-200">
                             <span class="text-base">&#128722;</span>
                             <span class="font-semibold">Checkout Carrinho</span>

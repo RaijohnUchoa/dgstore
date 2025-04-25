@@ -23,6 +23,7 @@ class ProductController extends Controller
             'price_normal' => $normal,
             'price_sale' => $sale
         ]);
+
         $request->validate([
             'category_id' => 'required',
             'brand_id' => 'required',
@@ -37,7 +38,7 @@ class ProductController extends Controller
         $products->title = $request->title;
 
         $slug = $request->title;
-        $slug = Str::snake($slug, '-');
+        $slug = Str::slug($slug, '-');
         $products->slug = 'diecast-'.$slug;
 
         $products->barcode = $request->barcode;
@@ -107,7 +108,7 @@ class ProductController extends Controller
     public function productsupdate(Request $request, $id){
         if (!$productsupdate = Product::find($id))
             return redirect()->route('productsread');
-    
+        
         $normal = str_replace(',', '.', str_replace('.', '', $request->price_normal));
         $sale = str_replace(',', '.', str_replace('.', '', $request->price_sale));
         
@@ -253,6 +254,8 @@ class ProductController extends Controller
         }
         return redirect()->route('productsread')->with('success', 'Imagem DELETADA com Sucesso!');
     }
+
+    //FILTROS MENU PRODUTOS
     public function productsfiltercategory($filter) {
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
@@ -295,8 +298,6 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        // $productsonsale = $products;
-        // $filter = '';
         return view('layouts.app', compact('products'));
     }
     public function productsfilterpreorder() {
@@ -321,6 +322,8 @@ class ProductController extends Controller
             ->get();
         return view('layouts.app', compact('products'));
     }
+
+    //DETALHES PRODUTOS
     public function productsdetails($id) {
         if (Auth::check()) {
             $user = (Auth::user()->name);
@@ -358,25 +361,21 @@ class ProductController extends Controller
 
         return redirect()->route('productsdetails', ['id' => $id]);
     }
+
     //CARRINHO DE COMPRAS
     public function productscartcreate(Request $request, $id) {
-
-        // dd($id, $request->all());
         
         if (Auth::check()) {
             $userId = (Auth::user()->id);
         } else {
             return redirect()->route('login')->with('success', 'Faça LOGIN ou Registre-se!!');
         }
-
         $cart = Cart::where(['user_id' => $userId, 'product_id' => $id]);
         
         if (!$product = Product::find($id))
             return redirect()->route('productsdetails', ['id' => $id]);
-    
         
         if ($cart->count() === 0) {
-
             $productcart = New Cart();
             $productcart->user_id = $userId;
             $productcart->product_id = $id;
@@ -385,7 +384,6 @@ class ProductController extends Controller
             $productcart->preorder = $request->preorder;
 
             if ($productcart->save()) {
-
                 // $stock = $product->stock;
                 // $product->update(['stock' => ($stock - $request->quantity)]); //ajuste estoque
 
@@ -403,9 +401,26 @@ class ProductController extends Controller
 
         if (!$productcart = Cart::find($id))
             return redirect()->route('productsdetails', ['id' => $id]);
+        
         $productcart->delete();
-
         return redirect()->route('productsdetails', ['id' => $id]);
     }
 
+    //CHECKOUT
+    public function productscheckout() {
+
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => Auth::user()->id])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        // $userId = (Auth::user()->id);
+        // $carts = Cart::where(['user_id' => $userId])->get();
+       
+        // dd($userId, $carts);
+
+        return view('productscheckout', compact('carts'));
+    }
 }
