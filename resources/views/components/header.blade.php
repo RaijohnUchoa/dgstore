@@ -34,8 +34,8 @@
                 </div>
             @else
                 <div class="hidden absolute top-[31px] bg-gray-800 text-xs w-36 rounded" id="dropdown">
-                    <div class="border-b cursor-pointer hover:text-gray-50 p-1"><a href="{{ route('register') }}">Registre-se!</a></div>
-                    <div class="border-b cursor-pointer hover:text-gray-50 p-1"><a href="information">Entre em Contato</a></div>
+                    <div class="border-b py-1 cursor-pointer hover:text-gray-50"><a href="{{ route('register') }}">Registre-se!</a></div>
+                    <div class="border-b py-1 cursor-pointer hover:text-gray-50"><a href="information">Entre em Contato</a></div>
                 </div>
             @endif
         </div>
@@ -44,15 +44,15 @@
                 @if(Auth::user()->type == 0)
                     <span class="font-bold text-white tracking-widest bg-red-700 px-3 py-1 rounded text-sm">PAINEL DE CONTROLE</span>
                 @else
-                    <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
-                    <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
-                    <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
+                    <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+                    <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+                    <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
                 @endif
 
             @else
-                <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
-                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
-                <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
+                <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ url('/') }}">Home</a>
+                <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+                <a class="hover:border-b-2 block py-1 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
             @endif
         </div>
         <div class="w-4/12 hidden md:flex justify-end items-center">
@@ -89,11 +89,11 @@
     {{-- MOBILE --}}
     <div class="mobile-menu hidden md:hidden text-center">
 
-        <a class="border-y block py-2 hover:text-gray-50" href="{{ url('/') }}">Home</a>
-        <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
-        <a class="border-b block py-2 hover:text-gray-50" href="{{ route('information') }}">Contato</a>
+        <a class="border-b hover:border-y block hover:text-gray-50" href="{{ url('/') }}">Home</a>
+        <a class="border-b hover:border-y block hover:text-gray-50" href="{{ route('information') }}">Sobre</a>
+        <a class="border-b hover:border-y block hover:text-gray-50" href="{{ route('information') }}">Contato</a>
         @if (Auth::check())
-            <a class="block py-2 hover:text-gray-50" href="{{ route('logout') }}">
+            <a class="block hover:text-gray-50" href="{{ route('logout') }}">
                 <span class="flex items-center justify-center">Sair
                     <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
@@ -101,7 +101,7 @@
                 </span>
             </a>
         @else
-            <a class="block py-2 hover:text-gray-50" href="{{ route('login') }}">
+            <a class="block hover:text-gray-50" href="{{ route('login') }}">
                 <span class="flex items-center justify-center">Entrar
                     <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />

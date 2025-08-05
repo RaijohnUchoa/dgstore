@@ -12,7 +12,7 @@
 
     <div class="container m-auto max-w-[1280px] text-gray-300 shadow p-1 grid grid-cols-10 gap-2 select-none">
         {{-- NAVTOP --}}
-        <div class="header col-span-10">
+        <div class="header col-span-10 bg-green-400">
             @php
                 if (Auth::check()) {
                     $user = Str::of(Auth::user()->name)->explode(' ');
@@ -86,20 +86,24 @@
                 @if (Request::is('login'))
                     {{-- DASHBOARD --}}
                     <div class="dashboard mt-6 px-6 gap-6 flex justify-center">
-                        <div class="w-4/12 text-center text-orange-700 font-bold border-2 border-orange-600 rounded p-2">
+                        <div class="w-4/12 text-center text-gray-700 font-bold border-2 border-gray-600 rounded p-2">
                             <p class="text-xl">USUÁRIOS</p>
                             <p class="text-2xl">[{{ count($users) }}]</p>
                         </div>
-                        <div class="w-4/12 text-center text-gray-700 font-bold border-2 border-gray-600 rounded p-2">
+                        <div class="w-4/12 text-center text-green-700 font-bold border-2 border-green-600 rounded p-2">
+                            <p class="text-xl">FORNECEDORES</p>
+                            <p class="text-2xl">[{{ count($suppliers) }}]</p>
+                        </div>
+                        <div class="w-4/12 text-center text-orange-700 font-bold border-2 border-orange-600 rounded p-2">
                             <p class="text-xl">CATEGORIAS</p>
                             <p class="text-2xl">[{{ count($categories) }}]</p>
                         </div>
-                        <div class="w-4/12 text-center text-red-700 font-bold border-2 border-red-600 rounded p-2">
-                            <p class="text-xl">FABRICANTES</p>
-                            <p class="text-2xl">[{{ count($brands) }}]</p>
-                        </div>
                     </div>
                     <div class="dashboard mt-6 px-6 gap-6 flex justify-center">
+                        <div class="w-4/12 text-center text-red-700 font-bold border-2 border-red-600 rounded p-2">
+                            <p class="text-xl">MARCAS</p>
+                            <p class="text-2xl">[{{ count($brands) }}]</p>
+                        </div>
                         <div class="w-4/12 text-center text-purple-700 font-bold border-2 border-purple-600 rounded p-2">
                             <p class="text-xl">ESCALAS</p>
                             <p class="text-2xl">[{{ count($scales) }}]</p>
@@ -108,16 +112,17 @@
                             <p class="text-xl">PRODUTOS</p>
                             <p class="text-2xl">[{{ count($products) }}]</p>
                         </div>
-                        <div class="w-4/12 text-center text-green-700 font-bold border-2 border-green-600 rounded p-2">
+                        {{-- <div class="w-4/12 text-center text-green-700 font-bold border-2 border-green-600 rounded p-2">
                             <p class="text-xl">PROMOÇÃO</p>
                             <p class="text-2xl">[{{ count($productsonsale) }}]</p>
-                        </div>
+                        </div> --}}
                     </div>
 
                 @endif
 
             @endif
-
+            
+            {{-- @dd($carts) --}}
             @if (($user == 'Visitante!' or Auth::user()->type > 0) and (!Request::is('information')))
 
                 <div class="flex-wrap flex justify-around items-center gap-2 p-1">
@@ -192,11 +197,40 @@
 
                                     </div>
                                 </a>
-                                <div class="shadow py-3 flex items-center justify-around rounded">
-                                    <a href=""><button title="compre agora" class="px-2 py-1 bg-sky-600 hover:bg-sky-800 shadow shadow-sky-800 rounded-lg text-white text-xs font-semibold">Buy Now</button></a>
-                                    <a href=""><button title="incluir no carrinho" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128722;</button></a>
-                                    <a href=""><button title="lista de desejos" class="px-2 bg-gray-50 hover:bg-gray-200 shadow shadow-gray-400 rounded-lg">&#128150;</button></a>
-                                </div>
+                                {{-- ADICIONA NO CART --}}
+                                <form action="{{ route('productscartcreate', $product->id) }}" method="POST" id="" class="text-xs">
+                                    @csrf
+                                    <div class="flex justify-center items-center text-blue-700 font-semibold space-x-1 pb-3">
+                                        <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="price_cart" id="price_cart" value="{{ $product->price_sale == 0 ? $product->price_normal : $product->price_sale }}">
+            
+                                        {{-- <span class="w-9 bg-gray-100 border text-center py-2 shadow rounded-full">+{{ $product->stock }}</span> --}}
+                                        <input class="w-12 border text-center px-2 py-2 shadow rounded" name="quantity" type="hidden" value="{{ $product->stock > 0 ? 1 : 0 }}" @disabled($product->stock > 0 ? false : true)>
+            
+                                        @if ($product->stock > 0)
+                                            @if ($product->is_preorder == 1)
+                                                <input type="hidden" name="preorder" id="preorder" value="{{ 1 }}">
+                                                <button type="submit" title="encomendar" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base">&#128722;<span class="text-sm text-red-500">Pre-Order</span></button>
+                                            @else
+                                                <input type="hidden" name="preorder" id="preorder" value="{{ 0 }}">
+                                                <button type="submit" title="incluir no carrinho" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base @if ($carts->contains('product_id', $product->id)) ? border border-green-700 : '' @endif">
+                                                    &#128722;<span class="text-sm">add to Cart</span>
+                                                </button>
+                                            @endif
+                                        @else
+                                            @if ($product->is_preorder == 1)
+                                                <input type="hidden" name="preorder" id="preorder" value="{{ 1 }}">
+                                                <button type="submit" title="encomendar" class="px-2 py-1 hover:bg-gray-200 shadow shadow-gray-400 rounded text-base">&#128722;<span class="text-sm text-red-500">Pre-Order</span></button>
+                                            @else
+                                                <input type="hidden" name="preorder" id="preorder" value="{{ 0 }}">
+                                                <span title="encomendar" class="px-2 py-1 shadow shadow-gray-400 rounded text-sm text-gray-400">&#128722;<span class="">Pre-Order</span></span>
+                                            @endif
+                                        @endif
+                                        @if ($carts->contains('product_id', $product->id))
+                                            <span class="text-green-700 text-2xl">&#128504;</span>
+                                        @endif
+                                    </div>
+                                </form>
                             </div>
 
                         @endforeach

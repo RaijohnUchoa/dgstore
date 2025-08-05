@@ -257,6 +257,17 @@ class ProductController extends Controller
 
     //FILTROS MENU PRODUTOS
     public function productsfiltercategory($filter) {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -265,9 +276,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('categories.category_name', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'filter'));
+        return view('layouts.app', compact('products', 'filter', 'carts'));
     }
     public function productsfilterbrand($filter) {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -276,9 +298,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('brands.brand_name', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'filter'));
+        return view('layouts.app', compact('products', 'filter', 'carts'));
     }
     public function productsfilterscale($filter) {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -287,9 +320,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.car_scale', '=', $filter)
             ->get();
-        return view('layouts.app', compact('products', 'filter'));
+        return view('layouts.app', compact('products', 'filter', 'carts'));
     }
     public function productsfiltersale() {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -298,9 +342,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.on_sale', 1)
             ->get();
-        return view('layouts.app', compact('products'));
+        return view('layouts.app', compact('products', 'carts'));
     }
     public function productsfilterpreorder() {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -309,9 +364,20 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.is_preorder', 1)
             ->get();
-        return view('layouts.app', compact('products'));
+        return view('layouts.app', compact('products', 'carts'));
     }
     public function productsfilterfeatured() {
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
@@ -320,7 +386,7 @@ class ProductController extends Controller
             ->where('products.is_active', 1)
             ->where('products.is_featured', 1)
             ->get();
-        return view('layouts.app', compact('products'));
+        return view('layouts.app', compact('products', 'carts'));
     }
 
     //DETALHES PRODUTOS
@@ -363,8 +429,7 @@ class ProductController extends Controller
     }
 
     //CARRINHO DE COMPRAS
-    public function productscartcreate(Request $request, $id) {
-        
+    public function productscartcreate(Request $request, $id) {        
         if (Auth::check()) {
             $userId = (Auth::user()->id);
         } else {
@@ -387,12 +452,12 @@ class ProductController extends Controller
                 // $stock = $product->stock;
                 // $product->update(['stock' => ($stock - $request->quantity)]); //ajuste estoque
 
-                return redirect()->route('productsdetails', ['id' => $id])->with('success', 'Produto ['.$product->title.'] INCLUÍDO no Carrinho com Sucesso!');
+                return redirect()->back()->with('success', 'Produto ['.$product->title.'] INCLUÍDO com Sucesso!');;
             }
 
         } else {
-
-            $qt = $cart->pluck('quantity')->first() + (int)$request->quantity;
+            $qty = ($request->quantity == null ? 1 : $request->quantity);
+            $qt = $cart->pluck('quantity')->first() + (int)$qty;
             $cart->update(['quantity' => $qt]);
             return redirect()->route('productsdetails', ['id' => $id])->with('success', 'Produto ['.$product->title.'] ALTERADO Quantidade com Sucesso!');
         }
@@ -403,6 +468,9 @@ class ProductController extends Controller
             return redirect()->route('productsdetails', ['id' => $id]);
         
         $productcart->delete();
+        $id = Cart::where(['user_id' => Auth::user()->id])->orderby('id', 'DESC')->first();
+        $id = $id->product_id;
+
         return redirect()->route('productsdetails', ['id' => $id]);
     }
 

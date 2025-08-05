@@ -8,31 +8,25 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Scale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
     public function information() {
-        // $categories = Category::orderBy('category_name', 'ASC')->where('is_active', 1)->get();
-        // $brands = Brand::orderBy('brand_name', 'ASC')->where('is_active', 1)->get();
-        // $scales = Scale::orderBy('scale_name', 'ASC')->get();
-        // $products = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->get();
-        // $productsonsale = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->join('brands', 'products.brand_id', '=', 'brands.id')
-        //     ->select('products.*', 'categories.category_name', 'brands.brand_name')
-        //     ->orderBy('id', 'DESC')
-        //     ->where('products.is_active', 1)
-        //     ->where('products.on_sale', 1)
-        //     ->get();
-        // $filter = '';
-        // return view('information', compact('categories', 'brands', 'scales', 'products', 'productsonsale', 'filter'));
-        return view('information');
+        if (Auth::check()) {
+            $user = Auth::user()->id;
+        } else {
+            $user = 1;
+        }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
+        return view('information', compact('carts'));
     }
     //SCALES
     public function scalescreate(Request $request){

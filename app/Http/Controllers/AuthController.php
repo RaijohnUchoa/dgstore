@@ -82,7 +82,18 @@ class AuthController extends Controller
 
     public function logout() {
         Auth::logout();
-        return view('layouts.app');
+        // if (Auth::check()) {
+        //     $user = Auth::user()->id;
+        // } else {
+            $user = 1;
+        // }
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->select('carts.*', 'products.title', 'products.image1')
+            ->where(['carts.user_id' => $user])
+            ->orderBy('id', 'DESC')
+            ->get();
+        return view('layouts.app', compact('carts'));
     }
 
     //CRUD USUÁRIOS ADMINISTRATIVO

@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user()->id;
+    } else {
+        $user = 1;
+    }
     $carts = DB::table('carts')
         ->join('products', 'carts.product_id', '=', 'products.id')
         ->select('carts.*', 'products.title', 'products.image1')
-        ->where(['carts.user_id' => Auth::user()->id])
+        ->where(['carts.user_id' => $user])
         ->orderBy('id', 'DESC')
         ->get();
         return view('layouts.app', compact('carts'));

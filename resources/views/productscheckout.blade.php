@@ -13,23 +13,25 @@
 
     <div class="p-1">
 
-        <div class="relative flex justify-between rounded text-xs">
+        <div class="relative flex justify-between rounded text-sm">
             
             
-            {{-- CARRINHO LATERAL --}}
-            <div class="w-1/4 p-1 border rounded">
+            {{-- CARRINHO CHECKOUT --}}
+            <div class="w-3/4 p-1 border rounded">
 
                 @php $sum = 0 @endphp
+
                 @foreach ($carts as $cart)
 
-                    <div class="mt-1 bg-gray-50 border shadow rounded">
+                    <div class="h-[65px] mt-1 bg-gray-50 border shadow rounded">
 
-                        <div class="relative flex p-1 h-[65px]">
+                        {{-- <div class="relative flex p-1"> --}}
+                        <div class="flex p-1">
 
-                            <div class="flex items-center w-1/5 max-h-[65px]">
-                                <a href="{{ route('productsdetails', $cart->product_id) }}"><img class="max-h-[60px]" src="{{ asset("storage/{$cart->image1}") }}"></a>
+                            <div class="flex items-center">
+                                <a href="{{ route('productsdetails', $cart->product_id) }}"><img class="max-h-[60px] w-[40px]" src="{{ asset("storage/{$cart->image1}") }}"></a>
                             </div>
-                            <div class="w-4/5 text-[10px] px-1">
+                            <div class="w-4/5 px-1">
                                 <div class="h-1/2">
                                     <span class="text-blue-900">{{ $cart->title }}</span>
                                 </div>
@@ -41,7 +43,7 @@
                             </div>
 
                             <a href="{{ route('productscartdelete', $cart->id) }}">
-                                <span class="absolute top-0 left-[-4px] px-1">
+                                <span class="px-1">
                                     <svg class="rounded bg-white" height="14px" viewBox="0 -960 960 960" width="14px" fill="#ef4444">
                                         <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                                     </svg>
@@ -49,11 +51,12 @@
                             </a>
                         </div>
                     </div>
+
                     @php $sum = $sum + ($cart->price_cart * $cart->quantity) @endphp
 
                 @endforeach
 
-                <div class="flex justify-between mt-1 px-2 py-1 border text-[10px] font-bold text-blue-900 shadow shadow-gray-200">
+                <div class="flex justify-between mt-1 px-2 py-1 border font-bold text-blue-900 shadow shadow-gray-200">
                     <span class="">Total Produtos</span>
                     <span class="">R$ {{ number_format($sum, '2', ',', '.') }}</span>
                 </div>
